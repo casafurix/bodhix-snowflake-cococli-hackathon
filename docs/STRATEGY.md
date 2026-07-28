@@ -1,5 +1,17 @@
 # Snowflake CoCo CLI Hackathon 2026 — Details & Winning Strategy
 
+## ⭐ North Star — Read This First
+
+**We win on the pain, not the tech.** Everything here should be built — and pitched — in this priority order:
+
+1. **The pain point** — a real, specific person feeling a real, measurable problem. Lead here. Always.
+2. **The experience** — how effortless it is for that person to go from problem → answer → action. Ease of use is a feature, not a footnote.
+3. **The tool** — the agent, memory, retrieval, optimization. These *serve* the pain; they are never the headline.
+
+> Judges (and the r/hackathon winner consensus) reward **problem-before-product**. A tech-first pitch reads as a commodity demo. Make them *feel the pain*, show a dead-simple fix, then reveal the engineering underneath. If any section leads with tech, it's in the wrong order.
+
+---
+
 ## Event Metadata
 
 | | |
@@ -307,9 +319,33 @@ Any vertical can wear this stack, but the one where **all four are genuinely req
 
 ---
 
-## Technical Depth: Memory, Retrieval & Optimization (the 40% score)
+## The Experience — Ease of Use Comes Before the Engineering
 
-This is where the **Technical Execution (40%)** points are won. A stateless "agent that drafts a thing" is a commodity demo; a winner **remembers, retrieves against ground truth, and provably optimizes a real objective.**
+*(Priority #2, per the North Star. The customer should never see the machinery — only how little effort the answer costs them.)*
+
+**Who the customer is (denial-recovery example):** a hospital billing / revenue-cycle specialist — not a data scientist. They live in spreadsheets and payer portals, and their day is death-by-a-thousand-clicks. The whole value proposition is **"the work already happened; just check it."**
+
+### Ease-of-use principles
+- **Zero setup for the user.** They open one screen; no SQL, no config, no prompt-engineering. The agent already ran overnight.
+- **Answer-first, not chat-first.** Don't hand them a blank chatbox and make them think of the right question. Lead with *"Here are the 12 denials worth appealing today ($48k recoverable) — here's why, and here are the drafts."* Natural-language Q&A is there for follow-ups, not the front door.
+- **One-click verify → act.** The human's entire job is Approve / Edit / Reject on a pre-built draft. Human-in-the-loop, minimal-friction.
+- **Explain-in-plain-language.** Every recommendation shows its reasoning and cites the source clause — trust without a manual.
+- **Meet them where they are.** Show impact in *their* KPIs ($ recovered, hours saved), not model metrics.
+
+### How we build it (the customer-facing layer)
+- **Streamlit-in-Snowflake** front-end — a clean app surface over the CoCo agent, so the customer never touches the CLI. The CLI/agent is the engine room; the app is the dashboard.
+- A **worklist UI**: ranked cards (most recoverable first) → expand for the drafted appeal + cited evidence → Approve/Edit/Reject → status tracked.
+- Natural-language box for ad-hoc questions ("why did Payer X denials spike?"), powered by Cortex Analyst.
+
+> **Demo implication:** the "damn" moment is a *non-technical* one — a billing manager clears a day's denial backlog in 3 clicks. Show the effortless experience first; the judges will *then* be impressed the engine underneath is sophisticated.
+
+---
+
+## Technical Depth: Memory, Retrieval & Optimization
+
+*(Priority #3 — the engine that makes the experience above possible. Every choice here exists to serve the pain and the ease-of-use goals, not for its own sake. This is where **Technical Execution (40%)** points are won.)*
+
+A stateless "agent that drafts a thing" is a commodity demo; a winner **remembers, retrieves against ground truth, and provably optimizes a real objective** — so the customer's worklist is trustworthy and gets smarter over time.
 
 > **Strategic rule:** use **Snowflake-native** memory + vector search. An external Pinecone/Weaviate *weakens* the Snowflake-native moat — the whole pitch is "governed AI where the data already lives."
 
