@@ -307,6 +307,45 @@ Any vertical can wear this stack, but the one where **all four are genuinely req
 
 ---
 
+## Technical Depth: Memory, Retrieval & Optimization (the 40% score)
+
+This is where the **Technical Execution (40%)** points are won. A stateless "agent that drafts a thing" is a commodity demo; a winner **remembers, retrieves against ground truth, and provably optimizes a real objective.**
+
+> **Strategic rule:** use **Snowflake-native** memory + vector search. An external Pinecone/Weaviate *weakens* the Snowflake-native moat — the whole pitch is "governed AI where the data already lives."
+
+### 1. Memory — an agent that *learns* (the differentiator)
+Four memory tiers, all backed by Snowflake tables:
+
+| Tier | What it holds | Backed by |
+|------|---------------|-----------|
+| **Working** | Transient per-run scratchpad (the case being worked) | Session state / temp table |
+| **Episodic** | Every past case: denial → action taken → **outcome** (won/lost/$ recovered), embedded for similarity lookup | Table + `VECTOR` column / Cortex Search |
+| **Semantic (knowledge)** | Distilled learned rules — *"Payer X overturns CO-197 when we cite policy §4.2"* | Table, updated from outcomes |
+| **Procedural** | The workflow playbooks | CoCo **Agent Skills** (`SKILL.md`) |
+
+**Learning loop:** outcomes feed back → update overturn-probability priors per `(payer, denial_code, action)` → each run's prioritization gets smarter. Most hackathon agents are stateless — memory + a visible "it learned from last week" moment is a showstopper.
+
+### 2. Retrieval / vector layer — the anti-hallucination mechanism
+The fix for the unstructured-data hallucination risk (flagged in Team Input):
+- **Cortex Search** — Snowflake's managed **hybrid (vector + keyword)** service; handles embedding + indexing. Default choice.
+- **Custom path** — `SNOWFLAKE.CORTEX.EMBED_TEXT_1024(model, text)` → `VECTOR` column → `VECTOR_COSINE_SIMILARITY` for bespoke similarity (e.g., "find similar past denials").
+- **Grounded generation:** every generated claim must **cite a retrieved source clause**; a verification pass (`AI_FILTER` / `AI_COMPLETE`) rejects any draft referencing facts not in the retrieved context. Retrieval is what makes unstructured data *safe* to act on.
+
+### 3. Optimization — the measurable "how"
+- **Core objective (business optimization):** `rank = overturn_probability × claim_amount − cost_to_appeal` → work the **most recoverable dollars first**, not FIFO. This is the quantifiable win judges reward.
+- **Model right-sizing:** cheap/fast model for classify & extract; strong model only for drafting & reasoning.
+- **Embedding cache** keyed by content hash — never re-embed unchanged docs.
+- **Retrieval quality:** top-k + rerank, sensible chunking, hybrid over pure-vector.
+- **Compute cost:** materialized views for hot aggregates, warehouse auto-suspend, batch AISQL calls.
+- **Confidence gating:** only escalate to the expensive LLM path when cheap-path confidence is low.
+
+### How this maps to the rubric
+- **Technical Execution (40%):** multi-tier memory + learning loop, grounded RAG, an explicit optimization objective, cost/latency engineering, error/confidence branches.
+- **Real-World Relevance (30%):** the EV objective *is* the measurable impact ($ recovered, cost-per-case down, hours saved).
+- **Solution Completeness (30%):** memory + outcome tracking closes the loop — the system improves with use, not a one-shot script.
+
+---
+
 ### Sources
 - Excel/reporting drudgery: [DEV — "847 hours cleaning Excel"](https://dev.to/vimal-patel/i-wasted-847-hours-last-year-cleaning-excel-files-heres-how-i-got-my-life-back-4hn3); [data.world — data engineer burnout survey](https://data.world/blog/why-so-blue-5-reasons-data-engineers-are-burnt-out)
 - Collections: [Allianz-Trade — B2B debt collection (33% unpaid at 90 days)](https://www.allianz-trade.com/en_SG/insights/risk-management/how-does-business-debt-collection-work.html)
