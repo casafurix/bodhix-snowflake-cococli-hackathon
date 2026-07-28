@@ -273,6 +273,40 @@ The healthcare twin of the month-end-close idea, and it hits everything we optim
 
 ---
 
+## Flagship Concept: One System That Unifies All 4 Problem Statements
+
+Instead of treating the 4 PS as alternatives, stack them as **4 layers of one system** — each becomes a natural tier, not a bolted-on checkbox:
+
+```
+PS-03  AI-Native App        ← the experience (NL app: ask → insight → act)
+PS-04  Domain Copilot       ← the specialization (industry terms, guardrails, skills)
+PS-01  Workflow Agent       ← the engine (autonomous detect → reason → act loop)
+PS-02  Unstructured Intel   ← the foundation (fuse messy docs + structured data)
+```
+
+Any vertical can wear this stack, but the one where **all four are genuinely required** is the healthcare **denial-recovery** idea.
+
+### The idea: autonomous Revenue-Cycle Denial-Recovery copilot (hospital billing team)
+
+**Real problem:** hospitals wrote off **$25.7B** in denied claims last year — most were *administrative* denials overturned **80%+** of the time *if* appealed. Staff don't have the hours, so recoverable cash is abandoned.
+
+**Each PS as a visible pillar of the same system:**
+
+- **PS-02 — Unstructured Data Intelligence (foundation).** Ingest denial letters, EOB/835 remittances, payer-policy PDFs; parse with `PARSE_DOCUMENT` + AISQL; **fuse** with structured claims/charges/payer tables. Literally the "combine unstructured + structured" mandate.
+- **PS-01 — Workflow Automation Agent (engine).** Autonomous agent scans posted denials, **detects the anomaly** ("spike in CO-197 denials from Payer X"), reasons about root cause, orchestrates the recovery workflow with real **decision branches**: appeal vs. rebill vs. write-off vs. escalate.
+- **PS-04 — Domain-Specific Copilot (specialization).** Tuned to healthcare RCM — CARC/RARC codes, payer policies, appeal templates, compliance guardrails — encoded as CoCo **Agent Skills** (RCM playbooks).
+- **PS-03 — AI-Native App (experience).** NL Streamlit-on-Snowflake app: billing manager asks *"which denials are worth appealing this week, and why?"*, gets insights + a drafted appeal, **verifies**, clicks approve → agent submits and tracks outcome. Question → insight → action in one surface.
+
+> One narrative, one user, four pillars — we can tell judges "we addressed all four problem statements in one deployable system."
+
+### Two caveats
+1. **Rules say pick one PS.** Submit under **PS-01** (the 40%-weighted spine); present the other three as demonstrated *depth*, not a checklist. "We touched all four" loses; "one deployable system whose layers happen to cover all four" wins.
+2. **Overscoping is the real 9-day risk.** Build the PS-01 spine + PS-02 fusion rock-solid first; PS-03 app polish and PS-04 skill tuning are the last-two-days layer. If time runs short, the spine still demos end-to-end.
+
+**Portability:** the same 4-layer stack ports to any domain — swap denial-letters+claims for vendor-PDFs+GL (finance close) or rate-sheets+loads (freight). Healthcare just makes all four *maximally necessary* and carries the strongest pitch number.
+
+---
+
 ### Sources
 - Excel/reporting drudgery: [DEV — "847 hours cleaning Excel"](https://dev.to/vimal-patel/i-wasted-847-hours-last-year-cleaning-excel-files-heres-how-i-got-my-life-back-4hn3); [data.world — data engineer burnout survey](https://data.world/blog/why-so-blue-5-reasons-data-engineers-are-burnt-out)
 - Collections: [Allianz-Trade — B2B debt collection (33% unpaid at 90 days)](https://www.allianz-trade.com/en_SG/insights/risk-management/how-does-business-debt-collection-work.html)
