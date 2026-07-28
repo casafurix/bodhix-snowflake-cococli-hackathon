@@ -241,6 +241,38 @@ Flow = Eirene's loop landing on a workflow judges recognize: **reconcile → fla
 
 **Freight brokerage** = the highest-*defensibility* alternative (AI never defaults to it; "$2.7M margin leak" is a killer pitch number) — pick it only if a teammate has domain knowledge or we can build convincing lane/rate data.
 
+---
+
+## Healthcare Option (PS-04 is explicitly healthcare-eligible)
+
+Healthcare is named directly in **PS-04 (Domain-Specific AI Copilot)** and is a hot, credible domain. Critical fork:
+
+> **Stay administrative, not clinical.** Clinical AI (diagnosis/treatment) is a hackathon landmine — no real data, high hallucination, patient-safety liability that spooks judges. Administrative healthcare has huge, quantified, *safe* pain that fits Snowflake.
+
+### Ranked healthcare angles
+
+| Angle | Evidence (quantified) | Fit / notes |
+|-------|-----------------------|-------------|
+| **🥇 Claim Denial Management & Appeals** | Hospitals spent **$25.7B in 2023** overturning denials (+23% YoY); **$25–181** to rework one denial; initial denial rate **11.8%** & rising. **Killer insight:** most denials are administrative — final rates collapse after appeal (Medicaid **44%→6%**, commercial **21%→3%**; prior-auth appeals overturned **81.7%**). Recoverable money gets written off for lack of staff-hours. | PS-01 + PS-04 + PS-02 triple combo; strong Snowflake moat; billing/admin = **safe**; fully synthetic data (no PHI) |
+| **🥈 Prior Authorization Agent** | Physicians spend **13–16 hrs/week** on **40+ PAs/week**; **40%** of practices staff people just for this; **81.7%** of appeals succeed | Same shape as denials, but more real-time/payer-portal dependent → harder to demo end-to-end on Snowflake; fold into denials |
+| **🥉 No-show prediction + smart rescheduling** | **$150B/yr** system-wide; **$200–375** per no-show; predictable by specialty | Good Snowflake fit, but a *classic ML demo* (crowded, low defensibility); little unstructured angle |
+
+### Top healthcare pick: **Claim Denial Management & Appeals Agent**
+
+The healthcare twin of the month-end-close idea, and it hits everything we optimize for:
+- **Triple-PS combo** — PS-01 (agentic workflow, the 40% weight) + PS-04 (healthcare copilot) + PS-02 (unstructured: denial letters, EOBs, payer-policy PDFs).
+- **Loop = Eirene's** — ingest denials → classify reason (AISQL) → check payer policy (Cortex Search) → predict overturn likelihood → **draft appeal citing policy** → human verifies → submit + track, with an **audit trail**.
+- **Snowflake-native moat** — claims data in the warehouse; governed, auditable appeal generation a generic agent can't credibly replicate.
+- **Safe** — billing/admin, zero clinical liability. **Data buildable** — synthetic claims + fake denial letters + fake payer policies, no PHI.
+- **Pitch hook** — "Billions in recoverable revenue is abandoned because nobody has time to appeal. Our agent works the denial queue autonomously."
+
+### Healthcare sources
+- Claim denials: [Aptarro — US denial-rate statistics 2026](https://www.aptarro.com/insights/us-healthcare-denial-rates-reimbursement-statistics); [Experian — State of Claims 2025](https://www.experian.com/blogs/healthcare/healthcare-claim-denials-statistics-state-of-claims-report/); [DataRovers — cost of managing denials](https://datarovers.com/denial-management-budget-blog/)
+- Prior authorization: [AMA — nearly 40 prior auths a week](https://www.ama-assn.org/practice-management/prior-authorization/fixing-prior-auth-nearly-40-prior-authorizations-week-way)
+- No-shows: [Curogram — average no-show rate 2025](https://curogram.com/blog/average-patient-no-show-rate); [Dialog Health — no-show statistics](https://www.dialoghealth.com/post/patient-no-show-statistics)
+
+---
+
 ### Sources
 - Excel/reporting drudgery: [DEV — "847 hours cleaning Excel"](https://dev.to/vimal-patel/i-wasted-847-hours-last-year-cleaning-excel-files-heres-how-i-got-my-life-back-4hn3); [data.world — data engineer burnout survey](https://data.world/blog/why-so-blue-5-reasons-data-engineers-are-burnt-out)
 - Collections: [Allianz-Trade — B2B debt collection (33% unpaid at 90 days)](https://www.allianz-trade.com/en_SG/insights/risk-management/how-does-business-debt-collection-work.html)
