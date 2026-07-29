@@ -382,6 +382,39 @@ The fix for the unstructured-data hallucination risk (flagged in Team Input):
 
 ---
 
+## Execution Playbook — How to Win (Beyond the Idea)
+
+> Core truth: **a compelling demo + clear business value beats superior code with a weak pitch.** Teams that read the rubric, scope tightly, and nail the presentation consistently out-place technically-deeper teams.
+
+### 1. Balanced team & roles (we're 1–4 people)
+- **Mix skill sets** — don't be all-backend. Assign a **presenter** (owns the pitch + time), a **deep diver** (owns the hardest technical blocker), and a **builder/UX** owner.
+- **Leverage existing chemistry** — split work by trust and communication style to move fast.
+
+### 2. Rubric-driven (already decoded — see North Star & rubric table)
+- Weights: **Technical Execution 40% · Relevance 30% · Completeness 30%.** Tailor everything to these.
+- **The sponsor is Snowflake** — heavy, correct use of **CoCo CLI + Cortex (Analyst/Search/AISQL) + Agent Skills** is both mandatory *and* the alignment judges reward. Watch the AMA/workshops for what they explicitly want to see.
+
+### 3. Hyper-focused MVP — the "Golden Path"
+- **Write the 90-second demo script FIRST**, before any code. Map the exact click-by-click user flow, then build only what that flow needs.
+- **Build breadth-narrow, depth-real.** Skip features/edge cases *outside* the demo path — but (see caveat) the golden path itself must show **real orchestration + a real decision branch + a real error/guardrail case**, because that's the 40% score.
+- **Fake what's off-path.** Hardcode user profiles, pre-load the synthetic dataset, mock any slow/external integration, cache results so the demo is instant.
+- **Use shortcuts** — code assistants, templates, rapid app builders — to buy time for polish.
+
+### 4. UI/UX "wow" (ties to the Experience section)
+- A **polished, beautiful UI beats a backend-heavy project with an ugly one** — every time, even for technical judges.
+- Invest in the visual layer of the worklist app: clean ranked cards, clear $ impact, plain-language reasoning, satisfying Approve/act interaction.
+
+### 5. Pitch & demo mechanics
+- **Open with the painful problem** (feel it first — the North Star), then reveal the product as a **story** with clear business relevance.
+- **Do NOT rely on live internet / real-time external DB calls** during judging. Pre-run the agent; the demo replays cached/hardcoded results.
+- **Record a clean backup video** of a smooth run *early* — insurance against a deadline-day crash.
+- **Submit early.** An incomplete-but-working version in on time beats late perfectionism that gets disqualified. Target submit **well before Aug 6**, not at the buzzer.
+
+### ⚠️ Reconciling "skip error handling" with THIS rubric
+Generic hackathon advice says fake the backend and skip error handling. Here, Technical Execution is 40% and explicitly rewards error handling + decision branches + end-to-end. **Reconciliation:** build the real agent loop, memory, retrieval, and *at least one* real error/decision branch **for the narrow golden path**, then **pre-cache that exact run** so it's crash-proof live. Skip *breadth* (edge cases we won't show), never the *depth* of the path we demo.
+
+---
+
 ### Sources
 - Excel/reporting drudgery: [DEV — "847 hours cleaning Excel"](https://dev.to/vimal-patel/i-wasted-847-hours-last-year-cleaning-excel-files-heres-how-i-got-my-life-back-4hn3); [data.world — data engineer burnout survey](https://data.world/blog/why-so-blue-5-reasons-data-engineers-are-burnt-out)
 - Collections: [Allianz-Trade — B2B debt collection (33% unpaid at 90 days)](https://www.allianz-trade.com/en_SG/insights/risk-management/how-does-business-debt-collection-work.html)
