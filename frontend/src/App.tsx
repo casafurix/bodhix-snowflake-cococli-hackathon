@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link, useLocation } from "wouter";
 import {
   Activity,
   ArrowUpRight,
@@ -10,6 +11,7 @@ import {
   ClipboardCheck,
   FileSearch,
   FlaskConical,
+  History,
   LayoutDashboard,
   LoaderCircle,
   Menu,
@@ -42,15 +44,17 @@ const statusTone: Record<ScreeningStatus, string> = {
 };
 
 const nav = [
-  [LayoutDashboard, "Command center", true],
-  [BookOpenText, "Protocols", false],
-  [Users, "Screening", false],
-  [ClipboardCheck, "Worklist", false],
-  [Activity, "Operations", false],
-  [FlaskConical, "Scenario lab", false],
+  [LayoutDashboard, "Command center", "/"],
+  [BookOpenText, "Protocols", "/protocols"],
+  [Users, "Screening", "/screening"],
+  [ClipboardCheck, "Worklist", "/worklist"],
+  [Activity, "Operations", "/operations"],
+  [FlaskConical, "Scenario lab", "/scenarios"],
+  [History, "Audit history", "/audit"],
 ] as const;
 
 function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [location] = useLocation();
   return (
     <aside
       className={cn(
@@ -72,17 +76,19 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
       </div>
       <nav className="flex-1 space-y-1 px-3 py-6">
         <div className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Workspace</div>
-        {nav.map(([Icon, label, active]) => (
-          <button
+        {nav.map(([Icon, label, path]) => (
+          <Link
             key={label}
+            href={path}
             className={cn(
-              "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
-              active ? "bg-white/10 font-semibold text-white" : "text-slate-400 hover:bg-white/5 hover:text-white",
-            )}
+                "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
+                location === path ? "bg-white/10 font-semibold text-white" : "text-slate-400 hover:bg-white/5 hover:text-white",
+              )}
+            onClick={onClose}
           >
-            <Icon className={cn("size-[18px]", active && "text-[#70d0c6]")} />
+            <Icon className="size-[18px]" />
             {label}
-          </button>
+          </Link>
         ))}
       </nav>
       <div className="m-3 rounded-xl border border-white/10 bg-white/[0.04] p-4">
@@ -135,6 +141,7 @@ function CandidateRow({ patient, active, onSelect }: { patient: PatientSummary; 
 }
 
 function EvidencePanel({ patientId, onClose }: { patientId: string; onClose: () => void }) {
+  const [, navigate] = useLocation();
   const { data, isLoading, error } = useQuery({
     queryKey: ["patient", patientId],
     queryFn: () => api.patient(patientId),
@@ -190,8 +197,8 @@ function EvidencePanel({ patientId, onClose }: { patientId: string; onClose: () 
               ))}
             </div>
             <div className="sticky bottom-0 -mx-6 mt-8 flex gap-3 border-t border-slate-200 bg-white/95 px-6 py-4 backdrop-blur">
-              <Button className="flex-1"><ClipboardCheck className="size-4" />Review for screening</Button>
-              <Button variant="outline">Dismiss</Button>
+              <Button className="flex-1" onClick={() => navigate("/worklist")}><ClipboardCheck className="size-4" />Open governed worklist</Button>
+              <Button variant="outline" onClick={onClose}>Close evidence</Button>
             </div>
           </div>
         )}
@@ -201,6 +208,8 @@ function EvidencePanel({ patientId, onClose }: { patientId: string; onClose: () 
 }
 
 export default function App() {
+  const [location] = useLocation();
+  const isScreening = location === "/screening";
   const queryClient = useQueryClient();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -209,7 +218,14 @@ export default function App() {
   const dashboard = useQuery({ queryKey: ["dashboard"], queryFn: api.dashboard });
   const rerun = useMutation({
     mutationFn: api.rerun,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["dashboard"] }),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["dashboard"] }),
+        queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+        queryClient.invalidateQueries({ queryKey: ["audit-events"] }),
+        queryClient.invalidateQueries({ queryKey: ["operations"] }),
+      ]);
+    },
   });
 
   const patients = useMemo(() => {
@@ -239,7 +255,7 @@ export default function App() {
           <Button variant="ghost" size="icon" className="mr-2 lg:hidden" onClick={() => setMenuOpen(true)}><Menu className="size-5" /></Button>
           <div>
             <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#1d5a85]">Coordinator workspace</div>
-            <h1 className="protocol-title mt-1 text-xl font-semibold">Command center</h1>
+            <h1 className="protocol-title mt-1 text-xl font-semibold">{isScreening ? "Cohort screening" : "Command center"}</h1>
           </div>
           <div className="ml-auto flex items-center gap-3">
             <div className="hidden text-right sm:block">
@@ -257,7 +273,7 @@ export default function App() {
                 <Badge className="border-blue-200 bg-blue-50 text-[#1d5a85]">{protocol.protocol_id}</Badge>
                 <span className="text-xs text-slate-400">{protocol.criteria_count} reviewed criteria · {run.cohort_size} synthetic candidates</span>
               </div>
-              <h2 className="protocol-title max-w-4xl text-3xl leading-tight text-[#10233b] md:text-4xl">The cohort review already happened. Verify the evidence.</h2>
+              <h2 className="protocol-title max-w-4xl text-3xl leading-tight text-[#10233b] md:text-4xl">{isScreening ? "Every candidate has a criterion-level record." : "The cohort review already happened. Verify the evidence."}</h2>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">{protocol.title}</p>
             </div>
             <Button variant="outline" onClick={() => rerun.mutate()} disabled={rerun.isPending}>
@@ -327,4 +343,3 @@ export default function App() {
     </div>
   );
 }
-

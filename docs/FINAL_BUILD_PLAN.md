@@ -3,8 +3,21 @@
 **Hackathon:** Snowflake CoCo CLI Hackathon 2026  
 **Submission track:** PS-04 — Domain-Specific AI Copilot  
 **Secondary capability:** PS-01 — Intelligent Workflow Automation  
-**Status:** Authoritative build contract; implementation proceeds against this document  
+**Status:** Authoritative target and delivery contract
 **Prototype rule:** Public protocol data and fully synthetic patient/site data only
+
+### Implemented snapshot — 1 August 2026
+
+The deployed golden path is complete through protocol review, patient evidence,
+deterministic pre-screening, missing-information/manual-review task generation,
+human decisions, audit history, site workload, and a non-mutating capacity
+scenario. It runs as a React/FastAPI container in Snowpark Container Services.
+
+The remaining expansion scope in this document—historical recruitment forecast,
+visit/consent compliance, sponsor portfolio, and natural-language assistant—is
+still a target, not a claim about the current deployment. The submission must not
+describe those modules as live until their data, API, UI, and verification are all
+present.
 
 ## 1. Executive decision
 

@@ -1,0 +1,10 @@
+.git
+.env
+.DS_Store
+**/.venv
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+frontend/dist
+docs/*.pptx

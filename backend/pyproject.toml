@@ -12,10 +12,11 @@ dependencies = [
   "pydantic>=2.8,<3",
   "fastapi>=0.116,<1",
   "uvicorn[standard]>=0.35,<1",
+  "snowflake-connector-python[secure-local-storage]>=3.18,<5",
 ]
 
 [project.optional-dependencies]
-snowflake = ["snowflake-snowpark-python>=1.31,<2"]
+snowpark = ["snowflake-snowpark-python>=1.31,<2"]
 dev = ["httpx>=0.28,<1", "pytest>=8.3,<9", "ruff>=0.9,<1"]
 
 [tool.setuptools.packages.find]

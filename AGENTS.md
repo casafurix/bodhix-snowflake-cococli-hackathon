@@ -21,7 +21,7 @@ Build the following in order:
 1. Protocol ingestion and criteria extraction.
 2. Patient evidence construction and criterion-level pre-screening.
 3. Coordinator task creation, approval, and audit logging.
-4. Streamlit worklist and evidence view.
+4. React coordinator worklist and evidence view backed by FastAPI.
 5. Tests, deployment, demo recording, and submission material.
 
 Recruitment forecasting, compliance monitoring, additional personas, multiple protocols, FHIR integration, and a digital twin are extensions only after the deployed golden path is stable.

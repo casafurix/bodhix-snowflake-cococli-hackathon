@@ -1,5 +1,10 @@
+import os
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.api.routes import router
 
@@ -17,8 +22,21 @@ app.add_middleware(
 )
 app.include_router(router)
 
+default_static_dir = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+static_dir = Path(os.getenv("TRIALOPS_STATIC_DIR", default_static_dir))
 
-@app.get("/")
-def root() -> dict:
-    return {"service": "TrialOps Evidence Desk API", "docs": "/docs"}
+if static_dir.is_dir():
+    assets_dir = static_dir / "assets"
+    if assets_dir.is_dir():
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
+    @app.get("/{path:path}", include_in_schema=False)
+    def frontend(path: str) -> FileResponse:
+        requested = (static_dir / path).resolve()
+        if requested.is_relative_to(static_dir.resolve()) and requested.is_file():
+            return FileResponse(requested)
+        return FileResponse(static_dir / "index.html")
+else:
+    @app.get("/")
+    def root() -> dict:
+        return {"service": "TrialOps Evidence Desk API", "docs": "/docs"}

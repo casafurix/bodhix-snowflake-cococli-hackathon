@@ -57,8 +57,23 @@ Use the coordinator-action-orchestrator skill. Create idempotent coordinator tas
 Application:
 
 ```text
-Build a Streamlit coordinator worklist over the persisted Snowflake results and actions. The primary screen must be answer-first, show potential matches and missing-information tasks, provide protocol and patient evidence, and support approve/edit/reject with audit logging. Follow AGENTS.md safety language.
+Build the React coordinator workspace and FastAPI repository over the persisted Snowflake results and actions. The primary screen must be answer-first, show potential matches and missing-information tasks, provide protocol and patient evidence, and support approve/edit/reject with audit logging. Follow AGENTS.md safety language.
 ```
+
+## Reproducible read-only evidence run
+
+Headless CoCo requires tool approvals. Keep the server-side SQL read-only guard on
+even when bypassing the interactive approval prompts:
+
+```bash
+cortex -c hackathon --workdir "$PWD" \
+  --sql-read-only --bypass --no-mcp --max-turns 6 --effort low \
+  -p "Use the patient-screening project skill. Read AGENTS.md and snowflake/verification/002_clinical_data.sql. Execute SELECT statements only against CTOPS_HACKATHON. Inspect the latest completed run by computed_at and report its id, confirm all patients are synthetic, the four overall status counts, UNKNOWN and CONTRADICTORY criterion counts for that run, and two exact protocol/patient citations. Do not edit files. Keep the final answer concise."
+```
+
+`--bypass` only skips non-interactive approval prompts here. `--sql-read-only`
+still blocks database mutations. Do not omit the read-only flag for verification
+runs.
 
 ## Demo evidence
 
@@ -67,5 +82,5 @@ Capture the following for the submission:
 1. CoCo discovering all three project skills.
 2. A skill executing real Snowflake SQL and AI functions.
 3. Four decision branches generated from computed results.
-4. Streamlit reflecting a new coordinator task.
+4. React/FastAPI reflecting a new coordinator task.
 5. A human approval producing a new screening-queue and audit event.
