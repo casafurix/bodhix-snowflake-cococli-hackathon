@@ -1,0 +1,998 @@
+# tactiq.io free youtube transcript
+# Hands on with CoCo CLI workshop
+# https://www.youtube.com/watch/Xsorj-C-KdM
+
+00:00:17.685 [music]
+00:00:26.200 [music]
+00:00:31.440 [music]
+00:00:43.230 [music]
+00:00:45.200 D.
+00:00:48.470 [music]
+00:01:23.680 first folks is that I would first like
+00:01:26.000 to take you across. How do we get
+00:01:28.880 started with snowflake? Right? Uh
+00:01:31.680 because that's the step number one. So
+00:01:34.400 you would have to come in. Uh what
+00:01:36.640 snowflake is? Snowflake is a SAS
+00:01:39.040 platform. uh it is data AI first kind of
+00:01:44.079 a platform where you can bring in your
+00:01:46.000 data and your AI can sit right on top of
+00:01:50.000 it very near to your context very near
+00:01:53.840 to where you have the grounded truth
+00:01:57.759 right against your agents absolutely
+00:02:01.360 governed you do not have to worry about
+00:02:04.719 who is looking at your data when you are
+00:02:06.880 accessing it with agents and that's What
+00:02:10.160 is the biggest plus point here? Once we
+00:02:13.520 understand what snowflake is, what we
+00:02:16.080 would do is how do we get started? These
+00:02:18.400 are some basic points which I definitely
+00:02:20.640 would like to uh take away from before I
+00:02:24.400 log into all the boring tech stuff and
+00:02:26.959 then of course I'll show you a demo.
+00:02:28.640 Yeah. So, uh what we do is we go to sign
+00:02:32.000 up.nowflake.com
+00:02:33.920 and we get started by clicking on this.
+00:02:37.200 You would get to a screen which looks
+00:02:39.599 something of this sort. You have got
+00:02:41.840 something which is two ways out here if
+00:02:44.480 you can see. So cortex code uh what is
+00:02:48.720 cocoa? I mean we are going to talk a lot
+00:02:51.040 of it about cocoa cortex code cortex
+00:02:54.160 code and a couple of other things but I
+00:02:56.879 would definitely like to tell you what
+00:02:58.560 is this cocoa and what is this cortex.
+00:03:00.800 So anything which is related with AI on
+00:03:03.840 snowflake is called as cortex. And when
+00:03:06.560 we can code with Cortex, it is called
+00:03:10.000 Cortex code. As simple as that. And
+00:03:12.560 because we loved the name Coco so much.
+00:03:16.319 So now Cortex code has been shortened to
+00:03:19.440 Coco. That's it. So that's Coco for you.
+00:03:23.200 And we have got this one uh item which
+00:03:26.319 is AI data cloud. You can of course fill
+00:03:28.640 in your as I have already done. You can
+00:03:30.959 just fill in your name, your last name,
+00:03:33.280 your email ID and sign up. After you
+00:03:36.000 click on this continue which I have not
+00:03:37.840 done but you can do is that you would
+00:03:40.239 have to choose your cloud your addition
+00:03:44.400 which could be enterprise edition or a
+00:03:46.560 business critical edition or a standard
+00:03:48.239 edition and then you can just choose
+00:03:50.480 which area or which region you want to
+00:03:52.720 go ahead with. That's it. Click on
+00:03:55.120 continue. You would get an email into
+00:03:57.360 your whichever email id you have given
+00:04:00.000 here which is a work email id and it
+00:04:02.720 would trigger an email to that
+00:04:04.720 particular email id on which you can
+00:04:06.799 click and you can get redirected to the
+00:04:10.560 snowflake login. So as simple as it
+00:04:14.080 gets. There is another option which is
+00:04:17.279 you can just get cocoa which is cortex
+00:04:20.399 code only for yourself as a developer
+00:04:24.160 because we have not built cortex code
+00:04:27.120 just for snowflake uh in you know
+00:04:30.160 snowflake data and snowflake
+00:04:32.160 intelligence. We have actually made uh
+00:04:35.280 koko to be aware as a one coding agent.
+00:04:39.440 So you can code on cocoa with snowflake,
+00:04:42.479 dbt, airflow, spark, glue or postgrade.
+00:04:47.199 You can also have accelerated end toend
+00:04:50.479 development and this is absolutely open
+00:04:53.919 and production ready and extensible. uh
+00:04:56.639 because we have got MCP connectors, we
+00:04:59.520 have got skills which you can bring in
+00:05:02.400 and of course uh all of this added into
+00:05:05.280 the conundrum of very good context
+00:05:08.000 against your data gives you very good
+00:05:11.600 results, high accuracy results and that
+00:05:13.919 is what matters to us at the end of the
+00:05:16.080 day. Right? So if you come here and you
+00:05:19.280 go in into the Koko for developers, you
+00:05:21.840 can go ahead and give given your first
+00:05:24.240 name, last name, email just like in the
+00:05:27.199 previous thing and do a sign up. You can
+00:05:29.919 still go ahead and use Koko. Here you
+00:05:32.960 see there are two things which are
+00:05:35.199 coming up. One is whe you can get a CLI
+00:05:39.360 and second is you can also get a
+00:05:41.440 desktop. So today we will talk both
+00:05:43.759 about CLI and desktop and I'll show you
+00:05:46.080 both even though the session says Koko
+00:05:48.320 CLI. So what we will do is we can check
+00:05:51.600 on both and that is what is the entire
+00:05:54.960 agenda of this particular discussion
+00:05:56.960 that we are going to have today. So I
+00:05:59.120 hope all of you are with me at least you
+00:06:02.320 have tried logging in into
+00:06:04.960 signup.nowflake.com
+00:06:07.280 and you have started your journey with
+00:06:09.199 all of us. Some of you are already with
+00:06:12.160 snowflake and those who are new to it,
+00:06:15.039 you can definitely try this and uh get
+00:06:18.160 yourselves ready. It takes about 5
+00:06:20.400 minutes. So I'm just elongating by
+00:06:23.280 conversing with you so that you get a
+00:06:25.120 chance of getting this account ready.
+00:06:27.440 Yeah. So what I'll do next is I'll just
+00:06:30.960 go ahead and talk everything theory so
+00:06:33.440 that you get an opportunity of getting
+00:06:35.199 the uh koko started. Right. So we'll go
+00:06:38.960 to the slideshow where I'll show you
+00:06:41.680 what does it mean and of course there
+00:06:43.600 are some disclaimers and everything but
+00:06:46.319 yes some of the largest uh some of the
+00:06:51.280 largest problems or adoption problems or
+00:06:54.960 issues uh which we face today with AI
+00:06:58.720 even though as you can see here all
+00:07:01.440 these numbers that you're seeing here
+00:07:03.039 where there is a large amount of
+00:07:04.800 developer adoption and impact of AI
+00:07:08.319 Because 92% of developers use AI tools
+00:07:11.440 today. Who has not tried their hands on
+00:07:15.840 a GPT or a claw or a Gemini at least
+00:07:19.440 even our parents do? I mean no no
+00:07:23.360 offenses but then this is where our
+00:07:27.120 world is walking towards right. AI has
+00:07:29.759 made access to data, information and
+00:07:32.960 honestly very very necessary data easier
+00:07:36.080 for us to obtain. Professional
+00:07:38.960 developers are using AI tools daily
+00:07:42.000 which is greater than 51% of course we
+00:07:44.800 also code we test and do a lot of other
+00:07:47.599 things. 60% and above have developers
+00:07:50.560 actively using code tools and 83% and
+00:07:53.199 above do it for software development. Of
+00:07:55.599 course we do it right. So but but what
+00:08:00.240 happens here is that even though those
+00:08:02.639 numbers look so good but these current
+00:08:06.000 tools have got a lot of complexity or a
+00:08:10.160 lot of challenges which we still need to
+00:08:12.879 solve for. For example, if the coding
+00:08:16.400 tasks become really complex where the
+00:08:18.800 transformations, pipelines and a lot of
+00:08:21.919 data agents come into place, there are a
+00:08:25.199 lot of connectors and then there are
+00:08:27.120 decisions to be made like how do we
+00:08:28.960 access the data, what should be the
+00:08:30.879 format etc. There comes the complexity.
+00:08:34.799 The second thing is when the context
+00:08:38.799 which you have built on top of your
+00:08:40.719 data, your data the understanding to it,
+00:08:43.519 the dictionary to it, the the ontology
+00:08:46.240 to it, the encyclopedia to it when it
+00:08:48.880 stops with your repo where you have the
+00:08:51.600 data code or something then this is a
+00:08:54.640 major major challenge. So you should
+00:08:56.800 have your context always available so
+00:08:59.120 that you can make the right decisions.
+00:09:01.040 The third one is that you it is also not
+00:09:04.320 given that you do not have the right
+00:09:06.320 governance engines on top of it, the
+00:09:08.399 right roles and accesses on top of it
+00:09:10.800 and your data should not move. What
+00:09:13.360 should move is uh your AI comes nearer
+00:09:17.200 to the data. It should always be on a
+00:09:19.680 secure environment and the context has
+00:09:22.399 to be something which you clo build
+00:09:24.480 closer to it for more groundedness.
+00:09:27.839 avoid hallucination basically, right?
+00:09:30.800 Okay. So, what did we do? We did what a
+00:09:35.839 data team should do. What we did was uh
+00:09:38.880 for for us where we believe that data
+00:09:42.240 has gravity and there is no AI strategy
+00:09:45.279 without a good data strategy. What we
+00:09:47.600 did was we brought in the right tool. We
+00:09:50.480 understand Snowflake and of course a
+00:09:52.399 couple of other languages also like
+00:09:54.320 React, like Node. We understand
+00:09:56.480 containers. We understand how uh
+00:09:59.360 applications are deployed and that is
+00:10:01.519 why all those four topics right where
+00:10:04.080 you are going to build your applications
+00:10:05.839 with this hackathon right so we
+00:10:08.560 understand all of this thing we know
+00:10:10.720 that how we can be context aware that is
+00:10:13.519 it adds to relevance of the data we can
+00:10:16.640 automate for complex task because we are
+00:10:18.880 efficient on top of it we understand
+00:10:21.040 warehouses how do we bring in compute
+00:10:23.279 pool whether they are CPUs or GPUs and
+00:10:26.160 how much amount amount of uh you know
+00:10:28.480 data complexity processing needs what
+00:10:31.200 kind of power. So all of that
+00:10:33.360 configuration being available to us, all
+00:10:35.600 of that compute power being available on
+00:10:37.600 the engine, uh we also know because
+00:10:41.519 security is one of the most important
+00:10:43.920 norms and nuances, we also believe that
+00:10:46.720 it has to be secure by design and that
+00:10:50.240 is where role based access control,
+00:10:53.120 governance layers from the first horizon
+00:10:56.160 context are all a part of snowflake
+00:11:00.320 from the go, Right. So here comes the
+00:11:04.079 beautiful part of it. I hope all of you
+00:11:06.160 have now done a sign up on
+00:11:07.680 snowflake.com. You have got your
+00:11:09.920 accounts ready. You are now ready for us
+00:11:12.480 to jump in as soon as I get get to the
+00:11:15.920 place. Right. Okay. [snorts] Now what is
+00:11:19.120 this cortis? So this is one of the most
+00:11:21.519 important slide guys. Please
+00:11:22.959 concentrate. So this is agentic cla.
+00:11:26.000 What does it look like? It looks
+00:11:27.440 something like this. the small penguin
+00:11:29.680 peacock whichever way you want to call
+00:11:31.600 it. It it works from VS Code Kger. It
+00:11:34.560 works with MCP. It works as individual
+00:11:37.360 CLI. It works also on desktop which I
+00:11:39.760 will show you in a while. It accelerates
+00:11:41.839 the speed of building and deploying
+00:11:43.360 applications agents. It understands and
+00:11:45.839 handles the snowflake compute and
+00:11:47.760 governance and it also takes advantage
+00:11:50.079 of specialized skills. So skills is
+00:11:52.959 something which is very very important
+00:11:55.360 for us to you know automate some of the
+00:11:57.839 processes to build something so that we
+00:11:59.920 can you know redo the same cycle again
+00:12:02.320 and again. So if uh people are here who
+00:12:05.279 do not understand the word called skill
+00:12:08.560 or the word called CLI then I I'll just
+00:12:11.360 take a pause and try to explain this
+00:12:13.680 nothing but just consider that CLI is a
+00:12:16.160 terminal folks and what we are doing
+00:12:18.639 here is that we are just accessing a
+00:12:21.440 particular database or a particular uh
+00:12:24.959 setup of a pipeline or a uh container
+00:12:28.800 with the help of a terminal. Okay. So
+00:12:30.800 that's about CLI and when we come to um
+00:12:35.120 what is the meaning of uh uh you know a
+00:12:38.480 skill then skill is very simplistically
+00:12:41.760 it's not exactly that way but very
+00:12:44.000 simplistically it is kind of a function
+00:12:46.800 or a package where you have put in a lot
+00:12:49.360 of functions within the same so it can
+00:12:52.160 solve for a type or a kind of problem
+00:12:54.880 again and again okay please don't judge
+00:12:56.959 me I was just trying to simplify okay uh
+00:13:00.000 the Next thing is skills add to the
+00:13:02.880 repository. You can add to the
+00:13:04.240 repository. You can build solutions from
+00:13:06.160 top of it. And uh you can solve for
+00:13:09.120 multiple things, right? You can build an
+00:13:11.279 agent. You can Okay. So what you can
+00:13:13.519 solve for? So we'll go one by one. You
+00:13:15.760 can do a data discovery which we will
+00:13:17.519 see like what you can do is you can find
+00:13:20.160 out all your catalog tables. You can
+00:13:23.120 find out your data. You can understand
+00:13:25.519 your semantics from your uh anywhere
+00:13:28.880 where your data resides. It could be
+00:13:30.560 iceberg tables also. Okay. It could be
+00:13:34.079 snowflake tables. It could be something
+00:13:36.480 which is external to snowflake and you
+00:13:39.839 are just trying to build your context on
+00:13:42.160 top of it. It can also do admin task. So
+00:13:45.760 any kind of users permissions. Uh okay
+00:13:49.600 can you give a resource monitor? So
+00:13:52.480 something which is a cost control or let
+00:13:55.279 us say who has got the so any kind of
+00:13:58.480 permission which you need any kind of
+00:14:00.560 privilege that you want to give as part
+00:14:02.639 of the governance any kind of role which
+00:14:05.279 you want to define all of that can also
+00:14:07.600 be done with admin task. Next is data
+00:14:10.240 engineering. Very very important part of
+00:14:12.240 the pipeline. Anything which flows in is
+00:14:15.440 very important for us to manage because
+00:14:18.160 we have to ensure that the systems are
+00:14:20.560 continuous. Right? We have to ensure
+00:14:22.240 that whatever was the source sum remains
+00:14:25.440 on the destination sum also and all the
+00:14:28.639 data has flown in. There should not be
+00:14:30.320 any data which gets dropped. So data
+00:14:32.480 quality kind of things optimization of
+00:14:35.120 pipelines whether built on dbt for
+00:14:38.079 transmissions or for running on airflow
+00:14:41.199 any of these aspects can also be done on
+00:14:43.360 top of cortex code. We can also build oh
+00:14:46.800 my god AI with agents on top of it. Why
+00:14:51.920 uh and how? Because it understands the
+00:14:54.399 context. It can very quickly help you in
+00:14:57.680 building u your semantic models which
+00:15:01.120 work as input as tools to your agents
+00:15:05.360 which take up an input that is a natural
+00:15:07.920 language. For example, you asked a
+00:15:09.440 natural language question. It says what
+00:15:12.240 was my total sales last quarter? So this
+00:15:15.600 is a natural language question, right?
+00:15:17.600 So this will take this input
+00:15:20.880 process it with an LLM understand that
+00:15:23.519 this would need this kind of data and
+00:15:27.760 I mean process that data and give you an
+00:15:30.160 output. So all of that on one stop shop
+00:15:34.399 solution. You can also build ML and data
+00:15:37.279 science. So all the data scientists out
+00:15:39.519 there please think of a very complex
+00:15:42.160 situation which we still need to solve
+00:15:44.079 in the world. What we can do is we can
+00:15:46.800 if there is a churn propensity analysis
+00:15:49.360 or there is a forecasting analysis which
+00:15:52.079 we need to do where you can build entire
+00:15:54.880 ML pipelines. So whether it is feature
+00:15:57.759 views of course it can also be done on
+00:16:00.800 top of snowflake. So if you want to
+00:16:03.120 build a feature on top of your
+00:16:04.959 dimensions metrics on top of your table
+00:16:07.440 data go for it. If you want to register
+00:16:10.959 your model, yes, we have got model
+00:16:13.440 registry. We have something which is
+00:16:15.199 called as snowflake.ml
+00:16:17.680 which gives you the entire set of
+00:16:19.920 packages which can now help you in doing
+00:16:22.959 complete machine learning, complete
+00:16:25.360 MLOps right on top of your data within
+00:16:28.959 snowflake, right? You can also do
+00:16:31.440 something like um uh process it with the
+00:16:34.480 help of notebooks. Makes your life
+00:16:37.199 easier and I honestly appreciate
+00:16:39.279 notebooks a lot myself. You can also do
+00:16:42.240 visualizations by converting your you
+00:16:45.040 know uh data frames which you have
+00:16:48.000 already built. Uh you can do uh you can
+00:16:51.680 just do two pandas and build very
+00:16:54.560 beautiful graphs, charts and all of that
+00:16:56.959 with some of the other packages which
+00:16:58.800 are great packages for showing results.
+00:17:01.839 So all of that right on top of the
+00:17:05.439 snowflake environment you have got
+00:17:07.439 advanced analytics where you can do
+00:17:09.119 processing with Python and SQL
+00:17:10.799 generation of course BI and apps
+00:17:13.760 streamlit is a beautiful solution we
+00:17:15.679 will see that when we go to the demo
+00:17:17.679 code migration and refactoring when we
+00:17:20.240 talk about code and we do not talk about
+00:17:22.880 migration and refactoring with the help
+00:17:24.480 of AI this is a crime so we can refactor
+00:17:27.599 we can convert code and we can also
+00:17:30.640 process all of that with the help of uh
+00:17:33.360 AI and with the help of Koko, right? So
+00:17:37.039 what is it? Why should I do it on Cortex
+00:17:40.320 code? Why should I uh use it? And how is
+00:17:44.240 it better? Is the B agentic CLI for
+00:17:47.280 data? What is the benchmark? Of course,
+00:17:49.840 we have also done this of many of you
+00:17:52.720 would have already used clot code. Some
+00:17:54.799 of you would have been listening to this
+00:17:56.400 and would have been thinking okay I have
+00:17:59.200 done this. I have seen this in claw
+00:18:00.880 code. What is new? What is it that is
+00:18:03.039 coming up? So here comes the ADE bench
+00:18:06.160 results where we are showing that 65%
+00:18:10.320 of the code the accuracy the benchmark
+00:18:13.039 results are showing 15.7%
+00:18:15.760 higher score when compared to cloud
+00:18:18.080 code. Um cortex code is more efficient
+00:18:21.679 when it comes to targeted results versus
+00:18:24.960 exhaustive results. And second is when
+00:18:27.600 your approach is SQL native there the
+00:18:31.039 cortex code definitely shines. The third
+00:18:33.679 place where snowflake cocoa also shines
+00:18:36.640 is governance and role based access
+00:18:39.679 control which is something which is
+00:18:41.919 proving very very necessary in today's
+00:18:45.679 surface of attack because it is
+00:18:47.520 increasing because of AI bots. So all of
+00:18:50.160 that makes it a very efficient solution
+00:18:52.160 for all of us to follow.
+00:18:54.720 uh Cortex Core CLI has a very strong
+00:18:57.200 momentum. A lot of our customers and
+00:18:59.760 these are all true names, true uh um you
+00:19:03.679 know u true people talking here who are
+00:19:07.520 who have seen a change. There are 3,300
+00:19:10.960 plus monthly active users who are using
+00:19:14.400 Cortex code today. In fact, this would
+00:19:16.320 have definitely increased. There are 900
+00:19:19.039 Oh, this is definitely old uh value.
+00:19:21.520 there are 1,700 plus active accounts
+00:19:24.880 which are currently using Cortex code.
+00:19:27.679 In India itself there are um 350 odd
+00:19:31.600 accounts out of which 190 or so are
+00:19:35.120 already using Cortex code. So that's the
+00:19:37.840 momentum that's that's how it is. So all
+00:19:40.080 the names that you see here I'm sure you
+00:19:42.400 would have seen the whoop band on uh
+00:19:46.000 Virat Kohi's wrist. Uh so that that is
+00:19:50.880 being powered by cortex code. Of course
+00:19:53.360 whoever works or whoever has learned
+00:19:55.679 about densu or uh lending tree you know
+00:19:59.120 about how agentic AI is helping with
+00:20:02.799 their uh governance with their pace of
+00:20:06.000 AI growth and with their data context.
+00:20:10.480 Snow on snow. Oh yes we we bake the cake
+00:20:13.360 and we eat it too. So this is one of the
+00:20:16.080 examples how we do it. We have 10x
+00:20:20.320 faster resolution. Don't I I mean I have
+00:20:24.400 I'm telling from my own personal
+00:20:26.080 experience. We have built chat ports
+00:20:28.799 which are so efficient using multiple
+00:20:32.320 APIs and uh MCP connectors throughout
+00:20:35.600 snowflake itself. Uh what we have done
+00:20:38.240 is now you can ask a question and it
+00:20:40.799 gives you a answer which is which is
+00:20:43.200 efficient. And I mean I would have
+00:20:44.480 written that answer in at least a four
+00:20:46.480 to 5 hours kind of a duration but in 4
+00:20:49.679 minutes it's done. So that is the kind
+00:20:51.520 of efficiency that we are seeing that is
+00:20:53.280 the kind of productivity that we are
+00:20:54.880 seeing with these tools in place and
+00:20:57.200 snow and snow is a huge example and a
+00:21:00.159 testimonial of what we are doing today
+00:21:02.159 and what we are using today. So we use
+00:21:04.480 it for context. We need it for
+00:21:07.280 intelligence and we of course have
+00:21:10.080 thousands of engineers who are using it
+00:21:12.240 today. Everyone in snowflake uses it
+00:21:14.880 across for cortex code. So here comes
+00:21:17.760 the most exciting part folks. I will go
+00:21:21.679 into the
+00:21:23.600 uh documentation part of it once just
+00:21:26.799 for you uh just for all of us to see
+00:21:29.919 that how we are going to install the
+00:21:32.240 same. You have got the snowflake um
+00:21:35.360 trial account. After that what you would
+00:21:37.679 need to do is you would have to install
+00:21:40.159 cortex code by going into a terminal. So
+00:21:42.720 terminal would be looking something of
+00:21:44.640 this sort. This is a Mac machine folks.
+00:21:47.840 Okay. This is a Mac machine which I have
+00:21:49.919 opened. This is my profile. This is my
+00:21:52.240 terminal. I have not done anything which
+00:21:54.080 is complex here. I have just done
+00:21:56.159 terminal. If in case you are on a
+00:21:59.440 Windows machine,
+00:22:01.760 I think it is ping or something. I have
+00:22:04.080 forgotten now. But on Windows machine,
+00:22:06.240 you can also go to your CS prompt or you
+00:22:09.600 can also go to terminal or uh uh
+00:22:12.320 something of that sort and you can uh
+00:22:14.480 you can open that and you can just uh
+00:22:18.480 put in the Windows command there. Okay.
+00:22:22.000 So what what happens here is I'm just
+00:22:24.480 going to copy because this is a Mac
+00:22:26.400 machine. I'll go ahead and copy the Mac
+00:22:29.120 or the Linux uh uh uh command which is
+00:22:33.120 the curl command. You can just do a copy
+00:22:35.360 from here and you can run it. Uh okay.
+00:22:38.320 If in case it is a Windows machine then
+00:22:41.039 I would request you to go ahead with
+00:22:42.799 this IRM which is the PowerShell
+00:22:45.840 command. You can copy it from here and
+00:22:48.559 you can run this. This is the executable
+00:22:50.720 command. Once you execute it what will
+00:22:53.440 happen is although I have already
+00:22:55.679 deployed it okay because I am a
+00:22:58.080 firstirhand user of it. Don't judge me.
+00:23:00.720 Um but once you have done this uh run
+00:23:04.080 this shell script what happens is it
+00:23:07.440 will start um installing a couple of
+00:23:11.520 packages. Okay. So let it run. It'll
+00:23:14.480 take about a minute or two. Just give it
+00:23:17.520 a minute or two. I'll continue speaking
+00:23:19.840 by till that time. Okay. Don't worry.
+00:23:21.440 I'm not going anywhere. So you can just
+00:23:23.919 run this and what we will do is um once
+00:23:27.840 you have run them what will happen at
+00:23:30.640 the end of it is you will get some
+00:23:33.039 prompts. What will your prompts look
+00:23:35.440 like? Your prompts will look something
+00:23:37.760 like um
+00:23:40.320 what is the how do you want this to look
+00:23:42.720 like? Should it be a dark mode? Should
+00:23:44.960 it be a light mode? Etc. Okay. So you
+00:23:48.480 choose whichever mode you want a dark
+00:23:51.200 mode, a light mode whichever. So that is
+00:23:53.600 where your cortex almost installation is
+00:23:56.000 done. Then it will go in into a
+00:23:58.480 particular phase where it will say that
+00:24:01.200 okay now your connection or your setup
+00:24:04.080 is complete. Now what do you want to do?
+00:24:06.880 Okay. So this is where once you have set
+00:24:10.080 up all of this and you are good to go,
+00:24:12.400 you will type cortex. This is not the
+00:24:15.760 end of it. what we will have to set up.
+00:24:18.880 Okay, suppose you have I mean because I
+00:24:21.600 had already got this installed so it is
+00:24:24.000 installing an update but for you it
+00:24:26.240 would just uh install it completely.
+00:24:29.120 Okay, so let us give it a minute. Now
+00:24:32.080 once the cortex has started you would
+00:24:34.400 see that my cortex is already linked
+00:24:38.400 with my snowflake account. Okay, my user
+00:24:42.720 ID, my password, my uh PAT which is
+00:24:46.320 personal access token, all of that I
+00:24:49.360 have already added it to my own account.
+00:24:52.400 But for you, you would have to add it.
+00:24:55.919 Okay, I hope all of you are with me. You
+00:24:58.480 will have to add your Snowflake account
+00:25:00.559 ID, your Snowflake account password and
+00:25:03.919 your uh programmatic access token. Or if
+00:25:07.120 you want to do it with oath, you can
+00:25:09.360 very easily do it with desktop also.
+00:25:11.919 Okay, no problem. So I'll just show one
+00:25:15.919 more about the desktop. One second. Let
+00:25:18.080 it let it come up and let this
+00:25:20.080 installation also go ahead.
+00:25:23.440 Okay. So now coming back to the
+00:25:25.760 documentation. So you have uh once you
+00:25:29.200 have done that and once you have done
+00:25:30.799 the setup you can do more options. Yes.
+00:25:33.679 One very important thing which is for
+00:25:36.640 all of us is that your connections I
+00:25:40.240 told you right that you would need the
+00:25:41.840 snowflake connection name you would need
+00:25:44.080 the account ID the password the pat
+00:25:47.440 token ID and all of that that is given
+00:25:50.240 in snowflake connections DML okay you
+00:25:54.159 can also search for this file after you
+00:25:56.640 have done a cortex kind of a run so on
+00:26:00.000 the terminal you have to run cortex just
+00:26:01.840 like I did here. I hope you can see my
+00:26:04.559 screen. I'll just increase it. I just
+00:26:06.559 did a cortex and it is it started
+00:26:08.960 running my update for you. This will be
+00:26:12.000 a installation which it is doing. Okay.
+00:26:15.679 Now I got my I think it's a penguin. I
+00:26:18.880 got my penguin. So it is asking me for a
+00:26:23.279 credential update. So I'll just show you
+00:26:25.840 that how we do it. Uh I mean this is
+00:26:30.080 snowflake setup.
+00:26:42.640 Give me a second.
+00:26:47.760 I'm just connecting to my VPN to get the
+00:26:49.840 access through.
+00:26:59.840 Log into my password.
+00:27:33.039 Okay,
+00:27:35.520 I am good to go. I have got this. I have
+00:27:39.760 now logged in and my terminal should
+00:27:41.679 work now. Okay, good. So as I told you I
+00:27:46.159 have already uh input my uh my account
+00:27:50.400 ID my password my path token everything
+00:27:53.760 into the uh 2ML2ML file connections file
+00:27:58.960 right and now I am at a place where
+00:28:03.120 I can connect with my um
+00:28:08.640 cortex. So now here comes the actual
+00:28:12.000 action. So once you have reached this
+00:28:13.840 place once you have validated now you
+00:28:15.840 have set it up you already have the
+00:28:18.240 entire setup for the cortex code
+00:28:21.600 terminal right okay my desktop also
+00:28:25.200 decided to come up folks very nice very
+00:28:27.600 good time when it comes up so what we
+00:28:29.840 will do is we will see how the desktop
+00:28:31.840 works so this is our cortex code desktop
+00:28:36.000 if you see here this is the shiny line
+00:28:38.799 so I told you there are two surfaces I
+00:28:41.600 mean there are three surfaces actually
+00:28:43.520 but there are two one which is the CLI
+00:28:46.960 which you see here here whoever is uh
+00:28:50.240 whoever is comfortable with the CLI
+00:28:52.320 option please go ahead and please use
+00:28:54.880 the CLI option right what I can do with
+00:28:57.760 cortex code you can just simply once you
+00:28:59.760 have set it up you can go back and you
+00:29:02.080 can just ask this question what I can do
+00:29:04.480 with cortex code okay and you are good
+00:29:07.919 to go and here goes your question your
+00:29:10.960 answer This is a very very basic
+00:29:13.200 question folks. Those who have already
+00:29:15.039 done a couple of AI agents, you'll be
+00:29:17.679 thinking that what is Sarita doing. But
+00:29:20.480 yeah, that is what my job is for today
+00:29:23.120 at least. So now uh this cortex code and
+00:29:27.039 this is the cortex code uh desktop
+00:29:30.000 version. You can just download it as a
+00:29:32.640 DMG file and it'll come to your
+00:29:35.120 downloads folder and then you can just
+00:29:37.679 uh double click on it. It'll work like a
+00:29:39.919 application and it'll sit on your
+00:29:42.240 desktop and very very easy to go. For
+00:29:45.600 example, here there is a playground. You
+00:29:47.760 can ask a similar question. What I can
+00:29:49.600 do with cortex code or if in case we
+00:29:53.120 will come to create a skill and I want
+00:29:54.960 to use this at that point in time. If
+00:29:57.279 you want to create a skill, you can
+00:29:58.720 click on create a skill and tell it what
+00:30:00.720 is the skill that you want to use it
+00:30:02.480 for. And here there is a beautiful
+00:30:06.080 pattern which you can see from the
+00:30:07.919 desktop. itself whether it is an agent
+00:30:10.640 or whether you want to plan something.
+00:30:13.679 So I strongly recommend plan activities
+00:30:17.200 to be done at a high-end LLM. Whereas if
+00:30:20.799 it is an execution of a simple SQL file
+00:30:23.440 or something of that sort just to do
+00:30:25.919 some you know costsaving you can go for
+00:30:28.880 a lower model. What are the models? I
+00:30:31.760 told you that we are a model garden and
+00:30:34.480 we follow model garden approach. As soon
+00:30:37.120 as one model is available outside in the
+00:30:39.600 market, it is right away available on
+00:30:41.919 top of Snowflake. As you can see here,
+00:30:44.320 I've got high-end models like Opus 4.8
+00:30:47.760 uh two Sony 5 to uh GPT 5.4.
+00:30:53.039 All of that is readily available to you.
+00:30:55.679 Now you can choose your own LLM instead
+00:30:59.520 of poison. Right? So this is where we
+00:31:02.399 have and you can ask a question. This is
+00:31:04.799 a very good view. So I just wanted to
+00:31:07.039 show you here you can do automations
+00:31:09.360 here. You can ask add a task and you can
+00:31:12.559 send your emails from here or you can
+00:31:15.279 build applications and you can run all
+00:31:17.520 of them build an app. So those guys who
+00:31:19.919 are choosing the third one right
+00:31:22.159 creation of native app and all of that
+00:31:24.399 just go ahead and try this. Okay. And
+00:31:27.279 then let us say you want to see your
+00:31:30.399 file explorer, your database, your data
+00:31:33.279 explorer. You can very easily see it
+00:31:35.919 from here. Let us say you want to see
+00:31:38.720 the browser here. Like you built a um
+00:31:43.600 local deployment of a file. Let us say
+00:31:46.080 it is a 8080 kind of a portal and you
+00:31:49.120 your URL has to open right on top of
+00:31:51.760 your system. Then you can open the URL
+00:31:54.640 here. Let us say you want to execute a
+00:31:56.880 SQL. You can execute the same here. The
+00:31:59.440 terminal also works and shows up here.
+00:32:01.840 All kinds of connectors, branches, any
+00:32:04.640 kind of changes for the GitHub and the
+00:32:06.720 location. Any kind of export, import of
+00:32:09.360 a session can also be done from here.
+00:32:12.159 There are a couple of settings. I just
+00:32:14.159 want to very quickly touch on settings
+00:32:16.399 folks. Uh CLI is a different beast. uh
+00:32:21.360 here desktop is a little different uh
+00:32:24.320 beast. So I just wanted to show you if
+00:32:26.559 in case you want to uh code uh on top of
+00:32:30.720 desktop you can go for you know if you
+00:32:33.279 want any hooks you can go for hooks. If
+00:32:36.080 you want any MCP servers you can build a
+00:32:39.039 MCP server from here by doing a new you
+00:32:42.159 can set up rules you can set up indexing
+00:32:45.440 and of course skills. Okay, you can add
+00:32:48.159 skills, you can bring in package skills,
+00:32:50.880 you can bring in skills from your local
+00:32:52.960 system. Okay, you can try all of the
+00:32:55.679 skill all of these things. I already
+00:32:58.240 told you if you want to build a new
+00:33:00.640 skill, you can create a skill here. You
+00:33:02.880 can build the app here. I'll pause here
+00:33:05.760 because we have to do it the Cortex code
+00:33:08.799 way. But I just wanted to show you the
+00:33:10.960 entire desktop approach also just to
+00:33:13.440 give you a fair chance of trying it out.
+00:33:16.480 and winning it easy. Okay. So now coming
+00:33:19.760 to the CLI version again. All right. So
+00:33:24.320 what we have is I already asked the
+00:33:26.640 question. So till now what we saw is CLI
+00:33:30.080 is up. I have given the user ID
+00:33:32.640 password. I am seeing my agent
+00:33:34.880 connection here. I'm seeing my SQL
+00:33:37.360 connection here. Warehouse is not a
+00:33:39.840 mandatory thing. The model is set to
+00:33:42.399 auto. So as I told you on the desktop
+00:33:44.720 version what were the models which are
+00:33:46.559 running under the hood you can also
+00:33:48.880 choose your model. Okay now what can I
+00:33:52.159 do with cortex code it is asking I asked
+00:33:54.880 this question it says you do code file
+00:33:57.120 operations snowflake SQL you can do
+00:33:59.840 skills uh you know skills you can build
+00:34:02.799 key shortcuts etc. Now I'll just show
+00:34:06.080 you two very important parts of it.
+00:34:09.280 Okay. One um what if I just what if I
+00:34:13.440 just want some example queries to be run
+00:34:17.119 like for example I want to understand
+00:34:19.520 all my table data. I want to understand
+00:34:22.159 or build a application on top of uh CLI.
+00:34:25.440 How do I do that? Very easy. I'm just
+00:34:27.599 following the documentation guys. I'm
+00:34:29.520 just doing it blindly so that all of us
+00:34:32.079 are starting from the same point. But
+00:34:35.679 I'm sure all of you are smart and you
+00:34:38.399 would definitely fly high
+00:34:41.839 without even depending upon me. But yes,
+00:34:44.480 we are short in time. I really want to
+00:34:46.879 use this. So this is something which we
+00:34:49.280 are looking for, right? This is what I
+00:34:50.960 just wanted to show you folks. Okay, I'm
+00:34:54.159 getting some issue here. Okay. If in
+00:34:57.440 case you get such issues, okay, like uh
+00:35:00.240 my database is not working or there are
+00:35:02.960 there is a compilation error, there is
+00:35:04.960 no object domain, there is nothing of
+00:35:07.119 that sort, right? Then you ask just copy
+00:35:09.920 this. Okay.
+00:35:12.240 Okay. Solve this problem for me. Solve
+00:35:15.359 this problem for me. Okay. You can you
+00:35:18.240 can I mean this is a this is an ongoing
+00:35:20.240 conversation which is already happening
+00:35:21.839 with Cortex code. Maybe it'll take my uh
+00:35:24.640 may take my prompt or not. But this is a
+00:35:28.400 selfhealing approach. Never forget
+00:35:32.079 earlier when we had issues we had to go
+00:35:34.800 check on our Google systems or we had to
+00:35:38.000 check on Reddit or we had to get those
+00:35:40.160 issues out of the box uh through some
+00:35:43.200 cases some support channel etc. Now you
+00:35:46.560 can ask for this particular error here
+00:35:49.599 itself to cortex code. It will tell you
+00:35:51.839 what is the error, what is the
+00:35:53.200 expectation, what is the problem that it
+00:35:56.079 is facing at this particular end. Right?
+00:35:58.400 So this is what is changing the entire
+00:36:01.599 game. Correct? So this is what is happy
+00:36:06.480 thing for a developer. Anyways, this is
+00:36:08.960 a huge query that I have run. Now if I
+00:36:11.839 would have run it for a sample database,
+00:36:14.079 maybe this would have taken faster. But
+00:36:16.320 what it basically does is it lists every
+00:36:18.800 table where PI is equal to true and it
+00:36:22.079 is showing the lineage from raw DB or
+00:36:24.880 dot orders to downstream dashboards.
+00:36:29.040 So this is this is something which you
+00:36:30.720 can do. You can build a catalog. That is
+00:36:33.119 what was the entire idea. I'm sure you
+00:36:36.000 got the drift of it. You got the point.
+00:36:38.320 Yes. So I have built the lineage. Oh my
+00:36:40.880 god. This lineage if it would have been
+00:36:44.160 built manually this would have taken at
+00:36:47.839 least a month but here it is all the
+00:36:52.400 databases all applications all tables
+00:36:55.200 with PII lineage on raw DB orders
+00:36:58.960 everything out with one with queries on
+00:37:02.400 top of it right so this is one example
+00:37:06.000 you can also work by building agents on
+00:37:09.280 top of it you can generate and run SQL
+00:37:12.240 queries by by saying that what are the
+00:37:14.960 top 10 customers. I'll just increase
+00:37:16.880 this also so that you can see write a
+00:37:19.920 query with top 10 customers by revenue.
+00:37:22.480 So that's that's also something
+00:37:24.079 possible. Add 7-day moving average build
+00:37:27.200 application. So let's try this. Yeah,
+00:37:30.000 let's try this.
+00:37:33.520 Let's do this.
+00:37:37.119 Let's see if we get the stream lit app
+00:37:39.119 right because this is a very important
+00:37:41.200 part of the hackathon folks those who
+00:37:43.760 are new to hackathons I would I do a few
+00:37:47.440 suggestions from my past experiences as
+00:37:49.520 I told you okay build choose a right
+00:37:54.160 topic
+00:37:55.680 build the right solution write a
+00:37:59.280 complete solution is like we used to
+00:38:01.680 call that as PRD or HLD or LLD
+00:38:05.599 You build the solution. Of course,
+00:38:07.680 coding is a very important part of the
+00:38:10.079 solution. Of course, it is. But along
+00:38:12.560 with that, you also have to present your
+00:38:15.119 solution in a very lucid fashion, very
+00:38:18.720 solid presentation with the entire team
+00:38:23.119 getting involved. If you are a
+00:38:24.640 individual, then that's a different
+00:38:26.640 story. You are the master of all. But if
+00:38:29.599 it is a team then all of you should show
+00:38:32.000 that you are all a part of the same uh
+00:38:35.359 you know team and you're doing it as a
+00:38:37.200 team. So all of these are things which
+00:38:39.280 will help you in winning over. If you
+00:38:41.440 really want to do a let us say a setup
+00:38:44.800 uh kind of a thing then you can always
+00:38:47.280 go with it. You can distribute the work
+00:38:49.200 and get the job done. Okay. So now it is
+00:38:52.560 asking me it has planned it. So as you
+00:38:55.200 see here it has planned it has
+00:38:57.359 understood that okay these are the
+00:38:58.880 things that wait a second where was that
+00:39:01.440 okay here before building it is actually
+00:39:04.000 doing a planning of it. It is
+00:39:06.079 understanding what is the table catalog
+00:39:08.240 where it has to go ahead and do this
+00:39:10.079 particular setup uh sales and revenue
+00:39:12.800 table does not exist in the account. Oh
+00:39:14.800 my god. So it cannot do it either it
+00:39:17.520 will create the sample data or it will
+00:39:20.640 wait uh for me to give it an option.
+00:39:24.000 Okay, one very important thing I should
+00:39:26.079 not forget to tell you. See, there are
+00:39:28.079 multiple modes here. Okay, one is the
+00:39:31.119 plan mode. You saw it on the desktop
+00:39:32.880 because it was very very prevalent. The
+00:39:35.119 same thing is also available on CLI. If
+00:39:37.760 you see here, right? Uh I can't I can't
+00:39:41.280 take this away. Okay, I can't take this
+00:39:43.760 away. Okay, you see here, right? The
+00:39:45.599 plan mode is on or off. You can this is
+00:39:49.119 how it works. Or it can also be let me
+00:39:52.480 let me just so and you can also choose
+00:39:55.760 whether you want to go with all yess or
+00:39:58.000 you want to give it um give it all the
+00:40:02.240 uh you know confirm all the actions
+00:40:04.079 automatically or you want to cue
+00:40:06.240 something or if your team mode is on or
+00:40:09.040 off. So all of that is something which
+00:40:11.200 is possible for you to do from the
+00:40:14.160 snowflake snow code uh CLI. Also you can
+00:40:18.079 connect to the MCP connectors. Don't go
+00:40:20.400 by these error messages. Okay? Don't go
+00:40:22.960 by them. This is just a demo. Don't
+00:40:25.359 judge it by what you're seeing here. I
+00:40:27.839 may not have all the setup here. Okay?
+00:40:30.880 So you can just you can just go ahead
+00:40:33.839 and do a complete skill development.
+00:40:36.400 Okay? That is one very important thing
+00:40:38.880 which I must tell you. Uh either either
+00:40:42.160 we do it in that fashion or we do it on
+00:40:44.880 the desktop. Whichever way you like. Let
+00:40:47.599 us say it is skills.
+00:40:51.920 Okay.
+00:40:53.680 Okay. Let us say I would like to show
+00:40:57.119 you what are the number of skills that
+00:40:59.119 we have.
+00:41:01.520 By now I have opened the VS code.
+00:41:17.119 Okay. So as as as I was telling you this
+00:41:21.760 is one important aspect and I do not
+00:41:23.680 want to miss this because of lack of
+00:41:25.760 time because we are just 10 minutes
+00:41:27.599 away. Okay. It is asking me to fix this
+00:41:30.000 tab. Okay, this uh
+00:41:33.280 okay list
+00:41:35.760 terminal. Yeah, skills you can see here
+00:41:38.640 if there are any specific skills that we
+00:41:40.800 can list out. I'll just do a control C
+00:41:43.119 of this one because I that is more
+00:41:44.880 important for us to see. Yeah. So you
+00:41:47.200 can you can see that I can I can get the
+00:41:49.280 skills from my own system or I can also
+00:41:52.160 build skills, right? I can build skill
+00:41:55.520 like there is a skill called architect
+00:41:57.520 and you can see that there is the
+00:42:00.000 description of that particular skill.
+00:42:02.160 There is a description of anything uh if
+00:42:04.640 you want to work with iceberg then those
+00:42:06.960 skills the if you want to work with
+00:42:09.520 lineage then those related skill all of
+00:42:12.560 them are there. Now comes the second
+00:42:15.040 part of it right. How do I create a
+00:42:17.520 skill? So you can just say create a
+00:42:20.880 skill for the best practices
+00:42:27.040 on
+00:42:29.359 NodeJS.
+00:42:32.000 Let us say something of this sort. If
+00:42:34.160 you if in case you want to build in the
+00:42:37.119 best practices for NodeJS because you
+00:42:39.200 are building an application. I'm just
+00:42:41.119 telling you an example. No need of doing
+00:42:43.200 this or applying this if you are not
+00:42:45.520 into it. But let us say you want you are
+00:42:48.079 you want to code an entire application
+00:42:50.880 and you want to code it on streamllet or
+00:42:53.119 you want to code it on NodeJS and you
+00:42:55.040 want to have the best practices in place
+00:42:57.599 instead of NodeJS let us say I just want
+00:43:00.079 to say streamllet because that is
+00:43:02.240 something which is which will be most
+00:43:04.480 probably a little bit easier. So you can
+00:43:06.640 just tell cortex code to build a skill
+00:43:10.560 or let us say you want to list out all
+00:43:12.560 the skills you can just say /kill or you
+00:43:15.440 can also say list out all the skills for
+00:43:17.760 me. So you can just talk to it just
+00:43:19.920 avoid hello please and thank you. Uh
+00:43:23.040 that's not required. Okay. So you can
+00:43:25.119 you can just build a skill of this sort
+00:43:27.440 and give it some time. It'll start
+00:43:30.319 building it for you. Okay. It'll tell
+00:43:32.160 you what is the plan of execution. It'll
+00:43:34.560 tell you how does it want to go ahead
+00:43:36.240 with. It'll tell you uh how many other
+00:43:39.760 streamllet or other things are there for
+00:43:41.680 you to build up and it'll just start
+00:43:44.800 doing it. I think I canled this.
+00:43:47.040 Anyways, uh coming to the desktop piece
+00:43:50.400 of it, you can also create a skill from
+00:43:52.880 here.
+00:43:55.119 This is much cleaner and much
+00:43:57.680 straightforward. I know that
+00:44:00.480 there is a third uh thing also. I just
+00:44:03.599 wanted to show you that for example
+00:44:11.680 this is my own account. Okay.
+00:44:33.920 Okay, there are a few things which I
+00:44:36.480 just wanted to show you that's why we
+00:44:38.319 are here. Um, what was that? It was
+00:44:42.079 okay. You can also have this uh you know
+00:44:46.800 uh the entire setup of uh cocoa or
+00:44:50.319 cortex code right on top of your
+00:44:53.200 snowflake. So this particular UI that
+00:44:55.280 you see on snowite is called as snowite.
+00:44:59.359 Snowflake is called a snowite. You can
+00:45:01.440 also come here. There's a little tiny
+00:45:03.680 blue button with a star. You can just
+00:45:05.760 click on it and you can just get
+00:45:07.359 started. So my teams usually use this uh
+00:45:11.280 for performance tuning for building
+00:45:13.520 things for writing and debugging their
+00:45:16.400 entire pipelines or research something
+00:45:19.839 or in case they have to build an
+00:45:21.599 application end to end thorough uh then
+00:45:24.640 they go to the CLI or the desktop
+00:45:27.359 nowadays but yeah definitely you can
+00:45:29.440 this is a very good one-stop uh solution
+00:45:32.480 which you can also explore in the short
+00:45:35.119 and long term. So this is where
+00:45:37.280 everything comes in. Uh your snowflake
+00:45:39.920 snow site would look like this. You you
+00:45:42.160 h you you can build agents and you can
+00:45:44.560 check your agents from this particular
+00:45:46.480 tab. Once you have built them, you can
+00:45:49.200 build your analyst or semantic views
+00:45:52.400 right from on top of your data with the
+00:45:55.440 help of the snowflake cocoa or the
+00:45:57.760 cortex code. So think of it and you can
+00:46:00.480 you can do any kind of solutioning
+00:46:02.720 whether it is data engineering, pipeline
+00:46:05.280 building, transformation,
+00:46:07.839 a machine learning, notebook, uh writing
+00:46:10.960 with a particular use case in mind,
+00:46:13.920 streamlit coding where you can bring
+00:46:16.640 something of this sort. I I will show
+00:46:19.200 you a streamlit app uh where you can you
+00:46:23.040 can build very easily. So this is one of
+00:46:25.520 the apps which I built for a conference
+00:46:28.319 uh called machine learning developer
+00:46:30.160 summit. So you can build very beautiful
+00:46:33.040 dashboards from streamlit with the help
+00:46:35.680 of cortex code. You can build agents uh
+00:46:39.040 on top of your data set. You can also
+00:46:41.920 build applications on top of it. So this
+00:46:44.480 is how streamllet would look like. So
+00:46:47.280 you can you can just uh you can just
+00:46:49.599 think about what is the solution you
+00:46:51.760 want to do and you can bring it to life
+00:46:54.319 and you can code accordingly. So there
+00:46:57.520 are 5 minutes more to go. I showed you
+00:47:00.720 three surfaces. One is this little blue
+00:47:02.960 button called cocoa on snowite. The
+00:47:05.839 second is the uh CLI where uh there were
+00:47:09.520 a couple of things which we could do.
+00:47:11.280 There are a couple of things uh
+00:47:14.400 which I killed and then there is this uh
+00:47:18.319 cortex code desktop where it where you
+00:47:21.200 can do a lot of things connecting
+00:47:23.760 including connecting with MCP connectors
+00:47:26.160 hooks and a couple of things of course
+00:47:28.400 you can also connect MCP connector from
+00:47:30.560 CLI also folks you can also do it from
+00:47:33.200 cocoon no site just that here it is a
+00:47:36.079 little straightforward that's the only
+00:47:38.079 difference right uh don't take that All
+00:47:41.119 three are different. They're exactly the
+00:47:42.880 same. Just that here it is a little
+00:47:44.960 straightforward on desktop. Okay. Now
+00:47:48.079 having said that and I I hope this was a
+00:47:52.000 good um surface area that I have covered
+00:47:55.359 today as a start point for the
+00:47:57.680 hackathon. Uh what we will do is um what
+00:48:02.400 we will do is we will now go in into
+00:48:06.240 something where we will see if we have
+00:48:09.440 any other slides to go. Okay. So we are
+00:48:14.240 on time and this is my thank you for
+00:48:16.960 you. I'll take a pause here.

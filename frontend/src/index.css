@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+:root {
+  font-family: "Avenir Next", Avenir, Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #10233b;
+  background: #f4f7f9;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(29, 90, 133, 0.035) 1px, transparent 1px),
+    #f4f7f9;
+  background-size: 100% 32px;
+}
+
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.protocol-title {
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+

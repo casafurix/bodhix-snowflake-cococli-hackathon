@@ -1,6 +1,22 @@
+# Snowflake credentials and local connection material
+.snowflake/
+connections.toml
+config.toml
+*.pem
+*.p8
+*.key
+
+# Environment and local tool state
+.env
+.env.*
+!.env.example
 .DS_Store
 *.log
-.env
-.venv/
 __pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
 node_modules/
+frontend/dist/
+*.tsbuildinfo

@@ -1,0 +1,1293 @@
+# tactiq.io free youtube transcript
+# Introductory & Problem Statement Explainer Session | Snowflake CoCo CLI Hackathon
+# https://www.youtube.com/watch/96mM6o5DxLA
+
+00:00:17.685 [music]
+00:00:23.580 [music]
+00:00:32.095 [music]
+00:00:41.265 [music]
+00:01:39.080 >> All right. Hi everyone. Welcome.
+00:01:42.240 Welcome to the official introductory and
+00:01:44.080 problem statement explainer session for
+00:01:46.120 the Snowflake Cocoa CLI Hackathon.
+00:01:48.880 We are thrilled to have you all here as
+00:01:50.560 we kick off this exciting journey today
+00:01:53.080 and we'll be soon joined by great
+00:01:55.040 speakers for the day who are throw us
+00:01:57.800 great insights on about the hackathon,
+00:02:00.480 also about the problem statements, and
+00:02:02.440 what can somebody expect out of the
+00:02:04.040 entire journey of their hackathon for
+00:02:06.520 this one. So, we are here discuss on the
+00:02:09.960 problem statements, what can you expect,
+00:02:12.240 what can be your journey look like on a
+00:02:15.480 journey as a winner coming out of this
+00:02:17.200 entire hackathon. But, for that, we have
+00:02:20.480 our key speakers. Let me just try to
+00:02:22.800 pull up my screen.
+00:02:27.000 All right, right here.
+00:02:30.400 So, before I invite our key speakers, or
+00:02:33.400 let's let me let me just throw you some
+00:02:35.800 insights about the hackathon right here
+00:02:38.560 itself. So, today's discussion is
+00:02:40.040 designed to be your road map to success.
+00:02:42.680 Our goal is to ensure you have complete
+00:02:44.640 clarity on what this hackathon is all
+00:02:46.360 about. From the core vision to the
+00:02:48.200 technical execution, we will deep dive
+00:02:50.600 into the four challenges themes,
+00:02:52.160 breaking down the problem statements in
+00:02:53.800 detail, and walking through the
+00:02:55.760 evaluation criteria that the judges will
+00:02:58.160 be looking for. By the end of the
+00:03:00.000 session, you'll know exactly how to get
+00:03:01.720 started, how to structure your projects,
+00:03:03.840 and how to maximize your chances of
+00:03:05.920 success as well. So, let's make this
+00:03:08.280 productive start by building our
+00:03:10.080 journey.
+00:03:11.200 And yes, so let me also welcome
+00:03:14.920 uh Shubhangi here. Okay, great. We have
+00:03:17.040 Shubhangi. Hi Shubhangi. Thank you so
+00:03:18.560 much for joining us.
+00:03:20.560 >> Hi Shakti. Thank you, and welcome all
+00:03:23.280 the builder data pioneers. All our
+00:03:26.640 special special people, innovators that
+00:03:29.640 have joined us on a Thursday evening.
+00:03:31.840 Thank you for showing interest in our
+00:03:33.600 very special beginning of a special
+00:03:35.680 hackathon, which is Snowflake Cocoa CLI
+00:03:38.280 hackathon,
+00:03:39.600 uh where your idea meet the power of AI
+00:03:41.880 native data development. You would have
+00:03:44.560 seen a lot of buzz around Snowflake
+00:03:47.320 Cocoa. And the CLI is for you developers
+00:03:51.760 specifically. So, before I take you
+00:03:54.520 through the program overview, I also
+00:03:56.720 want to share some of our reasoning,
+00:03:59.560 motive, mission, objective, and what are
+00:04:02.960 we expecting to achieve together with
+00:04:05.240 you guys working on hackathon.
+00:04:07.880 So, whether you are a data engineer,
+00:04:10.200 analytics engineer, or application
+00:04:12.400 developer,
+00:04:13.640 this hackathon was built for you.
+00:04:16.480 So, get ready to build faster, ship
+00:04:19.440 smarter, and redefine what's possible
+00:04:21.760 with Snowflake Cortex.
+00:04:23.880 Our goal is to have a world where every
+00:04:26.640 developer, data engineer, and analyst
+00:04:29.280 can speak to their data in plain
+00:04:31.320 language and have it respond with
+00:04:33.760 production-ready code, pipeline, and
+00:04:36.440 insights. Snowflake Cortex CLI is that
+00:04:39.440 bridge for you. It's not just a tool,
+00:04:42.200 it's your AI coding agent that lives in
+00:04:44.800 your terminal, understands your
+00:04:47.000 Snowflake environment, knows your
+00:04:49.240 schema, respects your government
+00:04:51.360 governance policies, and builds
+00:04:53.680 alongside you wherever you work in the
+00:04:57.240 terminal, browser, or desktop.
+00:05:00.240 Keeping it very simple, we want to
+00:05:02.360 eliminate the friction between human
+00:05:04.640 intent and data-driven outcomes. So, no
+00:05:07.440 more context switching, no more
+00:05:09.080 boilerplate, just you, your ideas, and
+00:05:12.160 Cortex.
+00:05:13.200 With that, let me take you through what
+00:05:15.919 this program is.
+00:05:17.680 Uh
+00:05:18.520 We're going to be doing a multi-round
+00:05:20.360 hackathon.
+00:05:21.600 Uh starting with this introductory
+00:05:23.520 webinar where we we're going to do a
+00:05:25.560 series of enablement for you, which will
+00:05:28.160 live on the page as the asset you can
+00:05:31.320 later use for yourself. So, the first
+00:05:33.960 round is, which is you already
+00:05:36.560 registering. Second is basically you
+00:05:39.640 building an idea based on the problem
+00:05:42.200 statements that we will cover later in
+00:05:44.120 the part. Uh and then the third is
+00:05:47.440 sharing your prototype and demonstrating
+00:05:49.880 it on as a finalist.
+00:05:52.200 You have to remember a few things that
+00:05:54.200 it's a team
+00:05:56.640 uh hackathon, so you need to have
+00:05:58.280 between one to four members of team. You
+00:06:00.880 need to select a leader that becomes a
+00:06:03.480 primary contract a contact to reach out
+00:06:06.200 to you with all the communication with
+00:06:08.520 you progressing within this hackathon
+00:06:11.120 journey.
+00:06:12.240 And we have a good cash prize pool of
+00:06:15.920 10,000 USD that would be converted in
+00:06:19.000 your local currency
+00:06:21.160 and would be rewarded to you based on
+00:06:23.960 where did you stand.
+00:06:25.800 Uh, can I have the next slide, please?
+00:06:30.240 So, very simple. These are the eligible
+00:06:32.520 profiles.
+00:06:34.080 The geography that we are focusing for
+00:06:36.080 this hackathon, which is our Asia
+00:06:39.080 Pacific and Japan market, and the team
+00:06:41.840 participation, which I already covered
+00:06:43.800 with you. If you feel that you're
+00:06:46.320 outside this profile,
+00:06:48.640 uh and you want to check your
+00:06:50.600 eligibility, please write to us and we
+00:06:53.320 will get back to you. It does not have
+00:06:55.320 to be only these profiles. If you're
+00:06:57.680 interested in building something on Coco
+00:07:00.120 CLI, please let us know and we will get
+00:07:02.680 back to you.
+00:07:04.200 With that, can I move to the next slide?
+00:07:09.919 Perfect. So, we have four tracks for
+00:07:12.720 you, basically four themes of problem
+00:07:15.120 statement. One being intelligent
+00:07:17.600 workflow automation agent, unstructured
+00:07:20.440 data agent data intelligence system,
+00:07:23.080 which is your second theme. Your third
+00:07:25.160 theme is AI native data application, and
+00:07:27.840 fourth is domain specific AI co-pilot.
+00:07:31.280 Now, what do you do with these?
+00:07:33.880 How do you start? What data sets or what
+00:07:37.680 what this problem statement entails?
+00:07:40.040 What are we expecting as submissions
+00:07:41.840 from you? For that, I will hand it over
+00:07:44.560 to my amazing co-speaker, Rohan, one of
+00:07:48.000 my favorite techies right now. So,
+00:07:51.000 Rohan,
+00:07:52.200 uh over to you.
+00:07:53.600 >> Thank you. Thank you so much, Shubhangi.
+00:07:55.400 And first and foremost, really, really
+00:07:58.360 excited to be part of this session. I'm
+00:08:00.120 really looking forward to an active
+00:08:01.720 participation as well.
+00:08:03.840 Uh and with that, uh let's quickly get
+00:08:06.320 started diving deep into the problem
+00:08:08.120 statements uh that we have at hand. So,
+00:08:11.200 the first problem statement that we have
+00:08:12.960 is inter- intelligent workflow
+00:08:14.720 automation agent.
+00:08:16.360 Now, in this, before I even start
+00:08:18.000 elaborating on the problem statement,
+00:08:20.280 right? I just want to make it very clear
+00:08:22.760 that this problem statement is not about
+00:08:25.240 how conventionally we talk about, uh you
+00:08:28.320 know, intelligence within an enterprise
+00:08:30.320 setting. Typically, what happens in
+00:08:32.360 enterprises is that most enterprise
+00:08:34.479 systems just stop at an insight.
+00:08:36.960 Everything stops at a dashboard, and
+00:08:39.640 from that dashboard, it is then up to
+00:08:41.520 humans to derive an insight, take an
+00:08:44.200 action. At most, an AI can give a
+00:08:46.040 poignant, you know, sort of a
+00:08:48.600 pointer that, &quot;Okay, this is what you
+00:08:50.320 should probably do.&quot; But, the AI never
+00:08:52.600 does things for you, right? So, this is
+00:08:55.360 where basically where the smartness is
+00:08:57.720 missing. So, the whole crux behind this
+00:09:00.640 track is that we need to move from the
+00:09:02.839 data to dashboard framework,
+00:09:05.200 and we need to step into the new world
+00:09:07.040 of data, insight, and action. We no
+00:09:09.680 longer just care about fancy dashboards
+00:09:11.920 in which a lot of data is there
+00:09:14.360 being summarized by AI. We want
+00:09:16.560 actionable uh
+00:09:18.280 insights, and the AI to be able to, you
+00:09:20.600 know, take a brunt of it and start
+00:09:23.120 taking, you know, some smaller actions
+00:09:25.160 within those insights as well. So, uh
+00:09:27.960 while those things might be sounding
+00:09:29.320 abstract, let me give you a real-world
+00:09:30.760 example. Let's say,
+00:09:32.520 uh
+00:09:33.240 customer complaints spike by 40%, right?
+00:09:36.240 So, if the customer complaints have
+00:09:38.040 spiked by 40% any dashboard would have
+00:09:39.920 captured it and then the team would have
+00:09:41.440 been in a fuzz in a hurry, okay, what
+00:09:43.640 has happened? Why has happened? First
+00:09:44.960 and foremost,
+00:09:46.160 this would have happened only if the
+00:09:47.560 team would have noticed this particular
+00:09:49.400 data insight in the dashboard, right?
+00:09:51.880 That is how typically things happen. In
+00:09:53.400 very large enterprises, there are many
+00:09:55.000 dashboards, many figures, many data
+00:09:56.960 points that can sometimes go unnoticed
+00:09:59.280 or
+00:10:00.480 come to notice much much later.
+00:10:02.480 So, let's say how this problem statement
+00:10:04.920 defines on this is, let's say there's a
+00:10:06.640 customer
+00:10:07.840 complaint spiked by 40%. Now, what's
+00:10:10.080 expected is that AI will detect the
+00:10:12.120 anomaly,
+00:10:13.720 investigate the root cause, summarize
+00:10:15.920 the findings, then open a support ticket
+00:10:18.680 and
+00:10:19.720 alert the concerned team based on the
+00:10:21.640 root cause analysis. Now, that can be
+00:10:23.160 the operations team, it can be the
+00:10:25.040 product team, whoever it is in the
+00:10:26.760 context for which you are building this
+00:10:28.960 particular software, let's say the
+00:10:30.800 customer is
+00:10:32.320 uh
+00:10:33.080 insurance customers. So, most likely
+00:10:35.040 will go to the procurement or operations
+00:10:36.680 team, right? So, if in case that is
+00:10:38.560 happening, it is very very very
+00:10:40.680 important the important part is not only
+00:10:42.920 that the AI is detecting the anomaly and
+00:10:44.880 investigating the root cause, it is
+00:10:47.080 after that performing an action. First
+00:10:49.440 action it performs is detection, the
+00:10:51.720 next action it performs is analysis,
+00:10:54.320 then it summarizes, then it opens a
+00:10:56.560 support ticket and notifies the
+00:10:58.000 concerned department as per its
+00:10:59.720 understanding and knowledge as well.
+00:11:02.400 So, by the end, when you're done, you
+00:11:04.520 know, working on this system, what's
+00:11:06.120 expected is that not only you were able
+00:11:09.240 to detect an issue, you were able to
+00:11:10.920 reason with it, you were able to gather
+00:11:13.120 the context around it and trigger an
+00:11:15.120 action based on the context that you had
+00:11:17.200 gathered. The user should not have to
+00:11:19.240 manually do these steps because if that
+00:11:21.040 is what is happening, there's already a
+00:11:22.800 lot of, you know, very very great
+00:11:25.080 dashboards and co-pilots that exist
+00:11:27.200 within the enterprise ecosystem
+00:11:29.640 right out of the gate, right? So, we
+00:11:31.720 need to be very, very careful and
+00:11:33.160 cognizant of
+00:11:34.600 delivering
+00:11:36.720 on the value that is hidden within this
+00:11:38.520 problem statement. If I have to
+00:11:40.160 summarize this problem statement's
+00:11:41.520 outcome in three words, it is get AI to
+00:11:44.360 take action. The focus is on action and
+00:11:47.000 execution. Right?
+00:11:49.120 And
+00:11:50.560 what will set a good submission apart
+00:11:52.240 from a bad submission?
+00:11:53.840 A good submission will have multi-step
+00:11:55.520 reasoning, autonomous execution,
+00:11:58.040 reusable modules, context-aware actions.
+00:12:01.480 We don't need a chatbot layer over a
+00:12:03.400 database or a single one-shot prompting
+00:12:05.880 solution or a dashboard which has
+00:12:07.880 alerts.
+00:12:09.120 These are all solutions which already
+00:12:10.760 exist or are too simple
+00:12:13.520 to solve a real-world problem. The whole
+00:12:15.920 and sole goal is that through this we
+00:12:17.800 are able to come up with something which
+00:12:19.440 actually ends up solving an enterprise
+00:12:21.320 use case or a real-world use case by
+00:12:23.560 automating that particular workflow in
+00:12:25.840 an efficient manner. Right? So,
+00:12:30.040 to sum up this problem statement, if
+00:12:31.840 your solution stops at showing insights,
+00:12:34.720 you have solved analytics.
+00:12:36.839 But if it takes actions on those
+00:12:38.960 insights, then you have solved this
+00:12:40.520 problem statement. It's not only about
+00:12:42.680 analytics, it's about taking action
+00:12:45.040 based on on analytics. And with that,
+00:12:47.320 let's move on to the next problem
+00:12:48.600 statement we have.
+00:12:50.800 Now, this problem statement at first
+00:12:52.760 glance might seem very, very similar,
+00:12:55.440 right? To the previous one. So, the
+00:12:57.680 previous problem statement was all about
+00:13:00.880 automation of workflow, and now this
+00:13:03.320 says unstructured data intelligence,
+00:13:05.240 right? So,
+00:13:06.520 it is very easy for people to conflate
+00:13:08.280 these two together, but it's very, very
+00:13:10.560 important to understand the nuances and
+00:13:12.240 the difference. So, whereas in the first
+00:13:14.600 problem statement we were focusing on
+00:13:16.640 taking action based on the analytics,
+00:13:19.400 so the primary focus was on action and
+00:13:21.480 execution.
+00:13:22.800 In this particular use case, interact
+00:13:25.240 two,
+00:13:26.680 our focus is
+00:13:29.040 Our focus is on
+00:13:31.000 Just wait a moment. Can we please have
+00:13:32.600 the track two problem statement?
+00:13:38.160 Yeah.
+00:13:39.000 Yeah.
+00:13:41.800 In
+00:13:42.520 for unstructured data intelligence
+00:13:44.120 systems, right? It might at first
+00:13:46.080 glance, it might seem like okay,
+00:13:48.040 enterprises have unstructured data and
+00:13:50.040 we are creating intelligence, so we are
+00:13:52.120 automating something, right? But where
+00:13:54.480 While the first problem statement was
+00:13:57.080 specified the outcome expected or the
+00:13:59.240 primary focus was on action and
+00:14:00.720 execution, in this problem statement, it
+00:14:03.520 is more about understanding the data.
+00:14:06.120 Because how enterprises live in, you
+00:14:08.720 know,
+00:14:09.640 how the data lives in large enterprises,
+00:14:11.360 it is not always stored in SQL
+00:14:12.800 databases,
+00:14:14.440 NoSQL databases, graph bases, right?
+00:14:16.880 Those are the idealistic thoughts that
+00:14:18.960 we have in mind that we'll have a lot of
+00:14:20.800 unstructured data and through a magical
+00:14:22.840 black box, we'll somehow be able to
+00:14:24.280 convert all of it into structured data
+00:14:26.120 and perform SQL queries, make dashboards
+00:14:28.280 on top of it. But in real world, data
+00:14:30.400 lives in silos, data lives in multiple
+00:14:32.320 formats.
+00:14:33.720 And it's very, very tough to bring it
+00:14:35.920 all together in a same structured
+00:14:38.240 format. So, let me again start by giving
+00:14:40.640 you an example, right? In most
+00:14:42.680 enterprises, the data can exist in PDF,
+00:14:44.920 emails, logs, reports, contracts, our
+00:14:47.800 conventional databases, then there could
+00:14:49.480 be other knowledge bases that are there,
+00:14:51.520 right? So, the challenge becomes that
+00:14:53.720 how to use this messy information and
+00:14:55.720 gather intelligence. Now, it is again
+00:14:58.080 not about being able to perform action
+00:15:01.200 on this data, it is being able to create
+00:15:04.160 something which helps us understand this
+00:15:06.040 data much, much better. So, let me give
+00:15:07.880 you a real world example. Hopefully,
+00:15:09.720 that will sort things out and put things
+00:15:11.280 into perspective. So, let's take example
+00:15:13.880 of an insurance company, right? So,
+00:15:15.560 insurance company can receive a claim in
+00:15:17.920 form of a PDF. It can be if it is done
+00:15:20.520 physically at a hospital, it can if it
+00:15:22.480 is not a paperless claim. Lot of
+00:15:24.320 hospitals currently in APAC, some might
+00:15:26.280 support
+00:15:27.560 totally digital transaction, some might
+00:15:29.200 still have a paper trail, some smaller
+00:15:31.200 hospitals, right? So,
+00:15:33.320 within the a larger APAC and APJ region,
+00:15:36.160 it is very very important for us to
+00:15:38.080 figure out uh
+00:15:40.200 that
+00:15:43.720 again, taking example, coming back to
+00:15:45.360 the example of, you know, insurance
+00:15:46.520 companies, right? Within the larger APJ,
+00:15:48.320 it is very very important for us to see
+00:15:50.000 that there are still a wide variety of
+00:15:52.320 spectrum spectrum of organizations and
+00:15:54.920 companies who are handling data in much
+00:15:57.000 much different ways. So, for example,
+00:15:59.040 again, as I was talking about the
+00:16:00.280 insurance company, right? They can
+00:16:01.480 receive as a PDF report, they can have
+00:16:04.560 uh
+00:16:05.480 you know, physical reports which they
+00:16:07.320 digitize by taking a picture or manually
+00:16:09.560 uploading to a server. They can have
+00:16:11.840 emails,
+00:16:13.120 uh some counter claim emails, they can
+00:16:14.720 have some email threads initiated with
+00:16:16.480 the support team. They might have
+00:16:18.280 certain reports after a claim has been
+00:16:20.560 closed. There can be some contracts that
+00:16:22.360 they initially signed with the customer.
+00:16:24.160 There can be other knowledge bases.
+00:16:25.600 There are terms and conditions which are
+00:16:26.920 constantly being updated. So, over a
+00:16:29.200 period of time, it becomes a huge mess
+00:16:31.160 to navigate across all for anyone
+00:16:33.160 working in a single department in an
+00:16:34.880 insurance agency, right?
+00:16:36.839 So, what AI can now help do is
+00:16:40.160 if AI is able to, you know, become the
+00:16:42.839 unifying layer amongst all of these
+00:16:44.839 different data types and it is able to
+00:16:47.360 extract the information,
+00:16:49.400 understand the relationship,
+00:16:51.600 probably in the back end it's able to
+00:16:53.080 plot a graph so that it has an
+00:16:55.200 understanding of how one document is
+00:16:56.839 linked to the another and how basically
+00:16:58.360 they are working together, right? And
+00:17:00.360 it's then on on basis of that it is able
+00:17:02.680 to generate insights and answer the
+00:17:04.680 questions,
+00:17:05.920 then it means that you have actually
+00:17:07.720 built something which is helping solve
+00:17:09.920 the problem of unstructured data
+00:17:11.400 intelligence.
+00:17:12.680 Right? Again, the expected outcome is
+00:17:15.040 moving from unstructured information to
+00:17:17.319 structured knowledge. But when I say
+00:17:19.240 structured structured knowledge and I
+00:17:20.959 don't mean that we should be able to
+00:17:22.359 feed PDF email data reports logs into
+00:17:25.680 databases. That is not the outcome. We
+00:17:28.040 don't need a pipeline in which we are
+00:17:29.640 able to homogenize the data. We need a
+00:17:31.920 pipeline which basically gives the
+00:17:34.160 impression that the data has been
+00:17:35.520 homogenized,
+00:17:37.160 but behind the scenes it is able to
+00:17:39.160 gather all the context. It is able to
+00:17:41.000 fill sort of the black box that exists
+00:17:43.240 between all of these documents and fill
+00:17:45.360 in each and every gap that a potential
+00:17:47.920 user, customer, or anyone might have
+00:17:50.840 while trying to access that data.
+00:17:53.040 So, what a good submission would be
+00:17:55.840 versus what a bad submission would be.
+00:17:57.400 So, good submission would should have
+00:17:58.880 document understanding, cross document
+00:18:00.880 reasoning, combined should be able to
+00:18:03.280 combine structured and unstructured
+00:18:04.800 data, and should have context aware
+00:18:06.720 retrieval. It should not be a basic rag
+00:18:09.280 demo. Everyone knows about rag. It's we
+00:18:12.480 are already deep into the GNA world,
+00:18:14.320 right? Everyone knows what rags are. A
+00:18:16.120 simple rag demonstration will not cut
+00:18:18.080 it, right? A simple document upload that
+00:18:20.960 just provides the analysis will not cut
+00:18:22.560 it. A simple keyword matching or keyword
+00:18:24.480 searching will not cut it. It needs to
+00:18:26.120 be a nuanced and sophisticated software
+00:18:28.040 that works across multiple modalities to
+00:18:30.440 give a unified
+00:18:32.280 insight to the database that exists. So,
+00:18:35.280 if I have to again sum this up, don't
+00:18:37.480 think about document search. Think about
+00:18:39.960 enterprise intelligence. The goal is to
+00:18:42.160 understand information not merely just
+00:18:44.520 retrieve it. Retrieving is not the
+00:18:46.320 challenge because
+00:18:48.360 while it is important, lot of the times
+00:18:50.360 people don't know where to look for it.
+00:18:53.720 A lot of the times if everything had
+00:18:55.640 been structured well, it just becomes
+00:18:57.200 too over at large scale just to
+00:18:59.800 go through all of that information. So,
+00:19:01.320 while retrieval is important, the
+00:19:03.640 problem statement just does not stop at
+00:19:05.400 retrieval. We need to go a step beyond
+00:19:07.720 and post retrieval understand the the
+00:19:10.280 that we are retrieving as well.
+00:19:13.000 And with that, we have landed on the
+00:19:14.440 third track, the AI native data
+00:19:16.600 application. Now, this is
+00:19:20.120 Can we please go to the third track? I'm
+00:19:21.800 I'm sorry. Yeah. Yeah. So,
+00:19:24.400 this this
+00:19:26.040 by the looks of it is in terms of the
+00:19:28.400 sheer breadth of implementation might
+00:19:30.960 appear to be the broadest track. So, let
+00:19:33.200 me
+00:19:34.600 let me sort of break it down so that it
+00:19:36.320 becomes more tangible in your minds and
+00:19:38.160 you're able to keep up with it. Right?
+00:19:40.680 So, this particularly this particular
+00:19:43.360 thing means is that we are able to
+00:19:45.400 identify any use case and participants
+00:19:48.080 are able to, you know, build a complete
+00:19:50.400 product around that use case.
+00:19:52.680 So, in this, let me just start off right
+00:19:54.720 out of the bat with an example. So,
+00:19:56.600 let's say in a company,
+00:19:58.480 a sales leader or a
+00:20:00.200 business development leader asks, &quot;Which
+00:20:02.160 customers are most likely to churn this
+00:20:03.960 quarter and why?&quot; Right? Now, this is a
+00:20:06.800 question which effectively can be asked
+00:20:08.560 in any type of organization, right? It
+00:20:10.280 is a organization agnostic. Different
+00:20:12.680 types of organizations can have
+00:20:13.880 different definition for what they call
+00:20:15.480 a customer, right? So,
+00:20:18.280 instead of SQL dashboards and filters,
+00:20:21.560 AI can provide because SQL can provide
+00:20:23.960 data. But then the owners of coming up
+00:20:26.360 with the evidence on top of that data,
+00:20:28.920 analyzing historical contents, then it
+00:20:31.360 lies on a business analyst or a data
+00:20:34.280 analyst to do that, right? But AI has
+00:20:36.360 become powerful enough where AI can not
+00:20:38.160 only provide the answer, it can provide
+00:20:39.840 everything, summary, and recommendations
+00:20:42.440 inside one applications. So, the whole
+00:20:44.840 and sole goal basically is to identify a
+00:20:47.400 use case around which an end-to-end
+00:20:49.720 application can be built, which is able
+00:20:52.200 to solve the problem by leveraging the
+00:20:54.320 power that AI has basically enabled us
+00:20:58.080 with.
+00:20:58.920 Right? So, the expected outcome is
+00:21:01.520 that we should be able to ask questions
+00:21:03.280 naturally, explore data, retrieve
+00:21:05.320 documentation, take action without
+00:21:07.640 needing technical expertise. The more we
+00:21:10.000 are able to eliminate the technical
+00:21:12.080 expertise needed behind taking a
+00:21:13.720 decision, right? The better your
+00:21:16.120 solution is.
+00:21:17.600 So, again, what separates a good
+00:21:19.240 solution from a bad solution? Given that
+00:21:21.920 this expects an AI native application to
+00:21:24.280 be built,
+00:21:25.560 there should be natural language
+00:21:26.760 interaction, end-to-end product
+00:21:28.440 experience, UX becomes very, very
+00:21:30.440 important because here we are trying to
+00:21:32.000 eliminate the technicalness, right? Or
+00:21:34.520 the technical adeptness out of a user
+00:21:36.640 flow. So, it becomes very, very
+00:21:38.280 important that if you are replacing
+00:21:40.440 something which is supposed to be highly
+00:21:41.840 technical with AI, it does not become a
+00:21:44.800 huge pain to use because at the end of
+00:21:47.600 the day, if you are solving a very,
+00:21:50.160 you know, critical problem,
+00:21:52.440 but it is still very, very difficult to
+00:21:54.280 navigate and use the software that you
+00:21:56.040 have built,
+00:21:57.120 people will not be using it.
+00:21:59.320 Obviously, if it is super critical,
+00:22:00.640 people will definitely use it. So, if
+00:22:02.120 you're able to identify a use case like
+00:22:03.880 that, please go ahead, but I would still
+00:22:05.520 strongly recommend that UX should be of
+00:22:07.920 utmost importance for this particular
+00:22:09.600 track as well.
+00:22:11.520 What What we are not looking for and
+00:22:13.400 what will be a weaker submission is just
+00:22:15.760 having an API or a chatbot or just a
+00:22:18.280 dashboard, right? In which data is being
+00:22:20.320 compiled, then it is no different from
+00:22:21.960 the previous problem statement we had,
+00:22:23.440 right? You're just compiling the data.
+00:22:25.240 Here, we need to eliminate the hurdles
+00:22:28.560 for lack of a better word, a
+00:22:29.760 tech-adjacent person would need,
+00:22:32.600 right? To go through it. So, instead of
+00:22:34.960 calling a business analyst or a data
+00:22:36.560 analyst, if I have access to the
+00:22:38.560 software and I don't have that much of a
+00:22:40.280 technical background, so to speak of,
+00:22:41.760 within data analysis, right? I should be
+00:22:43.840 able to use the software and still gain
+00:22:45.520 the same amount of insights that I would
+00:22:47.400 have gotten had a data analyst prepared
+00:22:49.120 a report for me. If you're able to make
+00:22:50.920 a software like that, identify a use
+00:22:52.680 case like that, then you'll definitely
+00:22:54.800 have a very, very strong submission.
+00:22:56.880 Again, to sum it up, the winner of this
+00:22:58.520 track will likely build a product that
+00:23:01.000 people feel like using tomorrow. It
+00:23:03.240 should not be a technical proof of
+00:23:04.560 concept. It should, you know, instill
+00:23:06.880 the feeling that what I have built is
+00:23:08.680 going to be used
+00:23:10.320 in the next coming day and age in on a
+00:23:12.920 day-to-day basis by whatever user group
+00:23:15.680 that you are trying to identify.
+00:23:18.280 And with this we have
+00:23:19.680 finally arrived on the final problem
+00:23:21.680 statement. Uh,
+00:23:23.280 track number four,
+00:23:24.920 which is domain specific
+00:23:27.240 AI copilot. So, till now all the three
+00:23:30.040 problem statements had been tackling
+00:23:32.640 a lot of things at breadth.
+00:23:34.800 This is a this this problem statement
+00:23:36.880 has been put there to challenge people
+00:23:38.960 who are interested to tackle problem
+00:23:40.560 statements more in a depth depth first,
+00:23:43.760 you know, approach so that there's
+00:23:46.200 something for everyone basically, right?
+00:23:48.160 So, basically
+00:23:49.640 do- it is
+00:23:51.240 the opposite of jack of all trades,
+00:23:53.120 master of none, right? It is jack of a
+00:23:55.200 single trade and master of one, right?
+00:23:57.000 So, whatever copilot it is that you end
+00:23:59.480 up building, it the more domain
+00:24:01.520 knowledge it has, the better for you,
+00:24:03.520 right? This track rewards depth over
+00:24:05.800 breadth, simply put. So, again, let me
+00:24:08.000 take a real-world example. So, if let's
+00:24:09.520 say we are building a healthcare
+00:24:10.560 copilot, right?
+00:24:12.440 So, instead of just me uploading a
+00:24:14.040 report and asking what does it mean,
+00:24:15.800 that is something any LLM can do.
+00:24:18.000 If it can answer clinical implications,
+00:24:20.160 risk factors, suggested interve-
+00:24:22.080 interventions,
+00:24:23.600 next steps that particularly can be
+00:24:25.600 taken from a workflow aspect, because I,
+00:24:27.880 let's say as a patient, I'm not aware
+00:24:30.200 what internally happens in a lab or in a
+00:24:32.040 hospital, right? But a robot which is
+00:24:34.880 aware about the healthcare domain should
+00:24:36.720 be. So, it should not be just another
+00:24:38.680 generic wrapper over an LLM, right? That
+00:24:42.000 is not what this challenge is about. It
+00:24:44.280 should be a nuanced, in-depth copilot.
+00:24:47.480 So, let's say if I'm talking about
+00:24:48.840 healthcare copilot,
+00:24:50.640 it should be like a junior clinician,
+00:24:53.040 right? It should have the same knowledge
+00:24:54.560 as a junior clinician. It should have
+00:24:55.920 the same confidence by which a junior
+00:24:57.680 clinician would be, you know,
+00:24:58.760 recommending things to a potential
+00:25:00.760 patient or or junior clinician would be
+00:25:03.560 taking decisions, right?
+00:25:06.120 So, the expected outcome is the AI
+00:25:08.640 should, to make it simpler, the AI
+00:25:11.120 should behave like a junior expert in
+00:25:13.080 whatever domain do you end up choosing,
+00:25:14.560 right? If it's finance, it should act
+00:25:16.360 like a junior financial analyst, right?
+00:25:18.840 So, it should not just merely answers,
+00:25:21.560 it should not just merely give answers,
+00:25:23.640 it should help user make decisions,
+00:25:25.920 right? That is the biggest difference.
+00:25:28.240 No matter what I ask an LLM, they can
+00:25:30.520 always give an answer.
+00:25:32.280 But, can they help with my
+00:25:33.840 indecisiveness? No.
+00:25:35.720 At most of the times, if they're not an
+00:25:37.480 expert, they'll say they're not an
+00:25:38.600 expert because that's how their
+00:25:39.640 guardrails have been programmed, right?
+00:25:41.520 This is where an expert co-pilot differs
+00:25:44.040 from a generic co-pilot because an
+00:25:46.000 expert co-pilot, based on its
+00:25:47.760 understanding, can help with
+00:25:49.040 indecisiveness and can help point
+00:25:50.760 towards the right decision, which
+00:25:52.480 normally would have taken humans a lot
+00:25:54.040 of back and forth or a lot of discussion
+00:25:56.760 to reach to, right? It can directly give
+00:25:58.560 the insights, the pointers that would
+00:26:00.040 have uncovered over set of three
+00:26:01.800 meetings, two meetings, right in a
+00:26:03.640 single output. So, that is basically the
+00:26:06.160 goal.
+00:26:07.160 What
+00:26:08.240 Again,
+00:26:09.520 what a good versus a bad submission
+00:26:10.960 looks like? A good submission, goes
+00:26:13.120 without saying, should have domain
+00:26:14.240 understanding,
+00:26:15.480 should be aware about the
+00:26:16.440 industry-specific workflows,
+00:26:18.760 should be able to specialize the
+00:26:20.320 interactions and recommendations based
+00:26:22.280 on the industry, and have actionable
+00:26:24.560 outputs, right? And anything which we
+00:26:27.480 consider a weak submission would be a
+00:26:28.880 generic chatbot, a simple rag
+00:26:30.840 application, or surface-level industry
+00:26:32.600 branding like just building a healthcare
+00:26:35.000 chatbot and you're just uploading a
+00:26:37.280 prescription and transcribing it.
+00:26:39.960 LLMs already do that, right? That's a
+00:26:41.520 weak submission. So, to sum it up,
+00:26:44.040 taking let's take example of a finance
+00:26:45.600 co-pilot, right? A finance co-pilot
+00:26:47.440 should think like a financial analyst, a
+00:26:49.200 healthcare co-pilot should think like a
+00:26:50.760 clinician. The more domain expertise
+00:26:53.200 your submission has, the stronger it
+00:26:55.120 becomes, right?
+00:26:56.760 So, with that, we've sort of reached at
+00:26:59.680 the end of the explanation for this
+00:27:01.560 particular problem statement, but I'd
+00:27:02.920 still like to take some time to go over
+00:27:05.160 how your submissions will be evaluated
+00:27:07.080 across these problem statements, because
+00:27:08.400 that is also equally important for you
+00:27:10.400 to be armed with how exactly
+00:27:13.440 what you're making is going to be
+00:27:14.680 evaluated, so that you understand the
+00:27:16.400 process at a much deeper level.
+00:27:18.800 So, the next thing that I'll be going on
+00:27:20.280 is the evaluation criteria.
+00:27:22.600 So, while the evaluation criteria is
+00:27:25.360 broadly divided into real-world
+00:27:26.960 relevance, technical execution, and
+00:27:29.080 solution completeness,
+00:27:30.720 one thing that I'd like to share with
+00:27:32.880 you is that in in this particular
+00:27:35.160 hackathon, we while we'll be checking
+00:27:37.160 how relevant your solution is to the
+00:27:38.680 real world, right? So, as I mentioned,
+00:27:40.800 right? It should solve actual actual use
+00:27:42.880 cases. What the technical execution is.
+00:27:44.920 So, when I'm talking about technical use
+00:27:46.920 execution, I I'm talking about things
+00:27:49.520 like whether
+00:27:51.800 it is logically working or not, whether
+00:27:53.840 it is architecturally making sense,
+00:27:56.120 whether you have hard-coded stuff or
+00:27:57.560 whether it it is actually, you know,
+00:27:59.720 fetching things from an API, how much of
+00:28:01.920 it is working in a real scenario, how
+00:28:03.600 much of of it is working on technical
+00:28:05.560 assumptions, and then the overall
+00:28:07.440 completeness of the use case. But,
+00:28:09.400 beyond that, there are other things also
+00:28:11.680 that in this particular hackathon will
+00:28:13.200 be of utmost importance. So, while we'll
+00:28:15.000 be focusing on all of this,
+00:28:16.880 the code that you'll be submitting will
+00:28:19.120 also be judged on its code quality,
+00:28:21.760 security, efficiency, testability, and
+00:28:24.480 accessibility,
+00:28:25.840 right? So, typically, what happens in
+00:28:28.160 hackathons is that only the
+00:28:29.560 functionality of the prototype is being,
+00:28:32.160 you know, scrutinized during the
+00:28:33.920 evaluation process.
+00:28:35.640 Uh
+00:28:36.400 and
+00:28:38.240 you know, in haste, participants
+00:28:39.680 typically end up making prototypes that
+00:28:41.760 just barely work or just get the point
+00:28:43.760 across. But, now nowadays, in the age of
+00:28:46.400 AI, and especially how powerful of a
+00:28:48.240 tool the how powerful Coco CLI is,
+00:28:50.560 right? It is very very easy to generate
+00:28:52.880 very high quality data pipelines and
+00:28:56.120 very high quality code in general,
+00:28:58.320 right? That is why we have created this
+00:29:00.640 format wherein not only will your
+00:29:03.480 functionalities and functional relevance
+00:29:05.840 of the submission be checked, but at the
+00:29:07.880 same time the GitHub repository that
+00:29:10.040 you'll be submitting in will also be
+00:29:12.000 statically analyzed for its code
+00:29:13.840 quality, security, efficiency, testing
+00:29:15.880 and accessibility.
+00:29:17.640 And with that
+00:29:19.680 I
+00:29:21.480 just want to say I'm very very excited
+00:29:23.680 and looking forward to the kind of
+00:29:24.920 submissions that are going to come up
+00:29:26.560 and I can't wait to see what all use
+00:29:29.840 cases you guys end up identifying and
+00:29:31.880 building around and I wish you all the
+00:29:33.520 best of luck for this.
+00:29:39.720 >> Great, thanks Rohan.
+00:29:42.440 Wonderful to hear from you. A lot of
+00:29:44.120 insights that you brought across
+00:29:46.360 around the problem statements.
+00:29:48.320 Let me ask Shivangi to also join us on
+00:29:50.600 screen.
+00:29:52.320 Okay, there she is. Wonderful. Great to
+00:29:54.720 hear from you as well. The great vision
+00:29:56.640 behind this
+00:29:58.040 great hackathon that we're trying to do
+00:29:59.640 here. So, it's completely open for
+00:30:01.640 everybody to participate like we're
+00:30:03.600 inviting professionals to participate in
+00:30:05.360 this hackathon.
+00:30:06.760 Who if you're if you're part of the APJ
+00:30:08.800 region, if you're eligible to
+00:30:10.000 participate like if you're if you're a
+00:30:12.040 developer who can solve a problem, bring
+00:30:14.160 great solutions around the problem
+00:30:16.200 statements that Rohan has referred to.
+00:30:18.240 So, it would be wonderfully great for
+00:30:20.280 you to participate into this and it has
+00:30:22.120 a huge price pool as well.
+00:30:24.800 So, let's quickly move forward and
+00:30:27.440 like like I mentioned the price pool,
+00:30:30.400 here was a quick glimpse to that as
+00:30:31.840 well. So, there's a grand pool prize
+00:30:34.720 here
+00:30:35.920 that you can see on my screen right
+00:30:37.200 there and it is across all problem
+00:30:40.000 statements that are there. So, there
+00:30:41.800 will be winners for runner-up and second
+00:30:43.880 runner-up.
+00:30:44.880 And there would be winners from
+00:30:46.680 team-wise as well. So, if you are
+00:30:48.360 somebody who's participating solo, bring
+00:30:50.640 in your fellow mates on the team and
+00:30:52.520 then try solving the great problem on
+00:30:54.600 solutions and the problem statements are
+00:30:56.400 all right there.
+00:30:57.640 But, wonderful to hear from you as well,
+00:30:59.320 Shubhangi. Let me see a couple of
+00:31:01.920 questions have already started to float
+00:31:03.320 in. Yeah, you were saying something.
+00:31:05.480 >> No, I was saying thank you. Thank you.
+00:31:07.120 I'm very excited and Rohan did a
+00:31:10.040 fantastic job of explaining the problem
+00:31:12.520 statements and everything. I really hope
+00:31:15.240 that it was useful for the ones who
+00:31:17.280 attended.
+00:31:18.560 And later on you can revisit it if you
+00:31:20.640 were feeling confused. But, this is not
+00:31:23.200 the only session that you will get an
+00:31:24.920 opportunity to ask us anything. You can
+00:31:27.280 always reach out to our team with any
+00:31:30.160 question. I do see some comments.
+00:31:33.200 Shakti,
+00:31:34.560 do we start addressing that or how do
+00:31:36.760 you want to take it?
+00:31:38.400 >> Yeah, yeah, we can do that. I would
+00:31:40.080 request Rohan if you can join back with
+00:31:42.480 us on screen. Let me just do that.
+00:31:45.040 And we'll pick up a very few questions
+00:31:46.560 from here.
+00:31:47.640 Rohan, you're there on the screen with
+00:31:49.680 us. Great.
+00:31:52.000 All right. So, we'll pick up a few
+00:31:53.040 questions. Just in the interest of time,
+00:31:55.280 we'll just pick a few ones that are
+00:31:57.000 relevant and addresses to the mass.
+00:32:00.040 So, here's one question. Let Can we have
+00:32:02.200 the question on the screen, please? All
+00:32:04.080 right.
+00:32:05.400 So,
+00:32:07.280 let me stop sharing my screen.
+00:32:12.720 All right. So, yeah. So, the question
+00:32:14.520 says what tech stack is recommended? Can
+00:32:16.320 we use any cloud or does everything has
+00:32:18.360 to be built on the platform?
+00:32:20.960 Rohan, would you like to address to that
+00:32:22.520 and maybe Shubhangi you can add to add
+00:32:24.160 up to that as well.
+00:32:25.680 >> Yeah, so
+00:32:26.520 >> answer the part two of the question. So,
+00:32:29.040 I'll let Rohan take the lead on the tech
+00:32:31.120 stack.
+00:32:31.960 >> Yeah, so
+00:32:34.240 once you actually get hold of Coco CLI,
+00:32:36.520 right? You'll realize that it has a
+00:32:38.800 fantastic
+00:32:40.360 way of integrating all the Snowflake
+00:32:42.200 services required for all
+00:32:45.480 data and data processing related
+00:32:48.040 anything to do with data, right? You'll
+00:32:49.840 find it on Snowflake. Now, if you as a
+00:32:52.720 participant feel that there's some
+00:32:54.360 feature or something which you require
+00:32:56.520 to embed in your application that does
+00:32:58.680 not exist within the ecosystem or you're
+00:33:00.520 not able to support, you can flag it to
+00:33:02.800 us and we can review and get back to
+00:33:04.360 you. But the expectation is for you to
+00:33:06.960 utilize as many Snowflake services as
+00:33:09.440 possible and you will be positively
+00:33:11.120 rewarded for it as well.
+00:33:13.080 Uh
+00:33:13.800 while we are evaluating the submissions.
+00:33:16.560 Uh and again, Shubhangi, feel free to
+00:33:18.800 add to it as well. Yeah.
+00:33:21.000 >> Yes, so yes, you can. Uh also, uh a lot
+00:33:24.960 of questions that are coming are Let me
+00:33:27.520 tell you, there would be multiple
+00:33:29.280 sessions. If you would have gone on
+00:33:31.080 event page, you would see there is a
+00:33:32.920 schedule of webinars that we are doing.
+00:33:35.680 Introductory was the first one. Second
+00:33:38.200 is going to be we teaching you, taking
+00:33:40.360 you through what is Coco and then a demo
+00:33:43.280 of Coco CLI so that it helps you to
+00:33:45.840 learn and go back and build uh on top of
+00:33:49.200 it. Uh yes, uh all things Snowflake is
+00:33:53.200 uh recommended, highly, highly
+00:33:55.160 recommended if you want to be in the top
+00:33:57.960 winning uh list. Uh but if you want to
+00:34:01.280 try out something which is complimentary
+00:34:03.640 to Snowflake but has Snowflake flavor,
+00:34:06.000 do not hesitate. We are not at any point
+00:34:08.440 discouraging any any any nominations,
+00:34:11.639 any submissions which do demonstrate
+00:34:14.159 creativity, but your evaluation like
+00:34:17.080 Rohan ran is going to be very Snowflake
+00:34:19.840 product heavy because this is Snowflake
+00:34:22.399 Coco CLI hackathon.
+00:34:27.560 Okay. Uh yes, it is uh mandatory to
+00:34:31.280 include Snowflake as solution. Um
+00:34:35.120 but with that uh rest of the steps uh on
+00:34:39.399 maybe we take the Is there a specific
+00:34:42.199 format for the final submission
+00:34:44.239 questions section?
+00:34:45.320 >> take that question. Okay.
+00:34:48.159 Rather, you've you've read that for us.
+00:34:50.440 Uh so, yes. So, there is a specific
+00:34:52.719 format. I'll address on your your your
+00:34:55.080 behalf.
+00:34:56.199 So, that's right there. Once you
+00:34:57.840 register, you'll find a participant
+00:34:59.600 dashboard. It's right there. You have a
+00:35:01.920 specific template that you need to
+00:35:03.600 follow. You have steps. You have guides.
+00:35:06.240 You have guidebooks. Everything very
+00:35:07.720 sorted out and it's placed right there
+00:35:09.760 on your participant dashboard. So, do
+00:35:12.080 check out the website. Register
+00:35:13.520 yourself. You'll find it on your
+00:35:14.840 dashboard right there. So, there's a
+00:35:16.400 specific format in which you need to
+00:35:18.120 make a submission.
+00:35:19.640 Things that you need to submit. So,
+00:35:20.960 there's another question. I'll I'll just
+00:35:22.560 address that in parallel.
+00:35:24.520 Is Is there Let me just pull up
+00:35:27.800 So, is there a specific format? That's
+00:35:29.440 the first part. Like GitHub a video
+00:35:31.640 demo, a live deployment. Yes.
+00:35:34.560 So, So, the entire submission consist
+00:35:37.200 consist of two different phases, which
+00:35:39.440 is one is your GitHub and your
+00:35:41.040 deployment link, wherein we you'll have
+00:35:43.040 a live update on the code that you have
+00:35:45.320 pushed to us.
+00:35:46.680 The other is where you have to add your
+00:35:49.640 video link. You have to add your
+00:35:51.040 presentation so that we get more just
+00:35:53.040 about what you're trying to build as a
+00:35:54.280 solution. And which is the problem
+00:35:56.080 statement? What all things are required
+00:35:58.040 for you to build that solution? What all
+00:36:00.160 are the services that you have included
+00:36:01.600 specifically [clears throat]
+00:36:02.760 that you need to mention right there,
+00:36:04.120 right now.
+00:36:05.160 So, uh yeah. So, everything you'll find
+00:36:07.440 it right there if you register. Uh so,
+00:36:09.400 go find and check it out. If you've
+00:36:10.760 already registered, go to your Innovator
+00:36:12.520 Dashboard under the Hack the Skill
+00:36:14.120 platform and you'll find it right there.
+00:36:17.244 >> [snorts]
+00:36:18.080 >> So, if I missed out anything, Rohan, uh
+00:36:19.760 Shivangi, you guys can add up to that
+00:36:21.200 anytime.
+00:36:24.200 Okay, let's have another one.
+00:36:27.000 Which problem statement is the best pick
+00:36:28.960 for someone who's new to Snowflake, Coco
+00:36:31.000 CLI
+00:36:32.440 and LangChain? Okay, this is a straight
+00:36:34.320 question. Maybe Rohan should answer
+00:36:35.880 this.
+00:36:36.480 >> Yeah, as as Shubhangi said, so if you're
+00:36:38.360 already familiar with Python LangChain,
+00:36:40.240 you already have the technical chops to
+00:36:42.560 make the most out of Coco CLI and tackle
+00:36:45.600 any of the four problem statements. So,
+00:36:47.960 you ideally won't face any issues
+00:36:51.600 tackling any of them.
+00:36:54.320 But, yeah. There will be supplementary
+00:36:56.040 sessions as Shubhangi mentioned, so
+00:36:57.360 you'll be even more better equipped to
+00:36:59.000 tackle all of those problem statements,
+00:37:00.440 right? So, yeah.
+00:37:02.640 There's no particular problem statement
+00:37:04.720 that you
+00:37:06.520 will be easier for you. I feel like
+00:37:09.000 given your background, all four problem
+00:37:10.640 statements are equally easy for you to
+00:37:12.360 tackle.
+00:37:14.000 >> Yes, because Coco CLI is that good and
+00:37:16.760 easy to use without pushing it too much.
+00:37:20.240 My recommendation personal would be
+00:37:23.240 trying something that you have a good
+00:37:25.120 handle on
+00:37:26.520 and that you can bring something that is
+00:37:29.000 very productive
+00:37:30.800 and creative. So, that's always going to
+00:37:32.920 be the emphasis. So, go through the
+00:37:34.920 problem statement, check which one
+00:37:37.040 resonates the best with you, which gives
+00:37:39.600 you more idea to build something that
+00:37:42.240 would contribute to a betterment of the
+00:37:44.240 community and is
+00:37:46.360 production ready.
+00:37:48.160 That would be the
+00:37:49.600 best one for you irrespective of So,
+00:37:51.880 there is no hierarchy or leveling in any
+00:37:54.920 of a problem statement. There is none
+00:37:57.240 which is level 100 or level 200 or
+00:37:59.440 anything. So, you can pick whatever you
+00:38:01.480 want. Each one would be touching enough
+00:38:04.160 of Snowflake features to give you a good
+00:38:06.800 outcome, good result, good app, good
+00:38:10.760 project in the end.
+00:38:13.480 >> Wonderful. Thanks for adding up to that,
+00:38:15.760 Shubhangi. Thank you, Rohan, for
+00:38:16.960 addressing that in the first place.
+00:38:18.960 Let's have like two, three odd more
+00:38:21.640 questions and then we can proceed to
+00:38:23.480 wrap up. Okay, here's one. What if my
+00:38:25.640 teammate is from India? Oh wait,
+00:38:27.080 Shubhangi should answer to this.
+00:38:28.440 >> I will take this one.
+00:38:29.920 >> And
+00:38:31.000 but I'm from Singapore, does the team
+00:38:32.720 still qualify since they have done this
+00:38:34.440 open for APJ region?
+00:38:36.120 >> Yes, it is. But you guys have to decide
+00:38:39.840 who's going to lead as the primary
+00:38:42.120 contact, which is your team lead. So if
+00:38:44.880 you all can manage that timeline, since
+00:38:47.000 both the countries fall within the geo
+00:38:49.320 that we are targeting and this hackathon
+00:38:51.960 is for, of course you can participate as
+00:38:54.520 a team. There's no problem with that.
+00:38:58.560 >> Thanks Shubhangi
+00:39:00.360 to add up to that. Okay, let's have
+00:39:03.040 next question. Okay, this is this may be
+00:39:05.400 genuine a genuine question and like it
+00:39:08.720 says as well. So about the AI native
+00:39:11.640 data app, when they say natural language
+00:39:13.680 integration, does that mean we literally
+00:39:15.400 need to
+00:39:17.080 need a chat interface or is a smart
+00:39:19.200 search with AI summarize also fine?
+00:39:21.880 Maybe Rohan, you should take that up.
+00:39:23.880 >> So given the breadth of this problem
+00:39:25.800 statement, right? It totally depends on
+00:39:28.200 what use case you actually end up
+00:39:30.040 building this AI native data app about.
+00:39:32.840 So if you feel the use case that you
+00:39:34.920 have identified can be tackled in a more
+00:39:37.640 elegant way through an AI native search
+00:39:39.600 instead of having a dedicated chat
+00:39:41.080 interface,
+00:39:42.240 that that works as well. It totally
+00:39:44.560 totally depends on the use case that you
+00:39:46.160 have identified. This problem statement
+00:39:48.280 in specific has such a huge breadth,
+00:39:50.480 right? That it gives leaves a lot open
+00:39:52.880 to the interpretation of the
+00:39:54.360 participants as well in terms of what
+00:39:56.640 exactly it is they want to build an AI
+00:39:59.000 native data app around. Like so without
+00:40:02.320 having an use case in mind, I will be
+00:40:04.600 very difficult for me to say whether it
+00:40:07.240 is more suited for an AI search or
+00:40:09.080 whether it's better suited to have a
+00:40:10.360 chat interface. But one guiding rule of
+00:40:13.640 hackathon that you can think along is
+00:40:15.720 the more feature rich you can make it
+00:40:17.800 without, you know, sacrificing the
+00:40:19.920 quality,
+00:40:21.240 the better your application would look
+00:40:23.120 overall. So, that is a guiding principle
+00:40:24.960 I,
+00:40:26.360 you know, used to go by when I would
+00:40:27.800 participate in hackathons. So, that is a
+00:40:29.800 good golden rule to have. But, this
+00:40:31.920 should not come at the cost of, you
+00:40:33.560 know, sacrificing the quality of the
+00:40:35.160 features that you are working on. So,
+00:40:37.200 yeah, based on the use case, I believe
+00:40:39.120 you'd be able to take the better call.
+00:40:44.080 >> Great. Thank you so much, Rohan, for
+00:40:45.400 adding up to that. I hope that answers
+00:40:48.280 to the question. If not, you can still
+00:40:50.560 ask a follow-up question in the chat
+00:40:52.000 box. Well, let's pick up another one
+00:40:54.160 in the chat. Okay.
+00:40:56.680 Yeshwanth says, &quot;Kind of confused about
+00:40:59.120 the unstructured data one. It says to
+00:41:01.480 combine structured and unstructured
+00:41:03.200 data, but what if my use case is
+00:41:05.680 entirely around unstructured data? Will
+00:41:07.560 that disqualify?&quot;
+00:41:11.000 >> Uh so, the short answer, no.
+00:41:13.880 The bigger answer is that uh while uh
+00:41:17.000 the only uh you know, sort of the reason
+00:41:20.240 mentioning both is so that participants
+00:41:22.600 are aware that data can exist in broadly
+00:41:25.200 two silos. One can be our structured
+00:41:26.920 databases, and other can be unstructured
+00:41:28.720 formats such as Google Drives, OneDrive,
+00:41:31.560 email logs, Jira tickets. Unstructured
+00:41:34.560 data can be infinitely large, right? So,
+00:41:37.120 if you're able to strictly tackle
+00:41:38.720 unstructured data, that is also a great
+00:41:40.480 problem to solve, and know your data
+00:41:42.280 your solution will not be disqualified.
+00:41:46.880 >> Great. Thanks, Rohan.
+00:41:49.120 Okay. Uh
+00:41:51.440 Maybe maybe I'll just look into the chat
+00:41:54.000 once.
+00:41:57.680 Okay, let's pick up this very small
+00:41:59.040 question, one last one. I'll just flash
+00:42:00.960 it on the screen. Do we must solve the
+00:42:03.560 interact with AI feature in all
+00:42:06.480 in all of our application? Rohan, you
+00:42:09.320 should answer that, or maybe Shivangi
+00:42:10.760 can add it up to it.
+00:42:12.914 >> [snorts]
+00:42:13.000 >> Sure. So, again, this becomes very
+00:42:16.840 use case specific.
+00:42:18.680 AI can be the reasoning engine of your
+00:42:20.720 application. It can be the
+00:42:23.760 user interface. It can power the user
+00:42:25.640 interface of your application. So, think
+00:42:27.840 of it if software was supposed to be a
+00:42:29.960 layered cake, right? Starting right from
+00:42:32.320 where it is getting the data to then
+00:42:34.920 performing certain analytics to then
+00:42:37.320 having certain APIs to the front end in
+00:42:39.520 which it is being served. AI can, you
+00:42:41.960 know, fit in as a frosting in any layer.
+00:42:44.320 It can be at the top of front end. It
+00:42:46.000 can be at the top of our API layer. It
+00:42:48.280 can be at the top of our back end layer,
+00:42:49.960 right? So, wherever you see that you can
+00:42:52.840 best work AI without it coming across as
+00:42:56.280 a gimmick because it is very easy to use
+00:42:58.600 AI as a gimmick and it is extremely
+00:43:00.840 challenging to use AI in a meaningful
+00:43:02.760 way. So, wherever in that text stack,
+00:43:04.800 you're not text stack, in that cake,
+00:43:06.560 metaphorical cake, you're able to find a
+00:43:08.120 good way to, you know, use AI, I would
+00:43:11.200 recommend that. So,
+00:43:12.840 just to again, it is not absolutely
+00:43:16.480 important that you should be able to
+00:43:18.000 interact with the AI, but if you feel it
+00:43:20.520 enhances or elevates your application in
+00:43:22.840 a meaningful manner, then you should add
+00:43:24.440 it.
+00:43:26.720 >> Just to add there,
+00:43:28.320 if it is on a prototype level, if it
+00:43:30.920 doesn't have that interaction or
+00:43:33.200 interactive element to it, which is
+00:43:35.120 fine, but if it can be something added,
+00:43:37.520 do mention that. If you don't want to
+00:43:40.160 build it right now, but if we want to
+00:43:42.880 take your project to production, will it
+00:43:45.080 be
+00:43:46.520 doable thing? Do highlight it and what
+00:43:48.800 would it look like post that
+00:43:50.360 integration? So,
+00:43:51.960 not a mandatory thing, recommended if
+00:43:55.120 can, very good, but we do understand uh
+00:43:58.840 uh it's going to be a new platform, new
+00:44:01.320 product, new feature for many of you to
+00:44:04.480 work on
+00:44:05.640 and hence there's more marks for
+00:44:07.640 innovation,
+00:44:09.040 uh, creativity, and the practical usage
+00:44:12.080 of your product.
+00:44:13.520 So.
+00:44:14.840 Uh, yeah. And I want to also highlight
+00:44:18.120 if you're confused on the participation
+00:44:20.640 number layers, and we are seeing some of
+00:44:23.000 those questions, uh, please go to the
+00:44:25.880 landing page and go through the terms
+00:44:28.160 and conditions. It has everything that
+00:44:30.920 you need covered, whether you are
+00:44:32.800 qualified, will you be able to proceed?
+00:44:36.120 Uh, but I can for sure say one thing,
+00:44:38.760 one person cannot be
+00:44:40.880 participating or be a participant in
+00:44:44.000 multiple teams. So, one team, one
+00:44:46.440 member.
+00:44:49.680 >> Great. I think you've addressed another
+00:44:51.320 question that was there in on the chat.
+00:44:52.800 Thank you so much Shubhangi, and thank
+00:44:54.480 you so much Rohan for the wonderful
+00:44:55.960 insights on the problem statements.
+00:44:58.040 And to take up the
+00:45:00.080 these fiery questions
+00:45:02.120 and answering to those ones. But
+00:45:04.560 But, yeah. So, here's here we are at the
+00:45:06.760 end of the session, but we are going to
+00:45:08.720 come up with a lot many sessions,
+00:45:10.920 hands-on as well as like we are trying
+00:45:12.880 to get more speakers in line and get you
+00:45:16.000 a hands-on experience on the Coco CLI.
+00:45:19.000 So, stay interacting on the platform, on
+00:45:21.880 the innovator dashboard. Keep an eye on
+00:45:24.360 whatever you're doing, and keep, you
+00:45:26.600 know, keep coming back to the innovation
+00:45:28.560 dashboard as well. So, what happens is
+00:45:30.680 every now and then we push for updates.
+00:45:32.600 So, keep an eye as well on your inboxes.
+00:45:34.800 So, we send a lot of resources, we send
+00:45:36.800 a lot of, you know, upcoming events that
+00:45:39.520 are happening under the hackathon
+00:45:40.880 itself. But, it was wonderful hosting
+00:45:42.880 both of you, Shubhangi and Rohan. It was
+00:45:46.040 wonderful having you here with us and
+00:45:47.640 have this great discussion around.
+00:45:49.560 Anything that you would would want to
+00:45:50.960 say before we end this?
+00:45:54.800 >> Okay. Thank you for giving us time and
+00:45:57.720 so many questions.
+00:45:59.760 We are sorry that we couldn't cover
+00:46:02.120 everything, but there is if you go on
+00:46:04.520 the page, there is a support email
+00:46:06.360 address which is support@hack2skill.com.
+00:46:11.120 You can drop us any email and we will
+00:46:13.400 surely get back to you. The next
+00:46:15.760 sessions would be enablement sessions
+00:46:17.840 with more on running you Coco concepts
+00:46:20.880 and then demo on Coco CLI. And if there
+00:46:23.960 is any new material that is coming, we
+00:46:27.120 will email it to you. So, first step is
+00:46:29.160 if you've not already registered,
+00:46:30.920 register right now so that we can stay
+00:46:33.120 in touch with you. And from my side,
+00:46:35.640 thank you again for giving us your
+00:46:37.640 Thursday evening. Rohan, if you want to
+00:46:40.760 say a few words.
+00:46:41.480 >> So, I'll I'll just like to say first and
+00:46:43.240 foremost, thank you so much for having
+00:46:44.720 me and to everyone who joined in, thank
+00:46:46.880 you so much for taking the time out and
+00:46:48.720 joining.
+00:46:49.840 Uh and I'm just now very very excited
+00:46:52.400 and looking forward to the kind of
+00:46:53.680 submissions I'll get to see. And just
+00:46:56.880 wishing everyone who's joined and
+00:46:58.800 everyone who sees this later on as well,
+00:47:00.840 the best of luck.
+00:47:02.400 May the strongest submission end up
+00:47:05.200 winning, right? So, yeah.
+00:47:07.360 Thank you so much once again.
+00:47:09.632 >> [clears throat]
+00:47:10.560 >> So, great. Thank you so much, Shubhangi.
+00:47:12.080 Thank you so much, Rohan, for joining us
+00:47:14.200 on the session. And thank you everyone
+00:47:16.120 who's watching us now or maybe later
+00:47:19.560 for watching this entire session. You're
+00:47:21.400 at the end of the session so it means
+00:47:23.280 definitely you had a lot of learnings
+00:47:24.960 today.
+00:47:25.880 But yes, we'll see you on the other side
+00:47:27.880 and we look forward to see your
+00:47:29.480 solutions coming forward to us.
+00:47:31.440 Wonderful, you have a great evening and
+00:47:33.880 thank you.
