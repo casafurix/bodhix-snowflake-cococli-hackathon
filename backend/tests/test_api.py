@@ -22,3 +22,35 @@ def test_patient_detail_has_two_sided_citations():
 def test_unknown_patient_returns_404():
     assert client.get("/api/patients/DOES_NOT_EXIST").status_code == 404
 
+
+def test_protocol_contract_contains_reviewed_source_clauses():
+    response = client.get("/api/protocol")
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["protocol"]["protocol_id"] == "NCT00749190"
+    assert len(payload["criteria"]) == 7
+    assert all(item["source_clause"] for item in payload["criteria"])
+
+
+def test_worklist_excludes_prescreen_exclusions():
+    items = client.get("/api/tasks").json()["items"]
+    assert len(items) == 7
+    assert {item["source_status"] for item in items} == {
+        "POTENTIAL_MATCH",
+        "MISSING_INFORMATION",
+        "MANUAL_REVIEW",
+    }
+
+
+def test_operations_rolls_up_all_three_sites():
+    payload = client.get("/api/operations").json()
+    assert len(payload["sites"]) == 3
+    assert sum(site["candidate_count"] for site in payload["sites"]) == 12
+
+
+def test_edit_decision_requires_an_edited_action():
+    response = client.post(
+        "/api/tasks/example-task/decision",
+        json={"decision": "EDIT", "actor": "tester", "reason": "verified evidence"},
+    )
+    assert response.status_code == 422

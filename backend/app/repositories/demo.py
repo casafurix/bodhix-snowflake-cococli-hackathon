@@ -266,9 +266,95 @@ class DemoRepository:
         }
 
     def tasks(self) -> list[dict]:
-        tasks = [task_from_screening(result) for result in self.results.values()]
-        return [asdict(task) for task in tasks if task is not None]
+        items = []
+        for result in self.results.values():
+            task = task_from_screening(result)
+            if task is not None:
+                items.append(
+                    {
+                        **asdict(task),
+                        "source_status": result.status,
+                        "updated_at": task.created_at,
+                    }
+                )
+        return items
+
+    def protocol_detail(self) -> dict:
+        criteria = []
+        for ordinal, criterion in enumerate(self.criteria, start=1):
+            criteria.append(
+                {
+                    "criterion_id": criterion.criterion_id,
+                    "criterion_type": criterion.criterion_type,
+                    "criterion_ordinal": ordinal,
+                    "source_clause": criterion.source_clause,
+                    "source_location": criterion.source_location,
+                    "clinical_concept": criterion.field,
+                    "operator": criterion.operator,
+                    "threshold_value": criterion.value
+                    if isinstance(criterion.value, (int, float))
+                    and not isinstance(criterion.value, bool)
+                    else None,
+                    "threshold_upper": criterion.upper_value,
+                    "threshold_unit": criterion.unit,
+                    "temporal_window": None,
+                    "required_evidence": criterion.field,
+                    "machine_evaluable": criterion.machine_evaluable,
+                    "review_status": criterion.review_status,
+                    "review_notes": "Validated deterministic offline fixture.",
+                }
+            )
+        return {
+            "protocol": {
+                **self.dashboard()["protocol"],
+                "document_hash": "OFFLINE-FIXTURE-HASH",
+                "overall_status": "COMPLETED",
+                "retrieved_at": self.computed_at,
+            },
+            "processing": {
+                "processing_run_id": "OFFLINE-FIXTURE",
+                "extracted_count": len(self.criteria),
+                "reviewed_count": len(self.criteria),
+                "manual_review_count": 0,
+                "rejected_count": 0,
+                "processor": "deterministic offline fixture",
+            },
+            "criteria": criteria,
+        }
+
+    def audit_events(self) -> list[dict]:
+        return []
+
+    def operations(self) -> dict:
+        rows = self.dashboard()["patients"]
+        sites: dict[str, dict] = {}
+        for patient in rows:
+            site = sites.setdefault(
+                patient["site_id"],
+                {
+                    "site_id": patient["site_id"],
+                    "candidate_count": 0,
+                    "potential_match_count": 0,
+                    "missing_information_count": 0,
+                    "manual_review_count": 0,
+                    "excluded_count": 0,
+                    "average_evidence_completeness": 0,
+                },
+            )
+            site["candidate_count"] += 1
+            key = {
+                "POTENTIAL_MATCH": "potential_match_count",
+                "MISSING_INFORMATION": "missing_information_count",
+                "MANUAL_REVIEW": "manual_review_count",
+                "EXCLUDED": "excluded_count",
+            }[patient["status"]]
+            site[key] += 1
+            site["average_evidence_completeness"] += patient["evidence_completeness"]
+        for site in sites.values():
+            site["average_evidence_completeness"] = round(
+                site["average_evidence_completeness"] / site["candidate_count"], 2
+            )
+        return {"run_id": self.run_id, "sites": sorted(sites.values(), key=lambda s: s["site_id"])}
 
 
 repository = DemoRepository()
-
