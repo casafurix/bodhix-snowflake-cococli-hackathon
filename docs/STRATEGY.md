@@ -415,6 +415,24 @@ Generic hackathon advice says fake the backend and skip error handling. Here, Te
 
 ---
 
+## Domain Decision — Clinical Trials vs. Finance/Stock Market
+
+**Decision: stick with the clinical trial operations idea** ([docs/idea-clinical-trial-operations.md](idea-clinical-trial-operations.md)). Finance/stock-market was raised as a personal-interest option and considered, then set aside.
+
+**Why clinical trials is confirmed, not just defaulted to:**
+- The #1 open risk — credible data — is now **resolved**: ClinicalTrials.gov + PhysioNet MIMIC-IV (real, de-identified, widely-published-on) + PubMed, with proper vocabulary standardization (ICD-10/SNOMED/LOINC/RxNorm). This is stronger than hand-waved synthetic data and reads as rigor to judges.
+- Pivoting now would re-open data availability, domain credibility, and scope from scratch with less runway left — a real cost, not a free option.
+
+**Why we did *not* pivot to finance/stock-market, independent of timing:**
+1. **It's the single most AI-brainstormed hackathon category.** "AI stock predictor / trading agent" is the exact AI-default trap described in the Defensibility section — if 200 teams ask an LLM for a finance idea, this is the top hit for half of them.
+2. **Backtesting credibility risk exceeds the clinical-safety risk.** A 9-day demo claiming "our agent beat the market" reads as curve-fitting to anyone with finance literacy — it's mathematically checkable, and the fastest way to lose a judge's trust.
+3. **No Snowflake-native moat.** Trial/EHR/claims data genuinely lives in an enterprise warehouse; live market data doesn't — the "governed AI where the data already lives" pitch falls apart.
+4. **Regulatory optics** — "buy/sell" recommendations brush against investment-advice framing for no real upside.
+
+**If a finance angle is wanted later** (roadmap note, not a pivot): the defensible version is **enterprise, not consumer** — e.g., an equity-research copilot that reads earnings-call transcripts + 10-Ks (unstructured) against financials (structured) and auto-drafts the "why did revenue/margin move" memo. Same shape as the month-end-close idea, applied to public markets — low-competition specifically *because* it's less flashy than stock-picking.
+
+---
+
 ### Sources
 - Excel/reporting drudgery: [DEV — "847 hours cleaning Excel"](https://dev.to/vimal-patel/i-wasted-847-hours-last-year-cleaning-excel-files-heres-how-i-got-my-life-back-4hn3); [data.world — data engineer burnout survey](https://data.world/blog/why-so-blue-5-reasons-data-engineers-are-burnt-out)
 - Collections: [Allianz-Trade — B2B debt collection (33% unpaid at 90 days)](https://www.allianz-trade.com/en_SG/insights/risk-management/how-does-business-debt-collection-work.html)

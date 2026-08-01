@@ -86,6 +86,27 @@ This one flow is the "damn" moment: highly visual, shows structured+unstructured
 
 ---
 
+## 5b. Data Sources (resolved — no longer an open risk)
+
+Eirene sourced a concrete, credible data plan (shared as a team architecture doc). This is stronger than hand-waved synthetic data and signals real rigor to judges.
+
+**Primary sources (4, all legitimate/legal to use):**
+
+| Source | Provides |
+|--------|----------|
+| **[ClinicalTrials.gov](https://clinicaltrials.gov)** | Trial protocols, inclusion/exclusion criteria, phases, disease classifications, recruitment status |
+| **PhysioNet — MIMIC-IV** | De-identified patient admissions, labs, medications, diagnoses, clinical notes (requires registration + data use agreement — respected, widely-published-on dataset, *not* toy synthetic data) |
+| **PubMed / PubMed Central** | Biomedical literature & clinical guidelines — evidence for explainable-AI citations |
+| **Clinical Trials Registry India (CTRI)** | Indian-specific trial registrations, investigators, criteria |
+
+**Enrichment / normalization sources:** OpenFDA (drug safety/labeling) · ICD-10 (disease coding) · SNOMED CT (clinical terminology) · LOINC (lab test coding) · RxNorm (medication vocabulary).
+
+**Production-path note:** the architecture doc points at **HL7 FHIR** as the standard for future real hospital EHR integration — good "this scales beyond the hackathon" talking point for the pitch, not something to build in 9 days.
+
+> **Action:** MIMIC-IV requires a data-use agreement/registration (usually fast, but start it immediately — it's the one item on the critical path with external lead time).
+
+---
+
 ## 6. Mapping to the Problem Statements & Rubric
 
 - **PS-01 (Workflow Automation Agent)** — multi-agent orchestration, decision branches (eligible / ineligible / needs-more-data). *Submit under this — 40% Technical weight.*
@@ -102,7 +123,7 @@ This one flow is the "damn" moment: highly visual, shows structured+unstructured
 | Risk | Mitigation |
 |------|------------|
 | **Scope too large for 9 days** | Cut to the 3-agent eligibility golden path; forecast/compliance = roadmap |
-| **Convincing synthetic data is hard** (real data = PHI) | Use public synthetic EHR (e.g., Synthea) + a real public protocol from ClinicalTrials.gov; pre-load and cache |
+| ~~Convincing synthetic data is hard (real data = PHI)~~ **RESOLVED** | MIMIC-IV (de-identified, real) + ClinicalTrials.gov protocols + PubMed — see §5b |
 | **Needs domain expertise** to look credible | Confirm a teammate is comfortable with clinical/lab terminology; keep criteria logic transparent & cited |
 | **Safety framing** ("patient qualifies" ≈ clinical claim) | Position as **decision-support for coordinators, human-verified, not auto-enrollment**; explainable + cited throughout |
 | **Prior art** (NIH **TrialGPT**, **Deep6 AI**) | Differentiate on the *operations loop* + explainability + Snowflake-native governance, not just matching |
@@ -120,8 +141,9 @@ Most teams will build document chatbots or simple RAG healthcare assistants. Thi
 
 1. **Does a teammate have healthcare/clinical-data comfort?** (Decides feasibility & credibility.)
 2. **Commit to cutting scope** to the eligibility golden path for the demo? (Required.)
-3. **Data source:** Synthea synthetic EHR + a public ClinicalTrials.gov protocol — acceptable?
-4. **This vs. the denial-recovery idea** — clinical trials is *higher ceiling, higher risk*; denial-recovery is *safer, easier data*. Pick based on answers to #1–2. (See [STRATEGY.md](STRATEGY.md) for the comparison.)
+3. ~~Data source~~ **RESOLVED** — MIMIC-IV + ClinicalTrials.gov + PubMed (see §5b). Start the MIMIC-IV data-use-agreement request immediately; it's the one external-lead-time item.
+4. **This vs. the denial-recovery idea** — clinical trials is *higher ceiling, higher risk*; denial-recovery is *safer, easier data*. With the data risk now resolved, clinical trials is the stronger pick *if* #1–2 hold. (See [STRATEGY.md](STRATEGY.md) for the comparison.)
+5. ~~Finance / stock-market pivot~~ **DECIDED — stick with clinical trials.** See [STRATEGY.md § Domain Decision — Clinical Trials vs. Finance/Stock Market](STRATEGY.md#domain-decision--clinical-trials-vs-financestock-market).
 
 ## Target Customers
 Pharmaceutical companies running trials, hospitals doing research, CROs, cancer centers, research institutions.
