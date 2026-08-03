@@ -34,6 +34,8 @@ snow sql -c hackathon -f snowflake/seed/001_protocol_and_synthetic_cohort.sql
 snow sql -c hackathon -f snowflake/seed/002_compute_demo_screening.sql
 snow sql -c hackathon -f snowflake/migrations/004_cortex_search.sql
 snow sql -c hackathon -f snowflake/migrations/005_workflow_and_screening_procedures.sql
+snow sql -c hackathon -f snowflake/migrations/007_copilot_runs.sql
+snow sql -c hackathon -f snowflake/migrations/008_multi_trial_intake.sql
 ```
 
 Start the backend:
@@ -53,7 +55,10 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. The backend API and interactive documentation are available at `http://127.0.0.1:8000/docs`.
+Open `http://127.0.0.1:5173`. Start on Dashboard, sync a public trial by
+ClinicalTrials.gov URL or NCT ID, then open Patients to import a synthetic CSV
+cohort or review the demonstration cohort. The backend API and interactive
+documentation are available at `http://127.0.0.1:8000/docs`.
 
 Production packaging and Snowpark Container Services commands are documented in
 [snowflake/deployment/README.md](snowflake/deployment/README.md). The deployed

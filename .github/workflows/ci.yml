@@ -1,4 +1,4 @@
-name: TrialOps CI
+name: ATLAS CI
 
 on:
   push:
@@ -36,4 +36,4 @@ jobs:
           npm --prefix frontend run build
           npm --prefix frontend audit --omit=dev
       - name: Build production image
-        run: docker build --platform linux/amd64 -t trialops:ci .
+        run: docker build --platform linux/amd64 -t atlas:ci .

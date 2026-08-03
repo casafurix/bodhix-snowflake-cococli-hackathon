@@ -134,6 +134,37 @@ export interface OperationsData {
   sites: SiteOperations[];
 }
 
+export interface TrialSummary {
+  protocol_id: string;
+  title: string;
+  overall_status: string;
+  phase?: string;
+  conditions?: string[];
+  site_count?: number;
+  enrollment?: number | null;
+  criteria_count: number;
+  reviewed_count: number;
+  processing_state: "PENDING_EXTRACTION" | "READY_FOR_SCREENING" | string;
+  updated_at: string;
+  source_url: string;
+  document_hash?: string;
+  is_demo: boolean;
+  message?: string;
+}
+
+export interface SyntheticPatientInput {
+  patient_id: string;
+  site_id: string;
+  age?: number;
+  diagnoses?: string;
+  metformin_mg_day?: number;
+  hba1c?: number;
+  bmi?: number;
+  recent_cv_event?: boolean;
+  renal_impairment?: boolean;
+  contradictory_field?: string;
+}
+
 export interface CopilotCitation {
   label: string;
   source: string;
@@ -145,6 +176,13 @@ export interface CopilotProposal {
   action_type: string;
   reason: string;
   label: string;
+}
+
+export interface AgentTraceStep {
+  step: string;
+  agent: string;
+  status: "COMPLETED" | "FALLBACK" | "AWAITING_APPROVAL" | "NO_MUTATION" | "NOT_REQUIRED";
+  detail: string;
 }
 
 export interface CopilotResponse {
@@ -164,4 +202,7 @@ export interface CopilotResponse {
     search_text?: string;
   }>;
   proposal: CopilotProposal | null;
+  copilot_run_id: string;
+  run_record_status: "PERSISTED" | "PERSISTENCE_UNAVAILABLE" | "LOCAL_ONLY";
+  agent_trace: AgentTraceStep[];
 }
