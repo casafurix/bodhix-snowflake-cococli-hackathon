@@ -563,7 +563,7 @@ Not implemented in the current frontend:
 - Historical recruitment or dropout forecasting.
 - Visit, consent, protocol-deviation, or sponsor-portfolio modules.
 - Arbitrary SQL generation or unrestricted general-purpose chat. The copilot is
-  intentionally limited to governed TrialOps intents.
+  intentionally limited to governed ATLAS intents.
 
 Do not present items in the second list as live capabilities. They are possible
 future integrations or architecture targets.

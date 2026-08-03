@@ -1,6 +1,6 @@
 """Bounded, evidence-grounded Coordinator Assistant behavior.
 
-The assistant routes only TrialOps/ATLAS operational intents. Deterministic
+The assistant routes only ATLAS operational intents. Deterministic
 screening results remain authoritative; language generation is used only to
 explain governed facts when the Snowflake repository provides Cortex AI.
 """
@@ -11,7 +11,6 @@ import re
 from dataclasses import dataclass
 from threading import Lock
 from uuid import uuid4
-
 
 SUPPORTED_INTENTS = {
     "PATIENT_EXPLANATION",
@@ -175,4 +174,4 @@ def answer_query(repository, query: str, context_patient_id: str | None = None) 
         return {**base, "state": "ANSWERED", "answer": "The current ATLAS demo has candidate workload by site, but it does not yet contain historical enrollment velocity. I cannot produce a defensible recruitment forecast from this dataset. The next governed input would be historical screening, enrollment, dropout, and capacity observations.", "grounded": True, "model": "scope-guardrail", "citations": [_citation(dashboard["run"]["run_id"], "Current run scope")]}
     if intent == "COMPLIANCE_SUMMARY":
         return {**base, "state": "ANSWERED", "answer": "The current cohort contains screening evidence and coordinator tasks, but no visit/consent/report records are loaded into the deployed demo. ATLAS therefore cannot claim a compliance alert from this run.", "grounded": True, "model": "scope-guardrail", "citations": [_citation(dashboard["run"]["run_id"], "Current run scope")]}
-    return {**base, "state": "CLARIFICATION", "answer": "Please rephrase that as a TrialOps question about a candidate, evidence, sites, recruitment, or compliance."}
+    return {**base, "state": "CLARIFICATION", "answer": "Please rephrase that as an ATLAS question about a candidate, evidence, sites, recruitment, or compliance."}
