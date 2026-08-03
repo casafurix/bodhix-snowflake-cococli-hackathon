@@ -156,5 +156,12 @@ export interface CopilotResponse {
   grounded: boolean;
   model: string;
   citations: CopilotCitation[];
+  retrieved_evidence: Array<{
+    document_type?: string;
+    patient_id?: string | null;
+    source_id?: string;
+    title?: string;
+    search_text?: string;
+  }>;
   proposal: CopilotProposal | null;
 }

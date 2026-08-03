@@ -132,12 +132,14 @@ class SnowflakeRepository:
             "warehouse": str(context["warehouse"]),
         }
 
-    def cortex_explain(self, question: str, draft: str, citations: list[dict[str, str]]) -> str | None:
+    def cortex_explain(self, question: str, draft: str, citations: list[dict[str, str]]) -> dict:
         """Grounded natural-language explanation using Snowflake Cortex.
 
         The model receives only the deterministic draft and source identifiers.
         If model access is unavailable, callers retain the safe deterministic
-        explanation instead of failing the coordinator workflow.
+        explanation instead of failing the coordinator workflow. Retrieved
+        evidence is returned separately so the UI can show what grounded the
+        response.
         """
         model = os.getenv("ATLAS_CORTEX_MODEL", "claude-sonnet-4-6")
         retrieved: list[dict] = []
@@ -172,9 +174,12 @@ class SnowflakeRepository:
             with self._connection() as connection, connection.cursor() as cursor:
                 cursor.execute("SELECT AI_COMPLETE(%s, %s) AS answer", (model, prompt))
                 row = cursor.fetchone()
-            return str(row[0]) if row and row[0] else None
+            return {
+                "answer": str(row[0]) if row and row[0] else None,
+                "retrieved_evidence": retrieved,
+            }
         except DatabaseError:
-            return None
+            return {"answer": None, "retrieved_evidence": retrieved}
 
     def dashboard(self) -> dict[str, Any]:
         with self._connection() as connection, connection.cursor(DictCursor) as cursor:

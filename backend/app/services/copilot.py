@@ -88,7 +88,9 @@ def confirm_proposal(proposal_id: str) -> dict[str, str] | None:
         return _PROPOSALS.pop(proposal_id, None)
 
 
-def _cortex_answer(repository, question: str, draft: str, citations: list[dict[str, str]]) -> tuple[str, str]:
+def _cortex_answer(
+    repository, question: str, draft: str, citations: list[dict[str, str]]
+) -> tuple[str, str, list[dict]]:
     """Ask Snowflake Cortex to polish a grounded draft when available.
 
     The deterministic draft is the fallback for local fixtures and for accounts
@@ -97,9 +99,13 @@ def _cortex_answer(repository, question: str, draft: str, citations: list[dict[s
     """
     explain = getattr(repository, "cortex_explain", None)
     if explain is None:
-        return draft, "governed-screening-context"
+        return draft, "governed-screening-context", []
     generated = explain(question, draft, citations)
-    return generated or draft, "claude-sonnet-4-6" if generated else "governed-screening-context"
+    if isinstance(generated, dict):
+        answer = generated.get("answer") or draft
+        evidence = generated.get("retrieved_evidence") or []
+        return answer, "claude-sonnet-4-6" if generated.get("answer") else "governed-screening-context", evidence
+    return generated or draft, "claude-sonnet-4-6" if generated else "governed-screening-context", []
 
 
 def answer_query(repository, query: str, context_patient_id: str | None = None) -> dict:
@@ -112,6 +118,7 @@ def answer_query(repository, query: str, context_patient_id: str | None = None) 
         "grounded": False,
         "model": "deterministic-router",
         "citations": [],
+        "retrieved_evidence": [],
         "proposal": None,
     }
     if intent == "UNSAFE":
@@ -149,8 +156,8 @@ def answer_query(repository, query: str, context_patient_id: str | None = None) 
         task = next((item for item in repository.tasks() if item["patient_id"] == patient_id), None)
         if task and detail["status"] in {"MISSING_INFORMATION", "MANUAL_REVIEW", "POTENTIAL_MATCH"}:
             proposal = _proposal(task, f"Coordinator review for {patient_id}: {answer}")
-        answer, model = _cortex_answer(repository, query, answer, citations)
-        response = {**base, "state": "ANSWERED", "answer": answer, "citations": citations, "proposal": proposal.__dict__ if proposal else None, "grounded": True, "model": model}
+        answer, model, retrieved_evidence = _cortex_answer(repository, query, answer, citations)
+        response = {**base, "state": "ANSWERED", "answer": answer, "citations": citations, "retrieved_evidence": retrieved_evidence, "proposal": proposal.__dict__ if proposal else None, "grounded": True, "model": model}
         return response
 
     patients = dashboard["patients"]
@@ -158,8 +165,8 @@ def answer_query(repository, query: str, context_patient_id: str | None = None) 
         matches = [item for item in patients if item["status"] == "POTENTIAL_MATCH"]
         answer = f"There are {len(matches)} potential match(es) in the latest governed run: " + ", ".join(item["patient_id"] for item in matches) + ". Each still requires coordinator verification against the remaining protocol clauses."
         citations = [_citation(dashboard["run"]["run_id"], "Screening run")]
-        answer, model = _cortex_answer(repository, query, answer, citations)
-        return {**base, "state": "ANSWERED", "answer": answer, "grounded": True, "model": model, "citations": citations}
+        answer, model, retrieved_evidence = _cortex_answer(repository, query, answer, citations)
+        return {**base, "state": "ANSWERED", "answer": answer, "grounded": True, "model": model, "citations": citations, "retrieved_evidence": retrieved_evidence}
     if intent == "MISSING_INFORMATION":
         missing = [item for item in patients if item["status"] == "MISSING_INFORMATION"]
         answer = f"{len(missing)} candidate(s) need evidence work: " + ", ".join(item["patient_id"] for item in missing) + ". ATLAS recommends locating existing records; it does not order tests or infer missing values."
