@@ -1,9 +1,9 @@
 # TrialOps Evidence Desk — Product Explanation and Operator Guide
 
-**Product:** TrialOps Evidence Desk  
-**Team:** BodhiX  
-**Hackathon track:** PS-04 — Domain-Specific AI Copilot  
-**Guide scope:** The application deployed as of 2 August 2026
+- **Product:** TrialOps Evidence Desk
+- **Team:** BodhiX
+- **Hackathon track:** PS-04 — Domain-Specific AI Copilot
+- **Guide scope:** The application deployed as of 2 August 2026
 
 ## 1. The product in one sentence
 
@@ -558,4 +558,3 @@ future integrations or architecture targets.
 > includes its source, and a human must record a reason before workflow state
 > changes. The system is deployed on Snowflake, but it contains no real patient
 > information and makes no final clinical or enrollment decision.
-
