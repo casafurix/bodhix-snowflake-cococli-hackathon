@@ -41,7 +41,7 @@ class SnowflakeRepository:
                     "warehouse": os.getenv("SNOWFLAKE_WAREHOUSE", "CTOPS_WH"),
                     "database": os.getenv("SNOWFLAKE_DATABASE", "CTOPS_HACKATHON"),
                     "schema": os.getenv("SNOWFLAKE_SCHEMA", "APP"),
-                    "session_parameters": {"QUERY_TAG": "trialops-fastapi"},
+                    "session_parameters": {"QUERY_TAG": "atlas-fastapi"},
                 }
                 if token_path.exists():
                     connection = snowflake.connector.connect(
@@ -271,7 +271,7 @@ class SnowflakeRepository:
 
     def run_screening(self) -> str:
         request_id = f"api-{uuid4()}"
-        actor = os.getenv("TRIALOPS_ACTOR", "API_SYNTHETIC_COORDINATOR")
+        actor = os.getenv("ATLAS_ACTOR", os.getenv("TRIALOPS_ACTOR", "API_SYNTHETIC_COORDINATOR"))
         with self._connection() as connection, connection.cursor() as cursor:
             cursor.execute(
                 "CALL CTOPS_HACKATHON.APP.RUN_SCREENING(%s, %s)",

@@ -238,7 +238,7 @@ function CopilotCard({ contextPatientId }: { contextPatientId?: string }) {
     <Card className="overflow-hidden border-[#c7dce4]">
       <div className="bg-[#10233b] p-5 text-white">
         <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#70d0c6]"><MessageSquareText className="size-4" /> ATLAS copilot</div>
-        <h3 className="protocol-title mt-2 text-2xl">Ask the evidence desk.</h3>
+        <h3 className="protocol-title mt-2 text-2xl">Ask ATLAS Copilot.</h3>
         <p className="mt-2 text-xs leading-5 text-slate-300">Answers stay inside the trial context, show their sources, and never turn into an autonomous clinical decision.</p>
       </div>
       <form onSubmit={submit} className="p-5">

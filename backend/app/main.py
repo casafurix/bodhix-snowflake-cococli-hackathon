@@ -23,7 +23,7 @@ app.add_middleware(
 app.include_router(router)
 
 default_static_dir = Path(__file__).resolve().parents[2] / "frontend" / "dist"
-static_dir = Path(os.getenv("TRIALOPS_STATIC_DIR", default_static_dir))
+static_dir = Path(os.getenv("ATLAS_STATIC_DIR", os.getenv("TRIALOPS_STATIC_DIR", default_static_dir)))
 
 if static_dir.is_dir():
     assets_dir = static_dir / "assets"

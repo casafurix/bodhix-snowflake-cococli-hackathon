@@ -11,9 +11,9 @@ PAT, API key, or private key is built into the image.
 
 ```bash
 snow sql -c hackathon -f snowflake/migrations/006_spcs_deployment.sql
-docker build --platform linux/amd64 -t trialops:latest .
+docker build --platform linux/amd64 -t atlas:latest .
 snow spcs image-registry login -c hackathon --role CTOPS_TEAM_ROLE
-docker tag trialops:latest \
+docker tag atlas:latest \
   pmwcgsc-yq79089.registry.snowflakecomputing.com/ctops_hackathon/app/trialops_repository/trialops:latest
 docker push \
   pmwcgsc-yq79089.registry.snowflakecomputing.com/ctops_hackathon/app/trialops_repository/trialops:latest

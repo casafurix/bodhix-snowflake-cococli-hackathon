@@ -3,7 +3,7 @@ spec:
     - name: trialops
       image: /ctops_hackathon/app/trialops_repository/trialops:latest
       env:
-        TRIALOPS_DATA_BACKEND: snowflake
+        ATLAS_DATA_BACKEND: snowflake
         SNOWFLAKE_WAREHOUSE: CTOPS_WH
         SNOWFLAKE_DATABASE: CTOPS_HACKATHON
         SNOWFLAKE_SCHEMA: APP
