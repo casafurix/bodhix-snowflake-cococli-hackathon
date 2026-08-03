@@ -6,6 +6,7 @@ import type {
   PatientDetail,
   ProtocolData,
   TaskDecision,
+  CopilotResponse,
 } from "@/types";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
@@ -39,5 +40,21 @@ export const api = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),
+    }),
+  copilot: (query: string, contextPatientId?: string) =>
+    request<CopilotResponse>("/copilot/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, context_patient_id: contextPatientId }),
+    }),
+  confirmCopilot: (proposalId: string, reason: string) =>
+    request<Record<string, string>>("/copilot/confirm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        proposal_id: proposalId,
+        actor: "TRIAL_COORDINATOR_DEMO",
+        reason,
+      }),
     }),
 };

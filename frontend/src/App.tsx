@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useLocation } from "wouter";
 import {
@@ -15,6 +15,7 @@ import {
   LayoutDashboard,
   LoaderCircle,
   Menu,
+  MessageSquareText,
   RefreshCw,
   Search,
   ShieldCheck,
@@ -27,7 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { PatientSummary, ScreeningStatus } from "@/types";
+import type { CopilotResponse, PatientSummary, ScreeningStatus } from "@/types";
 
 const statusLabel: Record<ScreeningStatus, string> = {
   POTENTIAL_MATCH: "Potential match",
@@ -207,6 +208,72 @@ function EvidencePanel({ patientId, onClose }: { patientId: string; onClose: () 
   );
 }
 
+function CopilotCard({ contextPatientId }: { contextPatientId?: string }) {
+  const queryClient = useQueryClient();
+  const [query, setQuery] = useState("");
+  const [response, setResponse] = useState<CopilotResponse | null>(null);
+  const ask = useMutation({
+    mutationFn: (value: string) => api.copilot(value, contextPatientId),
+    onSuccess: setResponse,
+  });
+  const confirm = useMutation({
+    mutationFn: (proposalId: string) => api.confirmCopilot(proposalId, "Coordinator confirmed the ATLAS proposal."),
+    onSuccess: async () => {
+      setResponse((current) => current ? { ...current, proposal: null, answer: `${current.answer}\n\nAction approved and written to the governed worklist.` } : current);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+        queryClient.invalidateQueries({ queryKey: ["audit-events"] }),
+      ]);
+    },
+  });
+  const examples = ["Why is P004 in manual review?", "Which candidates need evidence?", "Compare site workload"];
+
+  function submit(event: FormEvent) {
+    event.preventDefault();
+    const value = query.trim();
+    if (value) ask.mutate(value);
+  }
+
+  return (
+    <Card className="overflow-hidden border-[#c7dce4]">
+      <div className="bg-[#10233b] p-5 text-white">
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#70d0c6]"><MessageSquareText className="size-4" /> ATLAS copilot</div>
+        <h3 className="protocol-title mt-2 text-2xl">Ask the evidence desk.</h3>
+        <p className="mt-2 text-xs leading-5 text-slate-300">Answers stay inside the trial context, show their sources, and never turn into an autonomous clinical decision.</p>
+      </div>
+      <form onSubmit={submit} className="p-5">
+        <textarea
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Ask about a candidate, evidence, site, recruitment, or compliance…"
+          rows={3}
+          className="w-full resize-none rounded-lg border border-slate-200 bg-[#fbfcfd] p-3 text-xs leading-5 outline-none transition focus:border-[#23877e] focus:ring-2 focus:ring-[#70d0c6]/30"
+          aria-label="Ask ATLAS copilot"
+        />
+        <div className="mt-3 flex flex-wrap gap-2">
+          {examples.map((example) => <button key={example} type="button" onClick={() => setQuery(example)} className="rounded-full border border-slate-200 px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-[#70d0c6] hover:text-[#1d5a85]">{example}</button>)}
+        </div>
+        <Button type="submit" className="mt-4 w-full" disabled={!query.trim() || ask.isPending}>
+          {ask.isPending ? <LoaderCircle className="size-4 animate-spin" /> : <Sparkles className="size-4" />} {ask.isPending ? "Reviewing evidence" : "Ask ATLAS"}
+        </Button>
+        {ask.error && <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 p-3 text-xs text-rose-800">The assistant could not complete that request. Try a candidate ID such as P004.</div>}
+        {response && (
+          <div className="mt-5 border-t border-slate-100 pt-5">
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#1d5a85]">{response.state === "ANSWERED" ? "Grounded answer" : response.state === "REFUSED" ? "Safety boundary" : "Clarify the question"}</div>
+              <span className="font-mono text-[9px] text-slate-400">{response.model}</span>
+            </div>
+            <p className="mt-3 whitespace-pre-line text-sm leading-6 text-[#10233b]">{response.answer}</p>
+            {response.citations.length > 0 && <div className="mt-4 space-y-1.5 border-t border-slate-100 pt-3">{response.citations.slice(0, 4).map((citation) => <div key={`${citation.label}-${citation.source}`} className="flex gap-2 text-[10px] text-slate-500"><span className="font-semibold text-slate-700">{citation.label}</span><span className="font-mono">{citation.source}</span></div>)}</div>}
+            {response.proposal && <div className="mt-4 rounded-lg border border-[#9edbd2] bg-[#effaf8] p-3"><div className="text-xs font-bold text-[#17665e]">Proposed coordinator action</div><div className="mt-1 text-xs leading-5 text-[#275f5a]">{response.proposal.action_type.replaceAll("_", " ").toLowerCase()}. Confirming records a human-reviewed worklist transition.</div><Button type="button" size="sm" className="mt-3" onClick={() => confirm.mutate(response.proposal!.proposal_id)} disabled={confirm.isPending}>{confirm.isPending ? <LoaderCircle className="size-3 animate-spin" /> : <Check className="size-3" />} Confirm action</Button></div>}
+            {confirm.error && <div className="mt-3 text-xs text-rose-700">This proposal could not be applied. Refresh the worklist and try again.</div>}
+          </div>
+        )}
+      </form>
+    </Card>
+  );
+}
+
 export default function App() {
   const [location] = useLocation();
   const isScreening = location === "/screening";
@@ -335,6 +402,7 @@ export default function App() {
                 <div className="p-5 text-xs leading-5 text-slate-500">Every result was computed from reviewed criteria and synthetic evidence. Unknowns fail closed; no confidence score becomes eligibility.</div>
                 <a href={protocol.source_url} target="_blank" rel="noreferrer" className="flex items-center border-t border-slate-100 px-5 py-3 text-xs font-semibold text-[#1d5a85] hover:bg-slate-50">View public protocol <ArrowUpRight className="ml-auto size-4" /></a>
               </Card>
+              <CopilotCard />
             </div>
           </section>
         </div>

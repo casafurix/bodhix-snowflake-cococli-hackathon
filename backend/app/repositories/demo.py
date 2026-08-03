@@ -177,6 +177,8 @@ class DemoRepository:
         self.run_id = ""
         self.computed_at = datetime.now(UTC)
         self.results: dict[str, ScreeningResult] = {}
+        self._task_states: dict[str, str] = {}
+        self._audit: list[dict] = []
         self.run_screening()
 
     def run_screening(self) -> str:
@@ -274,6 +276,7 @@ class DemoRepository:
                     {
                         **asdict(task),
                         "source_status": result.status,
+                        "status": self._task_states.get(task.task_key, task.status),
                         "updated_at": task.created_at,
                     }
                 )
@@ -323,7 +326,41 @@ class DemoRepository:
         }
 
     def audit_events(self) -> list[dict]:
-        return []
+        return list(reversed(self._audit))
+
+    def apply_task_decision(
+        self,
+        task_key: str,
+        decision: str,
+        actor: str,
+        reason: str,
+        edited_action: str | None,
+        request_id: str,
+    ) -> dict:
+        task = next((item for item in self.tasks() if item["task_key"] == task_key), None)
+        if task is None:
+            raise ValueError("Synthetic coordinator task was not found")
+        next_status = {
+            "APPROVE": "APPROVED",
+            "EDIT": "OPEN",
+            "REJECT": "REJECTED",
+            "DISMISS": "DISMISSED",
+        }[decision]
+        self._task_states[task_key] = next_status
+        event = {
+            "event_id": f"DEMO-{uuid4().hex[:10].upper()}",
+            "event_type": "COPILOT_TASK_DECISION" if request_id.startswith("copilot-") else "TASK_DECISION",
+            "actor": actor,
+            "entity_type": "COORDINATOR_TASK",
+            "entity_id": task_key,
+            "prior_state": {"status": task["status"]},
+            "new_state": {"status": next_status, "action_type": edited_action or task["action_type"]},
+            "reason": reason,
+            "source_run_id": self.run_id,
+            "occurred_at": datetime.now(UTC),
+        }
+        self._audit.append(event)
+        return {"task_key": task_key, "status": next_status, "decision": decision}
 
     def operations(self) -> dict:
         rows = self.dashboard()["patients"]

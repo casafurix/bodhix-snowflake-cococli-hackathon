@@ -54,3 +54,14 @@ def test_edit_decision_requires_an_edited_action():
         json={"decision": "EDIT", "actor": "tester", "reason": "verified evidence"},
     )
     assert response.status_code == 422
+
+
+def test_copilot_routes_answers_and_unsafe_requests():
+    answered = client.post("/api/copilot/query", json={"query": "Why is P004 in manual review?"})
+    refused = client.post("/api/copilot/query", json={"query": "Enroll P001 automatically"})
+
+    assert answered.status_code == 200
+    assert answered.json()["state"] == "ANSWERED"
+    assert answered.json()["proposal"]["proposal_id"]
+    assert refused.status_code == 200
+    assert refused.json()["state"] == "REFUSED"
