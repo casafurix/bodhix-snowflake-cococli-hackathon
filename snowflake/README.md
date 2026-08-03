@@ -1,6 +1,6 @@
 # Snowflake setup
 
-This directory is the reproducible Snowflake setup for TrialOps Evidence Desk.
+This directory is the reproducible Snowflake setup for ATLAS — Advanced Trial Lifecycle & Analytics System.
 It does not contain account credentials. Local authentication stays in the
 user-level Snowflake CLI connection named `hackathon`.
 

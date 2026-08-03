@@ -1,11 +1,11 @@
--- TrialOps Evidence Desk: shared Snowflake foundation
+-- ATLAS — Advanced Trial Lifecycle & Analytics System: shared Snowflake foundation
 -- Run with: snow sql -c hackathon -f snowflake/migrations/001_foundation.sql
 
 USE ROLE ACCOUNTADMIN;
 
 -- 1. Shared least-privilege role and role hierarchy.
 CREATE ROLE IF NOT EXISTS CTOPS_TEAM_ROLE
-  COMMENT = 'Shared development role for the TrialOps PS-04 hackathon project';
+  COMMENT = 'Shared development role for the ATLAS PS-04 hackathon project';
 
 GRANT ROLE CTOPS_TEAM_ROLE TO ROLE SYSADMIN;
 GRANT ROLE CTOPS_TEAM_ROLE TO USER AGNIBHA;
@@ -22,7 +22,7 @@ CREATE WAREHOUSE IF NOT EXISTS CTOPS_WH
   MIN_CLUSTER_COUNT = 1
   MAX_CLUSTER_COUNT = 1
   SCALING_POLICY = 'STANDARD'
-  COMMENT = 'Extra-small auto-suspending compute for TrialOps development';
+  COMMENT = 'Extra-small auto-suspending compute for ATLAS development';
 
 CREATE RESOURCE MONITOR IF NOT EXISTS CTOPS_WH_MONITOR
   WITH CREDIT_QUOTA = 25
@@ -39,7 +39,7 @@ GRANT USAGE ON WAREHOUSE CTOPS_WH TO ROLE CTOPS_TEAM_ROLE;
 -- 3. One governed database, separated by data lifecycle and responsibility.
 CREATE DATABASE IF NOT EXISTS CTOPS_HACKATHON
   DATA_RETENTION_TIME_IN_DAYS = 1
-  COMMENT = 'Governed Snowflake data plane for TrialOps Evidence Desk';
+  COMMENT = 'Governed Snowflake data plane for ATLAS — Advanced Trial Lifecycle & Analytics System';
 
 CREATE SCHEMA IF NOT EXISTS CTOPS_HACKATHON.RAW
   COMMENT = 'Immutable source protocol, clause, note, lab, and synthetic patient inputs';

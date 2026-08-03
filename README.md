@@ -7,7 +7,7 @@ Team workspace for the **Snowflake CoCo (Cortex Code) CLI Hackathon 2026**.
 - [Strategy](docs/STRATEGY.md) — event metadata, CoCo CLI primer, winning strategy, real-world pain research, and the 9-day plan.
 - [Clinical Trial Architecture](docs/Clinical_Trial_Operations_Intelligence_Platform_Architecture.md) — the selected domain architecture.
 - [Final Build Plan](docs/FINAL_BUILD_PLAN.md) — the authoritative product, data, CoCo, architecture, deployment, and five-day delivery contract.
-- [Product and Operator Guide](docs/TRIALOPS_EVIDENCE_DESK_GUIDE.md) — plain-language explanation of the current build, frontend walkthrough, deployment operation, and honest demo boundaries.
+- [ATLAS Product and Operator Guide](docs/ATLAS_PLATFORM_GUIDE.md) — plain-language explanation of the current build, frontend walkthrough, deployment operation, and honest demo boundaries.
 - [CoCo Runbook](docs/coco-runbook.md) — reproducible CLI, skills, and demo workflow.
 
 ## Status
@@ -15,7 +15,7 @@ Selected track: **PS-04 — Domain-Specific AI Copilot**.
 
 The deployed golden path is a clinical-trial coordinator copilot that extracts cited protocol criteria, pre-screens a synthetic patient cohort, creates safe coordinator tasks, and records human-reviewed actions in an audit trail. Project-specific CoCo skills live under `.cortex/skills/`.
 
-**Live Snowflake deployment:** [TrialOps Evidence Desk](https://iaxsmo-pmwcgsc-yq79089.snowflakecomputing.app/)
+**Live Snowflake deployment:** [ATLAS Trial Intelligence](https://iaxsmo-pmwcgsc-yq79089.snowflakecomputing.app/)
 
 Snowflake sign-in is required. Use a team user with `CTOPS_TEAM_ROLE`; a suspended
 service resumes on first access and may take a short time to become ready.

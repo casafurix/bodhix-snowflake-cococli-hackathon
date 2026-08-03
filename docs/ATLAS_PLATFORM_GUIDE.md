@@ -1,15 +1,19 @@
-# TrialOps Evidence Desk — Product Explanation and Operator Guide
+# ATLAS — Product Explanation and Operator Guide
 
-- **Product:** TrialOps Evidence Desk
+- **Product:** ATLAS (Advanced Trial Lifecycle & Analytics System)
 - **Team:** BodhiX
 - **Hackathon track:** PS-04 — Domain-Specific AI Copilot
 - **Guide scope:** The application deployed as of 2 August 2026
 
 ## 1. The product in one sentence
 
-TrialOps Evidence Desk helps a clinical-trial coordinator compare public trial
+ATLAS helps a clinical-trial coordinator compare public trial
 eligibility rules with candidate evidence, identify the next safe review step,
 and preserve the reason and source for every result.
+
+The deployed Snowflake objects still use the original `TRIALOPS_*` names because
+those are live infrastructure identifiers. They are implementation names, not
+the product brand; the user-facing platform is ATLAS.
 
 It is pre-screening decision support. It does not diagnose, recommend treatment,
 confirm final eligibility, enroll a participant, order a test, contact a patient,
@@ -19,11 +23,11 @@ or replace clinical judgment.
 
 **BodhiX is the team name.** It is not the product name.
 
-The product name displayed in the application is **TrialOps Evidence Desk**. The
-short label **TrialOps** appears in the navigation. In submission material, use
+The product name displayed in the application is **ATLAS**. The
+team name is **BodhiX**. In submission material, use
 wording such as:
 
-> Team BodhiX built TrialOps Evidence Desk for the Snowflake CoCo CLI Hackathon.
+> Team BodhiX built ATLAS for the Snowflake CoCo CLI Hackathon.
 
 Do not refer to the platform itself as BodhiX.
 
@@ -39,7 +43,7 @@ conflicting information, and document what happened. The work is repetitive,
 but it is also sensitive: ambiguous medical language should not be converted
 into an automatic decision.
 
-TrialOps Evidence Desk performs a controlled first pass:
+ATLAS performs a controlled first pass:
 
 1. Keep the original public criterion beside its structured interpretation.
 2. Evaluate only criteria that have been marked reviewed and machine-evaluable.
@@ -500,7 +504,7 @@ Open <http://127.0.0.1:5173>. The local API documentation is available at
 The suspended service is starting. Wait approximately one minute and refresh.
 Use the status command above if it does not become ready.
 
-### The page says the evidence desk is offline
+### The page says ATLAS is offline
 
 The frontend could not obtain `/api/dashboard`. For local development, confirm
 FastAPI is running on port 8000. For production, check the service status and
@@ -551,7 +555,7 @@ future integrations or architecture targets.
 
 ## 16. Short explanation for a first-time viewer
 
-> TrialOps Evidence Desk is a clinical-trial coordinator workspace built by Team
+> ATLAS is a clinical-trial coordinator workspace built by Team
 > BodhiX. It takes real public trial eligibility wording and compares the reviewed
 > rules with fictional candidate records. It shows possible matches, clear
 > pre-screen exclusions, missing information, and contradictions. Every result

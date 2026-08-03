@@ -3,9 +3,9 @@ requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "trial-ops-copilot"
+name = "atlas-trial-operations-copilot"
 version = "0.1.0"
-description = "Snowflake-native clinical trial operations copilot"
+description = "Snowflake-native ATLAS clinical trial operations copilot"
 requires-python = ">=3.11"
 dependencies = [
   "pandas>=2.2,<3",

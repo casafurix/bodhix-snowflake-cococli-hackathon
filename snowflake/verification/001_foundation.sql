@@ -1,4 +1,4 @@
--- Read-only verification for the TrialOps Snowflake foundation.
+-- Read-only verification for the ATLAS Snowflake foundation.
 
 USE ROLE ACCOUNTADMIN;
 

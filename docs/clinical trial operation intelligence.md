@@ -1,4 +1,4 @@
-# Clinical Trial Operations Intelligence Platform
+# ATLAS — Advanced Trial Lifecycle & Analytics System
 
 > An AI-powered, Snowflake-native platform that automates clinical trial patient recruitment — turning a 200-page protocol and hundreds of patient charts into a ranked, explainable, citation-backed shortlist overnight.
 
@@ -52,7 +52,7 @@ Sources: [WithPower — enrollment statistics](https://www.withpower.com/guides/
 
 ## 2. The Solution
 
-An AI-powered **Clinical Trial Operations Intelligence Platform** that automates the operational side of clinical trials:
+An AI-powered **ATLAS clinical-trial operations platform** that automates the operational side of clinical trials:
 
 - **Analyzes the trial protocol** → extracts eligibility criteria, required tests, visit schedules, timelines, safety requirements.
 - **Analyzes patient data** → structured (demographics, diagnoses, medications, labs) + unstructured (physician notes, pathology/radiology reports, discharge summaries).

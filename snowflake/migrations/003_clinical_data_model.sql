@@ -1,4 +1,4 @@
--- TrialOps Evidence Desk: governed protocol, evidence, and screening model.
+-- ATLAS — Advanced Trial Lifecycle & Analytics System: governed protocol, evidence, and screening model.
 
 USE ROLE CTOPS_TEAM_ROLE;
 USE WAREHOUSE CTOPS_WH;

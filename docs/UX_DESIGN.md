@@ -2,7 +2,7 @@
 
 ## Subject and job
 
-The product is **TrialOps Evidence Desk**, used by clinical-trial coordinators to resolve the next evidence-backed operational decision. The primary screen's single job is to turn a pre-screening result into a safe, human-reviewed action.
+The product is **ATLAS (Advanced Trial Lifecycle & Analytics System)**, used by clinical-trial coordinators to resolve the next evidence-backed operational decision. The primary screen's single job is to turn a pre-screening result into a safe, human-reviewed action.
 
 ## Visual system
 
