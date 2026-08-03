@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import json
 from atexit import register
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -11,7 +12,6 @@ from pathlib import Path
 from threading import RLock
 from typing import Any
 from uuid import uuid4
-import json
 
 import snowflake.connector
 from snowflake.connector import DictCursor, SnowflakeConnection
