@@ -12,8 +12,8 @@ from dataclasses import dataclass
 from threading import Lock
 from uuid import uuid4
 
-
 SUPPORTED_INTENTS = {
+    "COORDINATOR_SUMMARY",
     "PATIENT_EXPLANATION",
     "MISSING_INFORMATION",
     "SHORTLIST",
@@ -45,6 +45,8 @@ def _classify(query: str, patient_id: str | None) -> tuple[str, str]:
     text = query.casefold()
     if any(word in text for word in ("enroll", "diagnose", "treat", "prescribe", "order a test", "medical advice")):
         return "UNSAFE", "ATLAS cannot provide treatment advice, confirm enrollment, or order clinical tests."
+    if any(word in text for word in ("daily brief", "daily summary", "weekly summary", "coordinator summary", "briefing")):
+        return "COORDINATOR_SUMMARY", "coordinator briefing"
     if any(word in text for word in ("what should i do", "why is", "explain", "why did", "evidence")) and patient_id:
         return "PATIENT_EXPLANATION", "patient explanation"
     if any(word in text for word in ("missing", "blocked", "need evidence", "incomplete")):
@@ -88,7 +90,15 @@ def confirm_proposal(proposal_id: str) -> dict[str, str] | None:
         return _PROPOSALS.pop(proposal_id, None)
 
 
-def _cortex_answer(repository, question: str, draft: str, citations: list[dict[str, str]]) -> tuple[str, str]:
+def _cortex_answer(
+    repository,
+    question: str,
+    draft: str,
+    citations: list[dict[str, str]],
+    *,
+    protocol_id: str | None = None,
+    patient_id: str | None = None,
+) -> tuple[str, str, list[dict]]:
     """Ask Snowflake Cortex to polish a grounded draft when available.
 
     The deterministic draft is the fallback for local fixtures and for accounts
@@ -97,12 +107,105 @@ def _cortex_answer(repository, question: str, draft: str, citations: list[dict[s
     """
     explain = getattr(repository, "cortex_explain", None)
     if explain is None:
-        return draft, "governed-screening-context"
-    generated = explain(question, draft, citations)
-    return generated or draft, "claude-sonnet-4-6" if generated else "governed-screening-context"
+        return draft, "governed-screening-context", []
+    generated = explain(
+        question,
+        draft,
+        citations,
+        protocol_id=protocol_id,
+        patient_id=patient_id,
+    )
+    if isinstance(generated, dict):
+        answer = generated.get("answer") or draft
+        evidence = generated.get("retrieved_evidence") or []
+        return answer, "claude-sonnet-4-6" if generated.get("answer") else "governed-screening-context", evidence
+    return generated or draft, "claude-sonnet-4-6" if generated else "governed-screening-context", []
 
 
-def answer_query(repository, query: str, context_patient_id: str | None = None) -> dict:
+def _finish_response(
+    repository,
+    response: dict,
+    *,
+    request_id: str,
+    patient_id: str | None,
+    dashboard: dict | None = None,
+) -> dict:
+    """Attach an auditable run ID and persist when the governed adapter supports it."""
+    response["copilot_run_id"] = f"COPILOT-{uuid4().hex[:12].upper()}"
+    response["run_record_status"] = "LOCAL_ONLY"
+    response["agent_trace"] = _agent_trace(response, dashboard)
+    record = getattr(repository, "record_copilot_run", None)
+    if record is None:
+        return response
+    persisted = record(
+        agent_run_id=response["copilot_run_id"],
+        request_id=request_id,
+        protocol_id=dashboard["protocol"]["protocol_id"] if dashboard else None,
+        patient_id=patient_id,
+        source_run_id=dashboard["run"]["run_id"] if dashboard else None,
+        response=response,
+    )
+    response["run_record_status"] = "PERSISTED" if persisted else "PERSISTENCE_UNAVAILABLE"
+    return response
+
+
+def _agent_trace(response: dict, dashboard: dict | None) -> list[dict[str, str]]:
+    """Expose the governed decision path without treating it as hidden model logic."""
+    has_governed_run = dashboard is not None
+    has_retrieval = bool(response.get("retrieved_evidence"))
+    cortex_used = str(response.get("model", "")).startswith("claude-")
+    proposal = response.get("proposal")
+    return [
+        {
+            "step": "01",
+            "agent": "Protocol Intelligence",
+            "status": "COMPLETED" if has_governed_run else "NOT_REQUIRED",
+            "detail": "Used reviewed public protocol criteria and source citations."
+            if has_governed_run
+            else "No governed run was needed for this safety or clarification response.",
+        },
+        {
+            "step": "02",
+            "agent": "Patient Screening",
+            "status": "COMPLETED" if has_governed_run else "NOT_REQUIRED",
+            "detail": "Read the latest deterministic Snowflake screening run; the LLM cannot alter its result."
+            if has_governed_run
+            else "No patient screening result was read.",
+        },
+        {
+            "step": "03",
+            "agent": "Evidence Retrieval",
+            "status": "COMPLETED" if has_retrieval else "FALLBACK",
+            "detail": "Cortex Search retrieved protocol/evidence excerpts for this answer."
+            if has_retrieval
+            else "No live Cortex Search context was available; only governed API context was used.",
+        },
+        {
+            "step": "04",
+            "agent": "Coordinator Copilot",
+            "status": "COMPLETED" if cortex_used else "FALLBACK",
+            "detail": "Snowflake Cortex generated a bounded explanation from the supplied evidence."
+            if cortex_used
+            else "Used a deterministic, cited response because a live Cortex model was not available.",
+        },
+        {
+            "step": "05",
+            "agent": "Human Approval Gate",
+            "status": "AWAITING_APPROVAL" if proposal else "NO_MUTATION",
+            "detail": "A coordinator must explicitly confirm the proposed action before the worklist changes."
+            if proposal
+            else "This request did not propose a state-changing action.",
+        },
+    ]
+
+
+def answer_query(
+    repository,
+    query: str,
+    context_patient_id: str | None = None,
+    request_id: str | None = None,
+) -> dict:
+    request_id = request_id or f"copilot-query-{uuid4()}"
     patient_id = _patient_id(query, context_patient_id)
     intent, intent_label = _classify(query, patient_id)
     base = {
@@ -112,18 +215,56 @@ def answer_query(repository, query: str, context_patient_id: str | None = None) 
         "grounded": False,
         "model": "deterministic-router",
         "citations": [],
+        "retrieved_evidence": [],
         "proposal": None,
     }
     if intent == "UNSAFE":
-        return {**base, "state": "REFUSED", "answer": intent_label}
+        return _finish_response(repository, {**base, "state": "REFUSED", "answer": intent_label}, request_id=request_id, patient_id=patient_id)
     if intent == "CLARIFY":
-        return {**base, "state": "CLARIFICATION", "answer": intent_label}
+        return _finish_response(repository, {**base, "state": "CLARIFICATION", "answer": intent_label}, request_id=request_id, patient_id=patient_id)
 
     dashboard = repository.dashboard()
+    if intent == "COORDINATOR_SUMMARY":
+        counts = dashboard["run"]["counts"]
+        operations = repository.operations()
+        busiest = max(
+            operations["sites"],
+            key=lambda site: site["missing_information_count"] + site["manual_review_count"],
+            default=None,
+        )
+        answer = (
+            f"Coordinator briefing for {dashboard['protocol']['protocol_id']}: "
+            f"{counts['POTENTIAL_MATCH']} potential match(es), "
+            f"{counts['MISSING_INFORMATION']} case(s) missing evidence, and "
+            f"{counts['MANUAL_REVIEW']} case(s) requiring manual review. "
+        )
+        if busiest:
+            answer += (
+                f"Prioritize {busiest['site_id']}, which has the highest evidence-review load. "
+            )
+        answer += "This is a workload briefing, not an enrollment forecast or clinical decision."
+        citations = [
+            _citation(dashboard["run"]["run_id"], "Screening run"),
+            _citation(operations["run_id"], "Operations rollup"),
+        ]
+        answer, model, retrieved_evidence = _cortex_answer(
+            repository,
+            query,
+            answer,
+            citations,
+            protocol_id=dashboard["protocol"]["protocol_id"],
+        )
+        return _finish_response(
+            repository,
+            {**base, "state": "ANSWERED", "answer": answer, "grounded": True, "model": model, "citations": citations, "retrieved_evidence": retrieved_evidence},
+            request_id=request_id,
+            patient_id=patient_id,
+            dashboard=dashboard,
+        )
     if intent == "PATIENT_EXPLANATION":
         detail = repository.patient_detail(patient_id) if patient_id else None
         if detail is None:
-            return {**base, "state": "CLARIFICATION", "answer": "I could not find that synthetic candidate. Use a candidate ID such as P004."}
+            return _finish_response(repository, {**base, "state": "CLARIFICATION", "answer": "I could not find that synthetic candidate. Use a candidate ID such as P004."}, request_id=request_id, patient_id=patient_id, dashboard=dashboard)
         unresolved = [
             item for item in detail["criteria"]
             if item["status"] in {"UNKNOWN", "CONTRADICTORY"}
@@ -136,43 +277,59 @@ def answer_query(repository, query: str, context_patient_id: str | None = None) 
             answer += "The coordinator should verify: " + ", ".join(item["criterion_id"] for item in unresolved) + "."
         else:
             answer += "All reviewed machine-evaluable criteria have a recorded result; this remains pre-screening support, not enrollment confirmation."
+        # Put the unresolved rule first. A fixed first-three slice can cite
+        # unrelated clauses when the decisive criterion appears later.
+        focused_criteria = unresolved or detail["criteria"]
         citations = [
             _citation(item["protocol_citation"], "Protocol clause")
-            for item in detail["criteria"][:3]
+            for item in focused_criteria[:3]
         ]
         citations.extend(
             _citation(item["patient_citation"], "Patient evidence")
-            for item in detail["criteria"][:3]
+            for item in focused_criteria[:3]
             if item["patient_citation"]
         )
         proposal = None
         task = next((item for item in repository.tasks() if item["patient_id"] == patient_id), None)
         if task and detail["status"] in {"MISSING_INFORMATION", "MANUAL_REVIEW", "POTENTIAL_MATCH"}:
             proposal = _proposal(task, f"Coordinator review for {patient_id}: {answer}")
-        answer, model = _cortex_answer(repository, query, answer, citations)
-        response = {**base, "state": "ANSWERED", "answer": answer, "citations": citations, "proposal": proposal.__dict__ if proposal else None, "grounded": True, "model": model}
-        return response
+        answer, model, retrieved_evidence = _cortex_answer(
+            repository,
+            query,
+            answer,
+            citations,
+            protocol_id=dashboard["protocol"]["protocol_id"],
+            patient_id=patient_id,
+        )
+        response = {**base, "state": "ANSWERED", "answer": answer, "citations": citations, "retrieved_evidence": retrieved_evidence, "proposal": proposal.__dict__ if proposal else None, "grounded": True, "model": model}
+        return _finish_response(repository, response, request_id=request_id, patient_id=patient_id, dashboard=dashboard)
 
     patients = dashboard["patients"]
     if intent == "SHORTLIST":
         matches = [item for item in patients if item["status"] == "POTENTIAL_MATCH"]
         answer = f"There are {len(matches)} potential match(es) in the latest governed run: " + ", ".join(item["patient_id"] for item in matches) + ". Each still requires coordinator verification against the remaining protocol clauses."
         citations = [_citation(dashboard["run"]["run_id"], "Screening run")]
-        answer, model = _cortex_answer(repository, query, answer, citations)
-        return {**base, "state": "ANSWERED", "answer": answer, "grounded": True, "model": model, "citations": citations}
+        answer, model, retrieved_evidence = _cortex_answer(
+            repository,
+            query,
+            answer,
+            citations,
+            protocol_id=dashboard["protocol"]["protocol_id"],
+        )
+        return _finish_response(repository, {**base, "state": "ANSWERED", "answer": answer, "grounded": True, "model": model, "citations": citations, "retrieved_evidence": retrieved_evidence}, request_id=request_id, patient_id=patient_id, dashboard=dashboard)
     if intent == "MISSING_INFORMATION":
         missing = [item for item in patients if item["status"] == "MISSING_INFORMATION"]
         answer = f"{len(missing)} candidate(s) need evidence work: " + ", ".join(item["patient_id"] for item in missing) + ". ATLAS recommends locating existing records; it does not order tests or infer missing values."
-        return {**base, "state": "ANSWERED", "answer": answer, "grounded": True, "model": "governed-screening-context", "citations": [_citation(dashboard["run"]["run_id"], "Screening run")]}
+        return _finish_response(repository, {**base, "state": "ANSWERED", "answer": answer, "grounded": True, "model": "governed-screening-context", "citations": [_citation(dashboard["run"]["run_id"], "Screening run")]}, request_id=request_id, patient_id=patient_id, dashboard=dashboard)
     if intent == "SITE_COMPARISON":
         operations = repository.operations()
         busiest = max(operations["sites"], key=lambda site: site["missing_information_count"] + site["manual_review_count"], default=None)
         if busiest is None:
-            return {**base, "state": "ANSWERED", "answer": "No site workload is available in the current governed run.", "grounded": True}
+            return _finish_response(repository, {**base, "state": "ANSWERED", "answer": "No site workload is available in the current governed run.", "grounded": True}, request_id=request_id, patient_id=patient_id, dashboard=dashboard)
         answer = f"{busiest['site_id']} has the highest evidence-review load in the current run, with {busiest['missing_information_count']} missing-information case(s) and {busiest['manual_review_count']} manual-review case(s)."
-        return {**base, "state": "ANSWERED", "answer": answer, "grounded": True, "model": "governed-site-rollup", "citations": [_citation(operations["run_id"], "Operations rollup")]}
+        return _finish_response(repository, {**base, "state": "ANSWERED", "answer": answer, "grounded": True, "model": "governed-site-rollup", "citations": [_citation(operations["run_id"], "Operations rollup")]}, request_id=request_id, patient_id=patient_id, dashboard=dashboard)
     if intent == "RECRUITMENT_SLOWDOWN":
-        return {**base, "state": "ANSWERED", "answer": "The current ATLAS demo has candidate workload by site, but it does not yet contain historical enrollment velocity. I cannot produce a defensible recruitment forecast from this dataset. The next governed input would be historical screening, enrollment, dropout, and capacity observations.", "grounded": True, "model": "scope-guardrail", "citations": [_citation(dashboard["run"]["run_id"], "Current run scope")]}
+        return _finish_response(repository, {**base, "state": "ANSWERED", "answer": "The current ATLAS demo has candidate workload by site, but it does not yet contain historical enrollment velocity. I cannot produce a defensible recruitment forecast from this dataset. The next governed input would be historical screening, enrollment, dropout, and capacity observations.", "grounded": True, "model": "scope-guardrail", "citations": [_citation(dashboard["run"]["run_id"], "Current run scope")]}, request_id=request_id, patient_id=patient_id, dashboard=dashboard)
     if intent == "COMPLIANCE_SUMMARY":
-        return {**base, "state": "ANSWERED", "answer": "The current cohort contains screening evidence and coordinator tasks, but no visit/consent/report records are loaded into the deployed demo. ATLAS therefore cannot claim a compliance alert from this run.", "grounded": True, "model": "scope-guardrail", "citations": [_citation(dashboard["run"]["run_id"], "Current run scope")]}
-    return {**base, "state": "CLARIFICATION", "answer": "Please rephrase that as a TrialOps question about a candidate, evidence, sites, recruitment, or compliance."}
+        return _finish_response(repository, {**base, "state": "ANSWERED", "answer": "The current cohort contains screening evidence and coordinator tasks, but no visit/consent/report records are loaded into the deployed demo. ATLAS therefore cannot claim a compliance alert from this run.", "grounded": True, "model": "scope-guardrail", "citations": [_citation(dashboard["run"]["run_id"], "Current run scope")]}, request_id=request_id, patient_id=patient_id, dashboard=dashboard)
+    return _finish_response(repository, {**base, "state": "CLARIFICATION", "answer": "Please rephrase that as an ATLAS question about a candidate, evidence, sites, recruitment, or compliance."}, request_id=request_id, patient_id=patient_id, dashboard=dashboard)

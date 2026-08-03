@@ -124,12 +124,12 @@ def _patient(
     patient_id: str,
     site_id: str,
     *,
-    age: int = 54,
-    diagnosis: str = "Type 2 diabetes mellitus",
-    metformin: int = 1800,
+    age: int | None = 54,
+    diagnosis: str | None = "Type 2 diabetes mellitus",
+    metformin: float | None = 1800,
     hba1c: float | None = 8.2,
-    bmi: float = 31.4,
-    recent_cv_event: bool = False,
+    bmi: float | None = 31.4,
+    recent_cv_event: bool | None = False,
     renal_impairment: bool | None = False,
     contradictory_key: str | None = None,
 ) -> PatientSnapshot:
@@ -179,6 +179,7 @@ class DemoRepository:
         self.results: dict[str, ScreeningResult] = {}
         self._task_states: dict[str, str] = {}
         self._audit: list[dict] = []
+        self._synced_protocols: dict[str, dict] = {}
         self.run_screening()
 
     def run_screening(self) -> str:
@@ -323,6 +324,103 @@ class DemoRepository:
                 "processor": "deterministic offline fixture",
             },
             "criteria": criteria,
+        }
+
+    def list_trials(self) -> list[dict]:
+        current = self.dashboard()["protocol"]
+        items = [
+            {
+                "protocol_id": current["protocol_id"],
+                "title": current["title"],
+                "overall_status": "COMPLETED",
+                "phase": "PHASE2",
+                "conditions": ["Type 2 Diabetes Mellitus"],
+                "site_count": 3,
+                "enrollment": 12,
+                "criteria_count": len(self.criteria),
+                "reviewed_count": len(self.criteria),
+                "processing_state": "READY_FOR_SCREENING",
+                "updated_at": self.computed_at,
+                "source_url": current["source_url"],
+                "is_demo": True,
+            }
+        ]
+        items.extend(self._synced_protocols.values())
+        return items
+
+    def ingest_protocol(self, trial: dict) -> dict:
+        item = {
+            "protocol_id": trial["protocol_id"],
+            "title": trial["title"],
+            "overall_status": trial["overall_status"],
+            "phase": trial["phase"],
+            "conditions": trial["conditions"],
+            "site_count": trial["site_count"],
+            "enrollment": trial["enrollment"],
+            "criteria_count": 0,
+            "reviewed_count": 0,
+            "processing_state": "PENDING_EXTRACTION",
+            "updated_at": datetime.now(UTC),
+            "source_url": trial["source_url"],
+            "document_hash": trial["document_hash"],
+            "is_demo": False,
+        }
+        self._synced_protocols[trial["protocol_id"]] = item
+        item["eligibility_text"] = trial["eligibility_text"]
+        return {
+            **item,
+            "message": "Public record synced and versioned. Criterion extraction is the next governed step.",
+        }
+
+    def extract_protocol(self, protocol_id: str) -> dict:
+        trial = self._synced_protocols.get(protocol_id)
+        if trial is None:
+            raise ValueError("Sync the public study before extracting its criteria.")
+        text = str(trial.pop("eligibility_text", ""))
+        count = sum(
+            1
+            for line in text.splitlines()
+            if line.strip().lstrip("*- ").strip()
+            and "criteria" not in line.strip().casefold()
+        )
+        trial["criteria_count"] = max(count, 1)
+        trial["processing_state"] = "REVIEW_REQUIRED"
+        trial["updated_at"] = datetime.now(UTC)
+        return {
+            "protocol_id": protocol_id,
+            "processing_run_id": f"DEMO-EXTRACT-{uuid4().hex[:8].upper()}",
+            "model": "offline-source-parser",
+            "extracted_count": trial["criteria_count"],
+            "reviewed_count": 0,
+            "manual_review_count": trial["criteria_count"],
+            "rejected_count": 0,
+            "processing_state": "REVIEW_REQUIRED",
+        }
+
+    def import_synthetic_cohort(self, cohort_name: str, rows: list[dict]) -> dict:
+        patients = []
+        for row in rows:
+            patients.append(
+                _patient(
+                    row["patient_id"],
+                    row["site_id"],
+                    age=row.get("age"),
+                    diagnosis=row.get("diagnoses"),
+                    metformin=row.get("metformin_mg_day"),
+                    hba1c=row.get("hba1c"),
+                    bmi=row.get("bmi"),
+                    recent_cv_event=row.get("recent_cv_event"),
+                    renal_impairment=row.get("renal_impairment"),
+                    contradictory_key=row.get("contradictory_field"),
+                )
+            )
+        self.patients = tuple(patients)
+        run_id = self.run_screening()
+        return {
+            "cohort_version": f"DEMO-{cohort_name.upper().replace(' ', '-')}",
+            "patient_count": len(patients),
+            "run_id": run_id,
+            "status": "SCREENED",
         }
 
     def audit_events(self) -> list[dict]:

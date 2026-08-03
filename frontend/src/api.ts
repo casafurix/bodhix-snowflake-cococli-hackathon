@@ -7,6 +7,8 @@ import type {
   ProtocolData,
   TaskDecision,
   CopilotResponse,
+  TrialSummary,
+  SyntheticPatientInput,
 } from "@/types";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
@@ -27,6 +29,27 @@ export const api = {
   tasks: () => request<{ items: CoordinatorTask[] }>("/tasks"),
   auditEvents: () => request<{ items: AuditEvent[] }>("/audit-events"),
   operations: () => request<OperationsData>("/operations"),
+  trials: () => request<{ items: TrialSummary[] }>("/trials"),
+  syncTrial: (source: string) =>
+    request<TrialSummary>("/trials/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ source }),
+    }),
+  extractTrial: (protocolId: string) =>
+    request<{ protocol_id: string; extracted_count: number; processing_state: string; model: string }>(`/trials/${protocolId}/extract`, {
+      method: "POST",
+    }),
+  importCohort: (cohortName: string, patients: SyntheticPatientInput[]) =>
+    request<{ cohort_version: string; patient_count: number; run_id: string; status: string }>("/cohorts/import", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        cohort_name: cohortName,
+        synthetic_data_confirmed: true,
+        patients,
+      }),
+    }),
   decideTask: (
     taskKey: string,
     input: {

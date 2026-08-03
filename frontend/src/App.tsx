@@ -10,12 +10,17 @@ import {
   CircleAlert,
   ClipboardCheck,
   FileSearch,
-  FlaskConical,
-  History,
+  FileUp,
+  Download,
   LayoutDashboard,
   LoaderCircle,
   Menu,
   MessageSquareText,
+  Bell,
+  Bot,
+  Settings,
+  PanelLeftClose,
+  PanelLeftOpen,
   RefreshCw,
   Search,
   ShieldCheck,
@@ -28,7 +33,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { CopilotResponse, PatientSummary, ScreeningStatus } from "@/types";
+import type { CopilotResponse, PatientSummary, ScreeningStatus, SyntheticPatientInput } from "@/types";
 
 const statusLabel: Record<ScreeningStatus, string> = {
   POTENTIAL_MATCH: "Potential match",
@@ -45,60 +50,89 @@ const statusTone: Record<ScreeningStatus, string> = {
 };
 
 const nav = [
-  [LayoutDashboard, "Command center", "/"],
-  [BookOpenText, "Protocols", "/protocols"],
-  [Users, "Screening", "/screening"],
-  [ClipboardCheck, "Worklist", "/worklist"],
-  [Activity, "Operations", "/operations"],
-  [FlaskConical, "Scenario lab", "/scenarios"],
-  [History, "Audit history", "/audit"],
+  [LayoutDashboard, "Dashboard", "/"],
+  [BookOpenText, "Trials", "/trials"],
+  [Users, "Patients", "/patients"],
+  [ClipboardCheck, "Tasks", "/tasks"],
+  [Activity, "Analytics", "/analytics"],
+  [Bot, "AI Copilot", "/copilot"],
+  [Bell, "Notifications", "/notifications"],
+  [Settings, "Settings", "/settings"],
 ] as const;
 
-function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
+function Sidebar({ open, collapsed, onClose, onToggle }: { open: boolean; collapsed: boolean; onClose: () => void; onToggle: () => void }) {
   const [location] = useLocation();
   return (
     <aside
       className={cn(
-        "fixed inset-y-0 left-0 z-40 flex w-[264px] flex-col bg-[#10233b] text-white transition-transform lg:translate-x-0",
+        "fixed inset-y-0 left-0 z-40 flex flex-col bg-[#10233b] text-white transition-[transform,width] duration-200 lg:translate-x-0",
+        collapsed ? "w-[72px]" : "w-[264px]",
         open ? "translate-x-0" : "-translate-x-full",
       )}
     >
-      <div className="flex h-20 items-center border-b border-white/10 px-6">
+      <div className={cn("flex h-20 items-center border-b border-white/10", collapsed ? "justify-center px-3" : "px-6")}>
         <div className="grid size-10 place-items-center rounded-lg border border-white/15 bg-white/10">
           <FileSearch className="size-5 text-[#70d0c6]" />
         </div>
-        <div className="ml-3">
+        <div className={cn("ml-3", collapsed && "hidden")}>
           <div className="protocol-title text-[17px] font-semibold tracking-wide">ATLAS</div>
           <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Trial intelligence</div>
         </div>
-        <button className="ml-auto lg:hidden" onClick={onClose} aria-label="Close navigation">
-          <X className="size-5" />
-        </button>
+        <div className={cn("ml-auto flex items-center", collapsed && "absolute right-1 top-2") }>
+          <button className="hidden rounded-md p-2 text-slate-300 hover:bg-white/10 lg:block" onClick={onToggle} aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"} title={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
+            {collapsed ? <PanelLeftOpen className="size-4" /> : <PanelLeftClose className="size-4" />}
+          </button>
+          <button className="ml-1 lg:hidden" onClick={onClose} aria-label="Close navigation"><X className="size-5" /></button>
+        </div>
       </div>
       <nav className="flex-1 space-y-1 px-3 py-6">
-        <div className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Workspace</div>
+        <div className={cn("mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500", collapsed && "sr-only")}>Workspace</div>
         {nav.map(([Icon, label, path]) => (
           <Link
             key={label}
             href={path}
             className={cn(
-                "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
+                "flex w-full items-center rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
+                collapsed ? "justify-center" : "gap-3",
                 location === path ? "bg-white/10 font-semibold text-white" : "text-slate-400 hover:bg-white/5 hover:text-white",
               )}
             onClick={onClose}
+            title={collapsed ? label : undefined}
           >
             <Icon className="size-[18px]" />
-            {label}
+            <span className={cn(collapsed && "sr-only")}>{label}</span>
           </Link>
         ))}
       </nav>
-      <div className="m-3 rounded-xl border border-white/10 bg-white/[0.04] p-4">
+      <div className={cn("m-3 rounded-xl border border-white/10 bg-white/[0.04] p-4", collapsed && "grid place-items-center p-3")}>
         <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-slate-200">
-          <ShieldCheck className="size-4 text-[#70d0c6]" /> Synthetic data
+          <ShieldCheck className="size-4 shrink-0 text-[#70d0c6]" /> <span className={cn(collapsed && "sr-only")}>Synthetic data</span>
         </div>
-        <p className="m-0 text-[11px] leading-5 text-slate-400">Decision support only. No PHI or automated enrollment.</p>
+        <p className={cn("m-0 text-[11px] leading-5 text-slate-400", collapsed && "hidden")}>Decision support only. No PHI or automated enrollment.</p>
       </div>
     </aside>
+  );
+}
+
+function DecisionTrace({ response }: { response: CopilotResponse }) {
+  const [expanded, setExpanded] = useState(true);
+  const tone = (status: string) => status === "COMPLETED" ? "border-teal-200 bg-teal-50 text-teal-800" : status === "AWAITING_APPROVAL" ? "border-amber-200 bg-amber-50 text-amber-800" : status === "FALLBACK" ? "border-slate-200 bg-slate-50 text-slate-600" : "border-slate-200 bg-white text-slate-500";
+  return (
+    <section className="mt-4 overflow-hidden rounded-lg border border-slate-200 bg-[#fbfcfd]">
+      <button type="button" onClick={() => setExpanded((value) => !value)} className="flex w-full items-center gap-2 px-3 py-3 text-left hover:bg-slate-50">
+        <div className="grid size-6 place-items-center rounded-full bg-[#e1eef5] text-[#1d5a85]"><Activity className="size-3.5" /></div>
+        <div><div className="text-[10px] font-bold uppercase tracking-[0.13em] text-[#1d5a85]">Decision trace</div><div className="mt-0.5 text-[10px] text-slate-500">What ATLAS used, what the model did, and what remains human-only.</div></div>
+        <ChevronRight className={cn("ml-auto size-4 text-slate-400 transition-transform", expanded && "rotate-90")} />
+      </button>
+      {expanded && <ol className="border-t border-slate-200 px-3 py-2">
+        {response.agent_trace.map((stage) => (
+          <li key={stage.step} className="grid grid-cols-[28px_1fr] gap-2 border-b border-slate-100 py-3 last:border-0">
+            <div className="mt-0.5 grid size-6 place-items-center rounded-full bg-[#10233b] font-mono text-[9px] font-bold text-[#70d0c6]">{stage.step}</div>
+            <div><div className="flex flex-wrap items-center gap-2"><span className="text-[11px] font-bold text-[#10233b]">{stage.agent}</span><span className={cn("rounded-full border px-1.5 py-0.5 text-[8px] font-bold tracking-wide", tone(stage.status))}>{stage.status.replaceAll("_", " ")}</span></div><p className="mb-0 mt-1 text-[10px] leading-4 text-slate-500">{stage.detail}</p></div>
+          </li>
+        ))}
+      </ol>}
+    </section>
   );
 }
 
@@ -111,6 +145,52 @@ function Metric({ label, value, accent, helper }: { label: string; value: number
       <div className="mt-3 text-xs text-slate-500">{helper}</div>
     </Card>
   );
+}
+
+function CohortImportPanel() {
+  const queryClient = useQueryClient();
+  const [error, setError] = useState("");
+  const mutation = useMutation({
+    mutationFn: ({ name, patients }: { name: string; patients: SyntheticPatientInput[] }) => api.importCohort(name, patients),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["dashboard"] }),
+        queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+        queryClient.invalidateQueries({ queryKey: ["operations"] }),
+      ]);
+    },
+  });
+  async function selectFile(file?: File) {
+    setError("");
+    mutation.reset();
+    if (!file) return;
+    try {
+      const lines = (await file.text()).trim().split(/\r?\n/).filter(Boolean);
+      const headers = lines.shift()?.split(",").map((value) => value.trim()) ?? [];
+      const required = ["patient_id", "site_id"];
+      if (!required.every((field) => headers.includes(field))) throw new Error("CSV needs patient_id and site_id columns.");
+      const numeric = new Set(["age", "metformin_mg_day", "hba1c", "bmi"]);
+      const boolean = new Set(["recent_cv_event", "renal_impairment"]);
+      const patients = lines.map((line) => {
+        const values = line.split(",").map((value) => value.trim());
+        const row: Record<string, string | number | boolean> = {};
+        headers.forEach((header, index) => {
+          const value = values[index];
+          if (value === undefined || value === "") return;
+          if (numeric.has(header)) row[header] = Number(value);
+          else if (boolean.has(header)) row[header] = value.toLowerCase() === "true";
+          else row[header] = value;
+        });
+        return row as unknown as SyntheticPatientInput;
+      });
+      if (!patients.length) throw new Error("CSV contains no synthetic patient rows.");
+      mutation.mutate({ name: file.name.replace(/\.csv$/i, ""), patients });
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "The CSV could not be read.");
+    }
+  }
+  const template = "patient_id,site_id,age,diagnoses,metformin_mg_day,hba1c,bmi,recent_cv_event,renal_impairment,contradictory_field\nSYN001,SITE-A,54,Type 2 diabetes mellitus,1800,8.2,31.4,false,false,";
+  return <Card className="mt-6 overflow-hidden border-[#c7dce4] bg-[#eef5f8]"><div className="grid gap-4 p-5 md:grid-cols-[1fr_auto] md:items-center"><div className="flex items-start gap-3"><div className="grid size-10 shrink-0 place-items-center rounded-xl bg-white text-[#1d5a85] shadow-sm"><FileUp className="size-5" /></div><div><div className="text-sm font-bold">Import a synthetic cohort</div><p className="mb-0 mt-1 text-xs leading-5 text-slate-500">CSV only: aliases and screening fields. Do not upload names, contact details, medical record numbers, or PHI.</p><a href={`data:text/csv;charset=utf-8,${encodeURIComponent(template)}`} download="atlas-synthetic-cohort-template.csv" className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-bold text-[#1d5a85]"><Download className="size-3" />Download CSV template</a></div></div><label className="inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#10233b] px-4 text-xs font-bold text-white transition hover:bg-[#1d5a85]">{mutation.isPending ? <LoaderCircle className="size-4 animate-spin" /> : <FileUp className="size-4" />}Choose synthetic CSV<input type="file" accept=".csv,text/csv" className="sr-only" onChange={(event) => selectFile(event.target.files?.[0])} /></label></div>{mutation.isSuccess && <div className="border-t border-teal-200 bg-teal-50 px-5 py-3 text-xs text-teal-800">Imported {mutation.data.patient_count} synthetic candidates and completed run <span className="font-mono">{mutation.data.run_id}</span>.</div>}{(error || mutation.error) && <div className="border-t border-rose-200 bg-rose-50 px-5 py-3 text-xs text-rose-800">{error || "The cohort was rejected. Check the schema and synthetic-data requirement."}</div>}</Card>;
 }
 
 function CandidateRow({ patient, active, onSelect }: { patient: PatientSummary; active: boolean; onSelect: () => void }) {
@@ -198,7 +278,7 @@ function EvidencePanel({ patientId, onClose }: { patientId: string; onClose: () 
               ))}
             </div>
             <div className="sticky bottom-0 -mx-6 mt-8 flex gap-3 border-t border-slate-200 bg-white/95 px-6 py-4 backdrop-blur">
-              <Button className="flex-1" onClick={() => navigate("/worklist")}><ClipboardCheck className="size-4" />Open governed worklist</Button>
+              <Button className="flex-1" onClick={() => navigate("/tasks")}><ClipboardCheck className="size-4" />Open governed worklist</Button>
               <Button variant="outline" onClick={onClose}>Close evidence</Button>
             </div>
           </div>
@@ -208,7 +288,7 @@ function EvidencePanel({ patientId, onClose }: { patientId: string; onClose: () 
   );
 }
 
-function CopilotCard({ contextPatientId }: { contextPatientId?: string }) {
+export function CopilotCard({ contextPatientId }: { contextPatientId?: string }) {
   const queryClient = useQueryClient();
   const [query, setQuery] = useState("");
   const [response, setResponse] = useState<CopilotResponse | null>(null);
@@ -226,7 +306,15 @@ function CopilotCard({ contextPatientId }: { contextPatientId?: string }) {
       ]);
     },
   });
-  const examples = ["Why is P004 in manual review?", "Which candidates need evidence?", "Compare site workload"];
+  const examples = [
+    "Why is P004 in manual review?",
+    "Which candidates need evidence?",
+    "Compare site workload",
+    "What should I do for P008?",
+    "Why did screening exclude P005?",
+    "What is the current recruitment risk?",
+    "Give me a daily coordinator briefing",
+  ];
 
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -238,8 +326,8 @@ function CopilotCard({ contextPatientId }: { contextPatientId?: string }) {
     <Card className="overflow-hidden border-[#c7dce4]">
       <div className="bg-[#10233b] p-5 text-white">
         <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#70d0c6]"><MessageSquareText className="size-4" /> ATLAS copilot</div>
-        <h3 className="protocol-title mt-2 text-2xl">Ask the evidence desk.</h3>
-        <p className="mt-2 text-xs leading-5 text-slate-300">Answers stay inside the trial context, show their sources, and never turn into an autonomous clinical decision.</p>
+        <h3 className="protocol-title mt-2 text-2xl">Ask ATLAS Copilot.</h3>
+        <p className="mt-2 text-xs leading-5 text-slate-300">A focused coordinator assistant—not general chat. Answers are grounded in the selected protocol, synthetic evidence, and current screening run.</p>
       </div>
       <form onSubmit={submit} className="p-5">
         <textarea
@@ -263,8 +351,11 @@ function CopilotCard({ contextPatientId }: { contextPatientId?: string }) {
               <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#1d5a85]">{response.state === "ANSWERED" ? "Grounded answer" : response.state === "REFUSED" ? "Safety boundary" : "Clarify the question"}</div>
               <span className="font-mono text-[9px] text-slate-400">{response.model}</span>
             </div>
+            <div className="mt-1 font-mono text-[9px] text-slate-400">{response.copilot_run_id} · {response.run_record_status.replaceAll("_", " ").toLowerCase()}</div>
             <p className="mt-3 whitespace-pre-line text-sm leading-6 text-[#10233b]">{response.answer}</p>
+            <DecisionTrace response={response} />
             {response.citations.length > 0 && <div className="mt-4 space-y-1.5 border-t border-slate-100 pt-3">{response.citations.slice(0, 4).map((citation) => <div key={`${citation.label}-${citation.source}`} className="flex gap-2 text-[10px] text-slate-500"><span className="font-semibold text-slate-700">{citation.label}</span><span className="font-mono">{citation.source}</span></div>)}</div>}
+            {response.retrieved_evidence.length > 0 && <div className="mt-4 rounded-lg border border-blue-100 bg-blue-50/60 p-3"><div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#1d5a85]">Retrieved grounding</div><div className="mt-2 space-y-2">{response.retrieved_evidence.slice(0, 3).map((evidence, index) => <div key={`${evidence.source_id ?? evidence.title ?? index}`} className="text-[10px] leading-4 text-slate-600"><div className="font-semibold text-slate-700">{evidence.title ?? evidence.document_type ?? "Evidence record"}</div><div>{evidence.search_text}</div><div className="mt-0.5 font-mono text-[9px] text-slate-400">{evidence.source_id ?? "Governed Snowflake evidence"}</div></div>)}</div></div>}
             {response.proposal && <div className="mt-4 rounded-lg border border-[#9edbd2] bg-[#effaf8] p-3"><div className="text-xs font-bold text-[#17665e]">Proposed coordinator action</div><div className="mt-1 text-xs leading-5 text-[#275f5a]">{response.proposal.action_type.replaceAll("_", " ").toLowerCase()}. Confirming records a human-reviewed worklist transition.</div><Button type="button" size="sm" className="mt-3" onClick={() => confirm.mutate(response.proposal!.proposal_id)} disabled={confirm.isPending}>{confirm.isPending ? <LoaderCircle className="size-3 animate-spin" /> : <Check className="size-3" />} Confirm action</Button></div>}
             {confirm.error && <div className="mt-3 text-xs text-rose-700">This proposal could not be applied. Refresh the worklist and try again.</div>}
           </div>
@@ -275,10 +366,9 @@ function CopilotCard({ contextPatientId }: { contextPatientId?: string }) {
 }
 
 export default function App() {
-  const [location] = useLocation();
-  const isScreening = location === "/screening";
   const queryClient = useQueryClient();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<ScreeningStatus | "ALL">("ALL");
   const [search, setSearch] = useState("");
@@ -315,14 +405,15 @@ export default function App() {
   const { protocol, run } = dashboard.data;
   return (
     <div className="min-h-screen">
-      <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <Sidebar open={menuOpen} collapsed={sidebarCollapsed} onClose={() => setMenuOpen(false)} onToggle={() => setSidebarCollapsed((value) => !value)} />
       {menuOpen && <button className="fixed inset-0 z-30 bg-black/20 lg:hidden" onClick={() => setMenuOpen(false)} aria-label="Close menu" />}
-      <main className="lg:pl-[264px]">
+      <main className={cn("transition-[padding] duration-200", sidebarCollapsed ? "lg:pl-[72px]" : "lg:pl-[264px]")}>
         <header className="flex h-20 items-center border-b border-slate-200 bg-white/90 px-4 backdrop-blur md:px-8">
           <Button variant="ghost" size="icon" className="mr-2 lg:hidden" onClick={() => setMenuOpen(true)}><Menu className="size-5" /></Button>
+          <Button variant="ghost" size="icon" className="mr-2 hidden lg:inline-flex" onClick={() => setSidebarCollapsed((value) => !value)} aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}>{sidebarCollapsed ? <PanelLeftOpen className="size-5" /> : <PanelLeftClose className="size-5" />}</Button>
           <div>
             <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#1d5a85]">Coordinator workspace</div>
-            <h1 className="protocol-title mt-1 text-xl font-semibold">{isScreening ? "Cohort screening" : "Command center"}</h1>
+            <h1 className="protocol-title mt-1 text-xl font-semibold">Cohort screening</h1>
           </div>
           <div className="ml-auto flex items-center gap-3">
             <div className="hidden text-right sm:block">
@@ -340,13 +431,15 @@ export default function App() {
                 <Badge className="border-blue-200 bg-blue-50 text-[#1d5a85]">{protocol.protocol_id}</Badge>
                 <span className="text-xs text-slate-400">{protocol.criteria_count} reviewed criteria · {run.cohort_size} synthetic candidates</span>
               </div>
-              <h2 className="protocol-title max-w-4xl text-3xl leading-tight text-[#10233b] md:text-4xl">{isScreening ? "Every candidate has a criterion-level record." : "The cohort review already happened. Verify the evidence."}</h2>
+              <h2 className="protocol-title max-w-4xl text-3xl leading-tight text-[#10233b] md:text-4xl">Review this cohort. Every decision leads back to evidence.</h2>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">{protocol.title}</p>
             </div>
             <Button variant="outline" onClick={() => rerun.mutate()} disabled={rerun.isPending}>
               <RefreshCw className={cn("size-4", rerun.isPending && "animate-spin")} /> Re-run screening
             </Button>
           </section>
+
+          <CohortImportPanel />
 
           <section className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <Metric label="Potential matches" value={run.counts.POTENTIAL_MATCH} accent="bg-[#23877e]" helper="Ready for coordinator verification" />

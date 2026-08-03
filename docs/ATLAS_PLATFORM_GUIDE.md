@@ -195,8 +195,31 @@ the Snowflake sign-in protecting the browser URL.
 
 ## 8. Frontend navigation and operation
 
-The left navigation contains seven routes. On a smaller display, open it with
+The left navigation contains eight product routes: Dashboard, Trials, Patients,
+Tasks, Analytics, AI Copilot, Notifications, and Settings. On a smaller display, open it with
 the menu button in the top-left corner.
+
+### 8.0 Start with your own demonstration inputs
+
+The Dashboard no longer assumes that a protocol has already appeared. Paste a
+ClinicalTrials.gov study URL or NCT identifier into **Sync trial**. ATLAS fetches
+the live public v2 record, creates a stable content hash, and stores the source
+version in Snowflake. A newly synced trial is shown as **Extraction pending**;
+it cannot replace the active screened protocol until criteria have been
+extracted and reviewed.
+
+Select **Extract** on a pending trial to invoke the Protocol Intelligence agent.
+The Cortex response must pass a structured schema and every returned clause
+must be an exact passage from the stored public eligibility text. A malformed or
+invented clause fails the run without a write. Successful clauses appear as
+**Review required** and remain non-machine-evaluable until a human approves
+their interpretation.
+
+On Patients, **Import a synthetic cohort** accepts a constrained CSV containing
+only aliases and the supported screening fields. Names, contact details,
+medical-record identifiers, and PHI must not be uploaded. The cohort is
+versioned, normalized, evaluated against reviewed criteria, and exposed through
+the same evidence, task, and audit workflow as the built-in cohort.
 
 ### 8.1 Command center — `/`
 
@@ -236,16 +259,59 @@ evidence** to return to the queue.
 
 #### ATLAS Copilot
 
-The right rail contains the bounded Coordinator Copilot. Ask a question about a
-candidate, evidence, sites, recruitment, or compliance. The assistant classifies
-the request, uses the current governed run, and returns an answer with source
-identifiers. Questions outside the clinical-trial operations scope are turned
-into a clarification or a safety refusal rather than a guessed answer.
+The right rail contains the bounded Coordinator Copilot. It is a focused
+chat-style interaction, not unrestricted general chat: ask a question about a
+candidate, evidence, sites, the current workload, recruitment, compliance, or
+a daily coordinator briefing. The assistant classifies the request, retrieves
+relevant protocol/evidence context when Cortex is available, uses the current
+governed run, and returns an answer with source identifiers and a copilot-run
+ID. Questions outside the clinical-trial operations scope are turned into a
+clarification or a safety refusal rather than a guessed answer.
 
 For a candidate explanation, the assistant may propose the existing coordinator
 task. **Confirm action** is an explicit human approval: it changes the worklist
 state and creates the corresponding audit event. The assistant never creates a
 clinical decision, orders a test, or confirms enrollment.
+
+#### Decision trace
+
+Every answer includes an expandable **Decision trace**. It makes the agentic
+path inspectable rather than presenting an opaque chatbot response:
+
+1. **Protocol Intelligence** shows that reviewed protocol clauses and their
+   citations were used.
+2. **Patient Screening** shows that the current deterministic screening run was
+   read. The LLM cannot alter this result.
+3. **Evidence Retrieval** reports whether Cortex Search returned scoped protocol
+   clauses and candidate evidence. It is marked `FALLBACK` when running offline.
+4. **Coordinator Copilot** reports whether Snowflake Cortex generated the
+   bounded explanation or the governed deterministic response was used instead.
+5. **Human Approval Gate** shows whether an action is only proposed or whether
+   the request is non-mutating.
+
+The left sidebar can be collapsed from the desktop header or sidebar control;
+route icons remain available with accessible labels.
+
+### Local modes
+
+The default local mode is intentionally offline and uses the synthetic fixture.
+It proves the decision workflow but labels Cortex Search and Cortex generation
+as fallbacks.
+
+To exercise the real governed LLM flow, authenticate through the local
+Snowflake connection outside the repository and run:
+
+```bash
+ATLAS_DATA_BACKEND=snowflake \
+SNOWFLAKE_CONNECTION_NAME=hackathon_pat \
+ATLAS_CORTEX_MODEL='SNOWFLAKE.MODELS."CLAUDE-SONNET-4-6"' \
+uvicorn app.main:app --app-dir backend --port 8012
+```
+
+In this mode, the trace should show `COMPLETED` for Evidence Retrieval and
+Coordinator Copilot, and each response is written to `AI.AGENT_RUNS`. The
+Snowflake connection and token remain local; no credential is placed in this
+repository.
 
 ### 8.2 Screening — `/screening`
 
@@ -413,7 +479,8 @@ Public study snapshot + synthetic evidence
   tasks, and audit history.
 - **Snowpark Container Services** hosts the production container.
 - **Cortex Search** indexes protocol clauses and synthetic evidence for governed
-  retrieval. The current frontend does not yet expose a general search assistant.
+  retrieval. ATLAS shows the retrieved evidence passages beside a grounded
+  copilot answer when the Snowflake-backed Cortex path is available.
 - **CoCo (Cortex Code)** was used as an engineering and Snowflake operations
   agent. It is not an invisible model making final candidate decisions.
 

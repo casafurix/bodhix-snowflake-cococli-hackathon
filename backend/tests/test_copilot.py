@@ -11,6 +11,16 @@ def test_copilot_answers_from_governed_candidate_context():
     assert result["grounded"] is True
     assert result["citations"]
     assert result["proposal"]
+    assert result["copilot_run_id"].startswith("COPILOT-")
+    assert result["run_record_status"] == "LOCAL_ONLY"
+    assert [step["agent"] for step in result["agent_trace"]] == [
+        "Protocol Intelligence",
+        "Patient Screening",
+        "Evidence Retrieval",
+        "Coordinator Copilot",
+        "Human Approval Gate",
+    ]
+    assert result["agent_trace"][-1]["status"] == "AWAITING_APPROVAL"
 
 
 def test_copilot_clarifies_unknown_questions_and_refuses_unsafe_ones():
@@ -27,3 +37,13 @@ def test_copilot_proposal_is_single_use():
 
     assert confirm_proposal(proposal_id)
     assert confirm_proposal(proposal_id) is None
+
+
+def test_copilot_generates_a_grounded_coordinator_briefing():
+    result = answer_query(repository, "Give me a daily coordinator briefing")
+
+    assert result["state"] == "ANSWERED"
+    assert result["intent"] == "COORDINATOR_SUMMARY"
+    assert "Coordinator briefing" in result["answer"]
+    assert len(result["citations"]) == 2
+    assert result["agent_trace"][-1]["status"] == "NO_MUTATION"
