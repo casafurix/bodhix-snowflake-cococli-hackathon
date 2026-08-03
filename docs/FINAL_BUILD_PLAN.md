@@ -14,10 +14,11 @@ human decisions, audit history, site workload, and a non-mutating capacity
 scenario. It runs as a React/FastAPI container in Snowpark Container Services.
 
 The remaining expansion scope in this document—historical recruitment forecast,
-visit/consent compliance, sponsor portfolio, and natural-language assistant—is
-still a target, not a claim about the current deployment. The submission must not
-describe those modules as live until their data, API, UI, and verification are all
-present.
+visit/consent compliance, and sponsor portfolio—is still a target. A bounded
+Coordinator Assistant API and UI are now implemented in the source tree; the
+Snowpark service must be rebuilt before that capability is live at the deployed
+URL. The submission must not describe target modules as live until their data,
+API, UI, and verification are all present.
 
 ## 1. Executive decision
 
@@ -230,7 +231,8 @@ The signature component is the **evidence rail**: protocol clause, patient evide
 | `/sponsor` | Enrollment forecast, site comparison, and risk summary |
 | `/scenarios` | Digital-twin-style operational scenario comparison |
 
-The assistant is a contextual drawer available from every route, not the homepage.
+The assistant is a bounded copilot card on the command center and can receive
+page context. It is intentionally not unrestricted chat.
 
 ### Primary coordinator flow
 
@@ -272,7 +274,8 @@ The assistant is a contextual drawer available from every route, not the homepag
 | `GET /api/operations/forecast` | Recruitment forecast by site |
 | `GET /api/operations/compliance` | Current compliance alerts |
 | `POST /api/scenarios/run` | Compare operational assumptions |
-| `POST /api/assistant/query` | Execute a whitelisted domain query |
+| `POST /api/copilot/query` | Execute a whitelisted domain query |
+| `POST /api/copilot/confirm` | Confirm a proposed coordinator action |
 | `GET /api/audit-events` | Append-only event history |
 
 ### Backend rules

@@ -11,6 +11,7 @@ from pathlib import Path
 from threading import RLock
 from typing import Any
 from uuid import uuid4
+import json
 
 import snowflake.connector
 from snowflake.connector import DictCursor, SnowflakeConnection
@@ -130,6 +131,50 @@ class SnowflakeRepository:
             "role": str(context["role"]),
             "warehouse": str(context["warehouse"]),
         }
+
+    def cortex_explain(self, question: str, draft: str, citations: list[dict[str, str]]) -> str | None:
+        """Grounded natural-language explanation using Snowflake Cortex.
+
+        The model receives only the deterministic draft and source identifiers.
+        If model access is unavailable, callers retain the safe deterministic
+        explanation instead of failing the coordinator workflow.
+        """
+        model = os.getenv("ATLAS_CORTEX_MODEL", "claude-sonnet-4-6")
+        retrieved: list[dict] = []
+        try:
+            search_payload = json.dumps(
+                {
+                    "query": question,
+                    "columns": ["document_type", "patient_id", "source_id", "title", "search_text"],
+                    "limit": 5,
+                }
+            )
+            with self._connection() as connection, connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT PARSE_JSON(SNOWFLAKE.CORTEX.SEARCH_PREVIEW(%s, %s))['results']",
+                    (os.getenv("ATLAS_CORTEX_SEARCH_SERVICE", "CTOPS_HACKATHON.AI.TRIALOPS_EVIDENCE_SEARCH"), search_payload),
+                )
+                row = cursor.fetchone()
+            if row and row[0]:
+                value = row[0]
+                retrieved = json.loads(value) if isinstance(value, str) else value
+        except DatabaseError:
+            retrieved = []
+        prompt = (
+            "You are the ATLAS clinical-trial coordinator assistant. Rewrite the supplied draft "
+            "in plain language using only the supplied facts. Do not change statuses, invent evidence, "
+            "provide medical advice, confirm enrollment, order tests, or propose autonomous actions. "
+            "Keep the answer under 120 words and mention that a coordinator must verify it.\n\n"
+            f"Question: {question}\nDraft: {draft}\nCitations: {json.dumps(citations)}\n"
+            f"Retrieved evidence: {json.dumps(retrieved)}"
+        )
+        try:
+            with self._connection() as connection, connection.cursor() as cursor:
+                cursor.execute("SELECT AI_COMPLETE(%s, %s) AS answer", (model, prompt))
+                row = cursor.fetchone()
+            return str(row[0]) if row and row[0] else None
+        except DatabaseError:
+            return None
 
     def dashboard(self) -> dict[str, Any]:
         with self._connection() as connection, connection.cursor(DictCursor) as cursor:

@@ -133,3 +133,28 @@ export interface OperationsData {
   run_id: string;
   sites: SiteOperations[];
 }
+
+export interface CopilotCitation {
+  label: string;
+  source: string;
+}
+
+export interface CopilotProposal {
+  proposal_id: string;
+  task_key: string;
+  action_type: string;
+  reason: string;
+  label: string;
+}
+
+export interface CopilotResponse {
+  query: string;
+  intent: string;
+  intent_label: string;
+  state: "ANSWERED" | "CLARIFICATION" | "REFUSED";
+  answer: string;
+  grounded: boolean;
+  model: string;
+  citations: CopilotCitation[];
+  proposal: CopilotProposal | null;
+}

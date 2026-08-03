@@ -234,6 +234,19 @@ The panel displays each evaluated criterion as a rail:
 Use **Open governed worklist** to continue to the task workflow, or **Close
 evidence** to return to the queue.
 
+#### ATLAS Copilot
+
+The right rail contains the bounded Coordinator Copilot. Ask a question about a
+candidate, evidence, sites, recruitment, or compliance. The assistant classifies
+the request, uses the current governed run, and returns an answer with source
+identifiers. Questions outside the clinical-trial operations scope are turned
+into a clarification or a safety refusal rather than a guessed answer.
+
+For a candidate explanation, the assistant may propose the existing coordinator
+task. **Confirm action** is an explicit human approval: it changes the worklist
+state and creates the corresponding audit event. The assistant never creates a
+clinical decision, orders a test, or confirms enrollment.
+
 ### 8.2 Screening — `/screening`
 
 The Screening route uses the same current Snowflake run and candidate evidence
@@ -538,7 +551,8 @@ Implemented now:
 - Snowflake-computed runs, tasks, human decisions, and audit history.
 - Site evidence workload and a transparent staffing scenario.
 - React/FastAPI application deployed in Snowpark Container Services.
-- Cortex Search and reproducible CoCo project workflows.
+- Cortex Search, the bounded Coordinator Copilot, and reproducible CoCo project
+  workflows.
 
 Not implemented in the current frontend:
 
@@ -548,7 +562,8 @@ Not implemented in the current frontend:
 - Final eligibility, enrollment, outreach, diagnosis, or treatment decisions.
 - Historical recruitment or dropout forecasting.
 - Visit, consent, protocol-deviation, or sponsor-portfolio modules.
-- A user-facing natural-language assistant embedded across the application.
+- Arbitrary SQL generation or unrestricted general-purpose chat. The copilot is
+  intentionally limited to governed TrialOps intents.
 
 Do not present items in the second list as live capabilities. They are possible
 future integrations or architecture targets.
