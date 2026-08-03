@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useLocation } from "wouter";
 import {
@@ -55,7 +55,6 @@ const nav = [
   [Users, "Patients", "/patients"],
   [ClipboardCheck, "Tasks", "/tasks"],
   [Activity, "Analytics", "/analytics"],
-  [Bot, "AI Copilot", "/copilot"],
   [Bell, "Notifications", "/notifications"],
   [Settings, "Settings", "/settings"],
 ] as const;
@@ -288,7 +287,7 @@ function EvidencePanel({ patientId, onClose }: { patientId: string; onClose: () 
   );
 }
 
-export function CopilotCard({ contextPatientId }: { contextPatientId?: string }) {
+export function CopilotCard({ contextPatientId, surface = "card" }: { contextPatientId?: string; surface?: "card" | "drawer" }) {
   const queryClient = useQueryClient();
   const [query, setQuery] = useState("");
   const [response, setResponse] = useState<CopilotResponse | null>(null);
@@ -323,10 +322,10 @@ export function CopilotCard({ contextPatientId }: { contextPatientId?: string })
   }
 
   return (
-    <Card className="overflow-hidden border-[#c7dce4]">
-      <div className="bg-[#10233b] p-5 text-white">
-        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#70d0c6]"><MessageSquareText className="size-4" /> ATLAS copilot</div>
-        <h3 className="protocol-title mt-2 text-2xl">Ask ATLAS Copilot.</h3>
+    <Card className={cn("overflow-hidden border-[#c7dce4]", surface === "drawer" && "h-full overflow-y-auto rounded-none border-0 shadow-none")}>
+      <div className={cn("bg-[#10233b] p-5 text-white", surface === "drawer" && "sticky top-0 z-10 border-b border-white/10 p-4")}>
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#70d0c6]"><MessageSquareText className="size-4" /> ATLAS copilot {contextPatientId && <span className="rounded-full border border-[#70d0c6]/30 px-2 py-0.5 font-mono tracking-normal text-teal-100">Context · {contextPatientId}</span>}</div>
+        <h3 className={cn("protocol-title mt-2 text-2xl", surface === "drawer" && "text-xl")}>Ask ATLAS Copilot.</h3>
         <p className="mt-2 text-xs leading-5 text-slate-300">A focused coordinator assistant—not general chat. Answers are grounded in the selected protocol, synthetic evidence, and current screening run.</p>
       </div>
       <form onSubmit={submit} className="p-5">
@@ -365,6 +364,67 @@ export function CopilotCard({ contextPatientId }: { contextPatientId?: string })
   );
 }
 
+export function FloatingCopilot() {
+  const [open, setOpen] = useState(false);
+  const [contextPatientId, setContextPatientId] = useState<string | undefined>();
+
+  useEffect(() => {
+    const openCopilot = () => setOpen(true);
+    const updateContext = (event: Event) => {
+      setContextPatientId((event as CustomEvent<{ patientId?: string }>).detail?.patientId);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("atlas:open-copilot", openCopilot);
+    window.addEventListener("atlas:copilot-context", updateContext);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      window.removeEventListener("atlas:open-copilot", openCopilot);
+      window.removeEventListener("atlas:copilot-context", updateContext);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
+
+  return (
+    <>
+      {open && <button type="button" className="fixed inset-0 z-[60] bg-[#10233b]/25 backdrop-blur-[1px] sm:hidden" onClick={() => setOpen(false)} aria-label="Close ATLAS Copilot" />}
+      <section
+        id="atlas-copilot-panel"
+        role="dialog"
+        aria-label="ATLAS Copilot"
+        aria-hidden={!open}
+        inert={!open}
+        className={cn(
+          "fixed bottom-24 right-4 z-[70] h-[min(680px,calc(100dvh-7rem))] w-[calc(100vw-2rem)] max-w-[430px] origin-bottom-right overflow-hidden rounded-2xl border border-[#b9d1dc] bg-white shadow-[0_28px_80px_rgba(16,35,59,0.28)] transition duration-200 sm:right-6",
+          open ? "pointer-events-auto translate-y-0 scale-100 opacity-100" : "pointer-events-none translate-y-3 scale-[0.98] opacity-0",
+        )}
+      >
+        <div className="absolute left-0 top-20 z-20 h-20 w-1 rounded-r-full bg-[#70d0c6]" aria-hidden="true" />
+        <button type="button" onClick={() => setOpen(false)} className="absolute right-3 top-3 z-30 grid size-8 place-items-center rounded-full border border-white/15 bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#70d0c6]" aria-label="Close ATLAS Copilot">
+          <X className="size-4" />
+        </button>
+        <CopilotCard surface="drawer" contextPatientId={contextPatientId} />
+      </section>
+
+      <div className="fixed bottom-5 right-4 z-[71] flex items-center gap-3 sm:bottom-6 sm:right-6">
+        {!open && <span className="hidden rounded-full border border-[#d0e0e7] bg-white/95 px-3 py-2 text-[11px] font-bold text-[#10233b] shadow-[0_8px_24px_rgba(16,35,59,0.12)] sm:block">Ask ATLAS</span>}
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
+          aria-controls="atlas-copilot-panel"
+          aria-label={open ? "Close ATLAS Copilot" : "Open ATLAS Copilot"}
+          className="relative grid size-14 place-items-center rounded-full border border-white/20 bg-[#10233b] text-white shadow-[0_14px_36px_rgba(16,35,59,0.34)] transition hover:-translate-y-0.5 hover:bg-[#183553] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#70d0c6]/40"
+        >
+          <span className="absolute right-0 top-0 size-3 rounded-full border-2 border-white bg-[#70d0c6]" aria-hidden="true" />
+          {open ? <X className="size-5" /> : <Bot className="size-6" />}
+        </button>
+      </div>
+    </>
+  );
+}
+
 export default function App() {
   const queryClient = useQueryClient();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -373,6 +433,13 @@ export default function App() {
   const [filter, setFilter] = useState<ScreeningStatus | "ALL">("ALL");
   const [search, setSearch] = useState("");
   const dashboard = useQuery({ queryKey: ["dashboard"], queryFn: api.dashboard });
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("atlas:copilot-context", { detail: { patientId: selectedId ?? undefined } }));
+    return () => {
+      window.dispatchEvent(new CustomEvent("atlas:copilot-context", { detail: {} }));
+    };
+  }, [selectedId]);
   const rerun = useMutation({
     mutationFn: api.rerun,
     onSuccess: async () => {
@@ -495,7 +562,6 @@ export default function App() {
                 <div className="p-5 text-xs leading-5 text-slate-500">Every result was computed from reviewed criteria and synthetic evidence. Unknowns fail closed; no confidence score becomes eligibility.</div>
                 <a href={protocol.source_url} target="_blank" rel="noreferrer" className="flex items-center border-t border-slate-100 px-5 py-3 text-xs font-semibold text-[#1d5a85] hover:bg-slate-50">View public protocol <ArrowUpRight className="ml-auto size-4" /></a>
               </Card>
-              <CopilotCard />
             </div>
           </section>
         </div>

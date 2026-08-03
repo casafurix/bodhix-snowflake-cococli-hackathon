@@ -3,7 +3,6 @@ import { Link, useLocation } from "wouter";
 import {
   Activity,
   Bell,
-  Bot,
   BookOpenText,
   ClipboardCheck,
   FileSearch,
@@ -25,7 +24,6 @@ const nav = [
   [Users, "Patients", "/patients"],
   [ClipboardCheck, "Tasks", "/tasks"],
   [Activity, "Analytics", "/analytics"],
-  [Bot, "AI Copilot", "/copilot"],
   [Bell, "Notifications", "/notifications"],
   [Settings, "Settings", "/settings"],
 ] as const;
