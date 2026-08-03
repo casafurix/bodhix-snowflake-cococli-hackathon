@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import os
 import json
+import os
 from atexit import register
 from collections.abc import Iterator
 from contextlib import contextmanager
