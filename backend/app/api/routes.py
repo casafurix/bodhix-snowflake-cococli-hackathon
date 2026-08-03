@@ -5,8 +5,8 @@ from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel, Field, model_validator
 
 from app.repositories.runtime import repository
-from app.services.copilot import answer_query, confirm_proposal
 from app.services.clinicaltrials import TrialSyncError, fetch_public_trial
+from app.services.copilot import answer_query, confirm_proposal
 
 router = APIRouter(prefix="/api")
 

@@ -12,7 +12,6 @@ from dataclasses import dataclass
 from threading import Lock
 from uuid import uuid4
 
-
 SUPPORTED_INTENTS = {
     "COORDINATOR_SUMMARY",
     "PATIENT_EXPLANATION",

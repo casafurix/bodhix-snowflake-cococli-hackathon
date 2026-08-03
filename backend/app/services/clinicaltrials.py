@@ -8,7 +8,6 @@ import re
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-
 _NCT_PATTERN = re.compile(r"\bNCT\d{8}\b", re.IGNORECASE)
 
 
@@ -29,7 +28,7 @@ def fetch_public_trial(source: str) -> dict:
     api_url = f"https://clinicaltrials.gov/api/v2/studies/{nct_id}"
     request = Request(api_url, headers={"Accept": "application/json", "User-Agent": "ATLAS-BodhiX/0.1"})
     try:
-        with urlopen(request, timeout=15) as response:  # noqa: S310 - fixed trusted host
+        with urlopen(request, timeout=15) as response:
             payload = json.load(response)
     except HTTPError as exc:
         if exc.code == 404:

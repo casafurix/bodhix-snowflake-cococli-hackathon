@@ -126,7 +126,7 @@ def _patient(
     *,
     age: int | None = 54,
     diagnosis: str | None = "Type 2 diabetes mellitus",
-    metformin: int | float | None = 1800,
+    metformin: float | None = 1800,
     hba1c: float | None = 8.2,
     bmi: float | None = 31.4,
     recent_cv_event: bool | None = False,
