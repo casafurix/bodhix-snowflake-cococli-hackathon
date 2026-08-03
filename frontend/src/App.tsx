@@ -67,8 +67,8 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
           <FileSearch className="size-5 text-[#70d0c6]" />
         </div>
         <div className="ml-3">
-          <div className="protocol-title text-[17px] font-semibold tracking-wide">TrialOps</div>
-          <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Evidence desk</div>
+          <div className="protocol-title text-[17px] font-semibold tracking-wide">ATLAS</div>
+          <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Trial intelligence</div>
         </div>
         <button className="ml-auto lg:hidden" onClick={onClose} aria-label="Close navigation">
           <X className="size-5" />
@@ -242,7 +242,7 @@ export default function App() {
     return <div className="grid min-h-screen place-items-center"><LoaderCircle className="size-8 animate-spin text-[#1d5a85]" /></div>;
   }
   if (dashboard.error || !dashboard.data) {
-    return <div className="grid min-h-screen place-items-center p-6"><Card className="max-w-md p-6"><h1 className="protocol-title text-2xl">The evidence desk is offline</h1><p className="mt-3 text-sm text-slate-600">Start the FastAPI backend on port 8000, then refresh this page.</p></Card></div>;
+    return <div className="grid min-h-screen place-items-center p-6"><Card className="max-w-md p-6"><h1 className="protocol-title text-2xl">ATLAS is offline</h1><p className="mt-3 text-sm text-slate-600">Start the FastAPI backend on port 8000, then refresh this page.</p></Card></div>;
   }
 
   const { protocol, run } = dashboard.data;

@@ -1,4 +1,4 @@
-# TrialOps Evidence Desk — Final Build Plan
+# ATLAS — Final Build Plan
 
 **Hackathon:** Snowflake CoCo CLI Hackathon 2026  
 **Submission track:** PS-04 — Domain-Specific AI Copilot  
@@ -21,7 +21,7 @@ present.
 
 ## 1. Executive decision
 
-We are building **TrialOps Evidence Desk**, a clinical-trial operations copilot for coordinators, hospital trial offices, and pharmaceutical sponsors.
+We are building **ATLAS (Advanced Trial Lifecycle & Analytics System)**, a clinical-trial operations copilot for coordinators, hospital trial offices, and pharmaceutical sponsors.
 
 The product converts a public clinical-trial protocol into reviewed, machine-readable rules; constructs governed synthetic patient profiles; performs evidence-backed pre-screening; creates human-reviewed coordinator work; forecasts recruitment; detects compliance risks; and lets users explore operational scenarios.
 
@@ -675,7 +675,7 @@ The deployed path, citations, safety, and auditability are never traded for extr
 
 ## 19. Final positioning
 
-**One-line product:** The governed evidence desk that turns a clinical-trial protocol and fragmented patient records into a cited coordinator worklist, recruitment forecast, and auditable human action.
+**One-line product:** ATLAS turns a clinical-trial protocol and fragmented patient records into a cited coordinator worklist, recruitment forecast, and auditable human action.
 
 **One-line differentiation:** Not just patient matching—an explainable, Snowflake-native operations loop spanning protocol intelligence, pre-screening, missing information, recruitment, compliance, and coordinator action.
 

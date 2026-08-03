@@ -1,4 +1,4 @@
-"""Snowflake-backed repository for the deployed TrialOps application."""
+"""Snowflake-backed repository for the deployed ATLAS application."""
 
 from __future__ import annotations
 
@@ -99,7 +99,7 @@ class SnowflakeRepository:
     def _one(cursor: DictCursor) -> dict[str, Any]:
         row = cursor.fetchone()
         if row is None:
-            raise RuntimeError("Snowflake returned no current TrialOps record")
+            raise RuntimeError("Snowflake returned no current ATLAS record")
         return {
             key.lower(): SnowflakeRepository._value(value)
             for key, value in row.items()

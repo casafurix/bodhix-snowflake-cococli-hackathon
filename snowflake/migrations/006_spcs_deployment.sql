@@ -8,7 +8,7 @@ CREATE COMPUTE POOL IF NOT EXISTS CTOPS_COMPUTE_POOL
   AUTO_RESUME = TRUE
   AUTO_SUSPEND_SECS = 300
   INITIALLY_SUSPENDED = TRUE
-  COMMENT = 'Small auto-suspending pool for the TrialOps hackathon web service';
+  COMMENT = 'Small auto-suspending pool for the ATLAS hackathon web service';
 
 GRANT BIND SERVICE ENDPOINT ON ACCOUNT TO ROLE CTOPS_TEAM_ROLE;
 GRANT USAGE, MONITOR ON COMPUTE POOL CTOPS_COMPUTE_POOL TO ROLE CTOPS_TEAM_ROLE;
@@ -20,4 +20,4 @@ USE DATABASE CTOPS_HACKATHON;
 USE SCHEMA APP;
 
 CREATE IMAGE REPOSITORY IF NOT EXISTS TRIALOPS_REPOSITORY
-  COMMENT = 'OCI images for the TrialOps Evidence Desk web application';
+  COMMENT = 'OCI images for the ATLAS — Advanced Trial Lifecycle & Analytics System web application';

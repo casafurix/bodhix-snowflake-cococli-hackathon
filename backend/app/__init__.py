@@ -1,2 +1,1 @@
-"""TrialOps Evidence Desk backend."""
-
+"""ATLAS Trial Intelligence backend."""

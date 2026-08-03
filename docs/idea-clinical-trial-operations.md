@@ -1,4 +1,4 @@
-# Idea: Clinical Trial Operations Intelligence Platform
+# Idea: ATLAS — Advanced Trial Lifecycle & Analytics System
 
 > **Source:** proposed by Eirene. Enriched with quantified pain, golden-path scoping, Snowflake architecture, UX, and risk analysis.
 > **Framing follows the North Star:** pain → experience → tool.
@@ -44,7 +44,7 @@ The value proposition in one line: **"The 200-page-vs-hundreds-of-charts review 
 
 ## 3. The Solution (the tool that serves the pain)
 
-An **AI-powered Clinical Trial Operations Intelligence Platform** that automates the operational side of trials:
+An **AI-powered ATLAS clinical-trial operations platform** that automates the operational side of trials:
 
 - **Analyzes the trial protocol** → extracts eligibility criteria, required tests, visit schedules, timelines, safety requirements.
 - **Analyzes patient data** → structured (demographics, diagnoses, medications, labs) + unstructured (physician notes, pathology/radiology reports, discharge summaries).

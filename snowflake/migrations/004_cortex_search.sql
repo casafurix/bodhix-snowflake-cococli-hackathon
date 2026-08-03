@@ -65,7 +65,7 @@ CREATE CORTEX SEARCH SERVICE IF NOT EXISTS AI.TRIALOPS_EVIDENCE_SEARCH
   INITIALIZE = ON_CREATE
   REQUEST_LOGGING = TRUE
   AUTO_SUSPEND = 1800
-  COMMENT = 'Grounded retrieval for TrialOps protocol clauses and synthetic evidence'
+  COMMENT = 'Grounded retrieval for ATLAS protocol clauses and synthetic evidence'
 AS
   SELECT
     corpus_id,

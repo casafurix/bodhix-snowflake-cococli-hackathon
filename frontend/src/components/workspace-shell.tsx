@@ -53,8 +53,8 @@ export function WorkspaceShell({
             <FileSearch className="size-5 text-[#70d0c6]" />
           </div>
           <div className="ml-3">
-            <div className="protocol-title text-[17px] font-semibold tracking-wide">TrialOps</div>
-            <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Evidence desk</div>
+            <div className="protocol-title text-[17px] font-semibold tracking-wide">ATLAS</div>
+            <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Trial intelligence</div>
           </div>
           <button className="ml-auto lg:hidden" onClick={() => setOpen(false)} aria-label="Close navigation">
             <X className="size-5" />

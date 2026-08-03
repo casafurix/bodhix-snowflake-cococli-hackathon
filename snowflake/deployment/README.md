@@ -1,6 +1,6 @@
 # Snowflake-native deployment
 
-TrialOps ships as one multi-stage Docker image: Vite compiles the React client,
+ATLAS ships as one multi-stage Docker image: Vite compiles the React client,
 then FastAPI serves the static application and same-origin `/api/*` routes.
 
 The production service uses the short-lived workload identity mounted by

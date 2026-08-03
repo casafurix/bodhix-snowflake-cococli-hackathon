@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from app.api.routes import router
 
 app = FastAPI(
-    title="TrialOps Evidence Desk API",
+    title="ATLAS — Advanced Trial Lifecycle & Analytics System API",
     version="0.1.0",
     description="Clinical-trial pre-screening decision support over synthetic data.",
 )
@@ -39,4 +39,4 @@ if static_dir.is_dir():
 else:
     @app.get("/")
     def root() -> dict:
-        return {"service": "TrialOps Evidence Desk API", "docs": "/docs"}
+        return {"service": "ATLAS Clinical Trial Operations API", "docs": "/docs"}

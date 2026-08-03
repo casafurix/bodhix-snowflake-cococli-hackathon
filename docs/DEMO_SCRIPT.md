@@ -1,8 +1,8 @@
-# TrialOps Evidence Desk — demo script
+# ATLAS — demo script
 
 ## One-sentence pitch
 
-TrialOps turns a clinical-trial protocol and fragmented patient evidence into a
+ATLAS turns a clinical-trial protocol and fragmented patient evidence into a
 cited coordinator worklist, while keeping eligibility decisions and workflow
 changes human-controlled and auditable in Snowflake.
 
@@ -35,7 +35,7 @@ coordinator verification queue; it does not enroll or contact anyone.
 prior/new state, source run, and timestamp. Corrections append events instead of
 rewriting history.
 
-**1:25–1:30 — Close.** “A generic chatbot can suggest. TrialOps creates a
+**1:25–1:30 — Close.** “A generic chatbot can suggest. ATLAS creates a
 reproducible, cited, human-gated workflow where the enterprise data already
 lives.”
 

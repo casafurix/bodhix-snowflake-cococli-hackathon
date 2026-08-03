@@ -1,8 +1,8 @@
-# Clinical Trial Operations Intelligence Platform
+# ATLAS — Advanced Trial Lifecycle & Analytics System
 
 ## Overview
 
-An AI-powered enterprise platform that helps pharmaceutical companies,
+ATLAS is an AI-powered enterprise platform that helps pharmaceutical companies,
 hospitals, and CROs accelerate clinical trials by automating patient
 recruitment, protocol understanding, recruitment forecasting, compliance
 monitoring, and operational decision making.
