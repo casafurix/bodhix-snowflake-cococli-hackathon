@@ -1,7 +1,7 @@
 spec:
   containers:
     - name: trialops
-      image: /ctops_hackathon/app/trialops_repository/trialops:latest
+      image: /ctops_hackathon/app/trialops_repository/trialops:20260805-fixes2
       env:
         ATLAS_DATA_BACKEND: snowflake
         SNOWFLAKE_WAREHOUSE: CTOPS_WH

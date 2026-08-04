@@ -7,6 +7,7 @@ import type {
   ProtocolData,
   TaskDecision,
   CopilotResponse,
+  CopilotConfirmation,
   TrialSummary,
   SyntheticPatientInput,
 } from "@/types";
@@ -16,7 +17,8 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, init);
   if (!response.ok) {
-    throw new Error(`Request failed (${response.status})`);
+    const payload = await response.json().catch(() => null) as { detail?: string } | null;
+    throw new Error(payload?.detail ?? `Request failed (${response.status})`);
   }
   return response.json() as Promise<T>;
 }
@@ -71,7 +73,7 @@ export const api = {
       body: JSON.stringify({ query, context_patient_id: contextPatientId }),
     }),
   confirmCopilot: (proposalId: string, reason: string) =>
-    request<Record<string, string>>("/copilot/confirm", {
+    request<CopilotConfirmation>("/copilot/confirm", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

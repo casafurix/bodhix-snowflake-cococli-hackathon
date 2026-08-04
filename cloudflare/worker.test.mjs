@@ -90,3 +90,48 @@ test("serves non-API routes from static assets", async () => {
   assert.equal(await response.text(), "ATLAS SPA");
   assert.equal(response.headers.get("X-Frame-Options"), "DENY");
 });
+
+test("fetches a ClinicalTrials.gov record before sending it to Snowflake", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const publicRecord = {
+    protocolSection: {
+      identificationModule: { nctId: "NCT00749190", briefTitle: "Public trial" },
+    },
+  };
+  let calls = 0;
+  globalThis.fetch = async (url, init) => {
+    calls += 1;
+    if (calls === 1) {
+      assert.equal(url, "https://clinicaltrials.gov/api/v2/studies/NCT00749190");
+      return Response.json(publicRecord);
+    }
+    assert.equal(url.toString(), "https://snowflake.example/api/trials/sync-record");
+    assert.deepEqual(JSON.parse(init.body), { source: "NCT00749190", payload: publicRecord });
+    return Response.json({ protocol_id: "NCT00749190", processing_state: "PENDING_EXTRACTION" }, { status: 201 });
+  };
+
+  const response = await worker.fetch(
+    new Request("https://atlas.example/api/trials/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ source: "NCT00749190" }),
+    }),
+    env(),
+  );
+
+  assert.equal(response.status, 201);
+  assert.equal((await response.json()).protocol_id, "NCT00749190");
+  assert.equal(calls, 2);
+});
+
+test("does not expose the trusted trial-record intake route publicly", async () => {
+  const response = await worker.fetch(
+    new Request("https://atlas.example/api/trials/sync-record", {
+      method: "POST",
+      body: "{}",
+    }),
+    env(),
+  );
+  assert.equal(response.status, 404);
+});

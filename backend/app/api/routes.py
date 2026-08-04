@@ -5,8 +5,8 @@ from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel, Field, model_validator
 
 from app.repositories.runtime import repository
-from app.services.clinicaltrials import TrialSyncError, fetch_public_trial
-from app.services.copilot import answer_query, confirm_proposal
+from app.services.clinicaltrials import TrialSyncError, fetch_public_trial, normalize_public_trial
+from app.services.copilot import answer_query, complete_proposal, confirm_proposal
 
 router = APIRouter(prefix="/api")
 
@@ -40,6 +40,10 @@ class CopilotConfirmationRequest(BaseModel):
 
 class TrialSyncRequest(BaseModel):
     source: str = Field(min_length=11, max_length=500)
+
+
+class TrialSyncRecordRequest(TrialSyncRequest):
+    payload: dict
 
 
 class SyntheticPatientInput(BaseModel):
@@ -111,6 +115,16 @@ def sync_trial(body: TrialSyncRequest) -> dict:
     return repository.ingest_protocol(trial)
 
 
+@router.post("/trials/sync-record", status_code=status.HTTP_201_CREATED)
+def sync_trial_record(body: TrialSyncRecordRequest) -> dict:
+    """Accept a validated public record fetched by the Cloudflare gateway."""
+    try:
+        trial = normalize_public_trial(body.source, body.payload)
+    except TrialSyncError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    return repository.ingest_protocol(trial)
+
+
 @router.post("/trials/{protocol_id}/extract", status_code=status.HTTP_201_CREATED)
 def extract_trial(protocol_id: str) -> dict:
     if not hasattr(repository, "extract_protocol"):
@@ -141,13 +155,13 @@ def copilot_query(body: CopilotQueryRequest) -> dict:
 
 @router.post("/copilot/confirm")
 def copilot_confirm(body: CopilotConfirmationRequest, request: Request) -> dict:
-    proposal = confirm_proposal(body.proposal_id)
+    proposal = confirm_proposal(repository, body.proposal_id)
     if proposal is None:
         raise HTTPException(status_code=409, detail="This copilot proposal has expired or was already used")
     if not hasattr(repository, "apply_task_decision"):
         raise HTTPException(status_code=503, detail="Copilot actions require the governed Snowflake backend")
     actor = request.headers.get("Sf-Context-Current-User", body.actor)
-    return repository.apply_task_decision(
+    result = repository.apply_task_decision(
         proposal["task_key"],
         "APPROVE",
         actor,
@@ -155,6 +169,18 @@ def copilot_confirm(body: CopilotConfirmationRequest, request: Request) -> dict:
         None,
         body.request_id,
     )
+    complete_proposal(repository, body.proposal_id, body.request_id)
+    return {
+        **result,
+        "proposal_id": body.proposal_id,
+        "approval_status": "COMPLETED",
+        "agent_trace_step": {
+            "step": "05",
+            "agent": "Human Approval Gate",
+            "status": "COMPLETED",
+            "detail": "Coordinator approval was written to the governed worklist and append-only audit trail.",
+        },
+    }
 
 
 @router.get("/operations")

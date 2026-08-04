@@ -68,7 +68,7 @@ def _citation(source: str, label: str) -> dict[str, str]:
     return {"label": label, "source": source}
 
 
-def _proposal(task: dict, reason: str) -> CopilotProposal:
+def _proposal(repository, task: dict, reason: str) -> CopilotProposal:
     proposal = CopilotProposal(
         proposal_id=f"proposal-{uuid4().hex[:12]}",
         task_key=str(task["task_key"]),
@@ -76,18 +76,37 @@ def _proposal(task: dict, reason: str) -> CopilotProposal:
         reason=reason,
         label="Approve coordinator action",
     )
-    with _PROPOSAL_LOCK:
-        _PROPOSALS[proposal.proposal_id] = {
-            "task_key": proposal.task_key,
-            "action_type": proposal.action_type,
-            "reason": proposal.reason,
-        }
+    payload = {
+        "proposal_id": proposal.proposal_id,
+        "task_key": proposal.task_key,
+        "action_type": proposal.action_type,
+        "reason": proposal.reason,
+    }
+    store = getattr(repository, "store_copilot_proposal", None)
+    if store is not None:
+        store(payload)
+    else:
+        with _PROPOSAL_LOCK:
+            _PROPOSALS[proposal.proposal_id] = payload
     return proposal
 
 
-def confirm_proposal(proposal_id: str) -> dict[str, str] | None:
+def confirm_proposal(repository, proposal_id: str) -> dict[str, str] | None:
+    """Resolve a pending proposal without consuming it before its action succeeds."""
+    load = getattr(repository, "load_copilot_proposal", None)
+    if load is not None:
+        return load(proposal_id)
     with _PROPOSAL_LOCK:
-        return _PROPOSALS.pop(proposal_id, None)
+        return _PROPOSALS.get(proposal_id)
+
+
+def complete_proposal(repository, proposal_id: str, request_id: str) -> None:
+    complete = getattr(repository, "complete_copilot_proposal", None)
+    if complete is not None:
+        complete(proposal_id, request_id)
+        return
+    with _PROPOSAL_LOCK:
+        _PROPOSALS.pop(proposal_id, None)
 
 
 def _cortex_answer(
@@ -291,8 +310,8 @@ def answer_query(
         )
         proposal = None
         task = next((item for item in repository.tasks() if item["patient_id"] == patient_id), None)
-        if task and detail["status"] in {"MISSING_INFORMATION", "MANUAL_REVIEW", "POTENTIAL_MATCH"}:
-            proposal = _proposal(task, f"Coordinator review for {patient_id}: {answer}")
+        if task and task.get("status") == "OPEN" and detail["status"] in {"MISSING_INFORMATION", "MANUAL_REVIEW", "POTENTIAL_MATCH"}:
+            proposal = _proposal(repository, task, f"Coordinator review for {patient_id}: {answer}")
         answer, model, retrieved_evidence = _cortex_answer(
             repository,
             query,

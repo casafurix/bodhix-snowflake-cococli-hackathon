@@ -37,6 +37,13 @@ def fetch_public_trial(source: str) -> dict:
     except (URLError, TimeoutError, json.JSONDecodeError) as exc:
         raise TrialSyncError("ClinicalTrials.gov is temporarily unavailable. Try again shortly.") from exc
 
+    return normalize_public_trial(nct_id, payload)
+
+
+def normalize_public_trial(source: str, payload: dict) -> dict:
+    """Validate and normalize a public v2 record fetched by a trusted gateway."""
+    nct_id = normalize_nct_id(source)
+
     protocol = payload.get("protocolSection", {})
     identification = protocol.get("identificationModule", {})
     status = protocol.get("statusModule", {})
@@ -45,7 +52,10 @@ def fetch_public_trial(source: str) -> dict:
     conditions = protocol.get("conditionsModule", {})
     contacts = protocol.get("contactsLocationsModule", {})
     eligibility_text = str(eligibility.get("eligibilityCriteria") or "").strip()
-    if not identification.get("nctId") or not identification.get("briefTitle"):
+    payload_nct_id = str(identification.get("nctId") or "").upper()
+    if payload_nct_id != nct_id:
+        raise TrialSyncError("The public study record does not match the requested NCT ID.")
+    if not identification.get("briefTitle"):
         raise TrialSyncError("The public study record is missing its identifier or title.")
 
     canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
@@ -64,7 +74,7 @@ def fetch_public_trial(source: str) -> dict:
         "last_update": (status.get("studyFirstPostDateStruct") or {}).get("date"),
         "eligibility_text": eligibility_text or "Eligibility criteria not provided.",
         "source_url": f"https://clinicaltrials.gov/study/{nct_id}",
-        "source_api_url": api_url,
+        "source_api_url": f"https://clinicaltrials.gov/api/v2/studies/{nct_id}",
         "source_payload": payload,
         "document_hash": hashlib.sha256(canonical.encode("utf-8")).hexdigest().upper(),
         "processing_state": "PENDING_EXTRACTION",

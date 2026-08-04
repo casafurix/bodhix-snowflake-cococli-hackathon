@@ -268,6 +268,55 @@ class SnowflakeRepository:
         except DatabaseError:
             return False
 
+    def store_copilot_proposal(self, proposal: dict[str, str]) -> None:
+        """Persist a human-gated action before returning it to the browser."""
+        with self._connection() as connection, connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO CTOPS_HACKATHON.AI.ACTION_PROPOSALS (
+                  proposal_id, task_key, action_type, reason, proposal_status,
+                  created_at, expires_at
+                )
+                SELECT %s, %s, %s, %s, 'PENDING', CURRENT_TIMESTAMP(),
+                       DATEADD('minute', 30, CURRENT_TIMESTAMP())
+                """,
+                (
+                    proposal["proposal_id"],
+                    proposal["task_key"],
+                    proposal["action_type"],
+                    proposal["reason"],
+                ),
+            )
+
+    def load_copilot_proposal(self, proposal_id: str) -> dict[str, str] | None:
+        with self._connection() as connection, connection.cursor(DictCursor) as cursor:
+            cursor.execute(
+                """
+                SELECT proposal_id, task_key, action_type, reason
+                FROM CTOPS_HACKATHON.AI.ACTION_PROPOSALS
+                WHERE proposal_id = %s
+                  AND proposal_status = 'PENDING'
+                  AND expires_at > CURRENT_TIMESTAMP()
+                """,
+                (proposal_id,),
+            )
+            row = cursor.fetchone()
+        if row is None:
+            return None
+        return {key.lower(): self._value(value) for key, value in row.items()}
+
+    def complete_copilot_proposal(self, proposal_id: str, request_id: str) -> None:
+        with self._connection() as connection, connection.cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE CTOPS_HACKATHON.AI.ACTION_PROPOSALS
+                SET proposal_status = 'APPLIED', consumed_at = CURRENT_TIMESTAMP(),
+                    decision_request_id = %s
+                WHERE proposal_id = %s AND proposal_status = 'PENDING'
+                """,
+                (request_id, proposal_id),
+            )
+
     def dashboard(self) -> dict[str, Any]:
         with self._connection() as connection, connection.cursor(DictCursor) as cursor:
             cursor.execute(

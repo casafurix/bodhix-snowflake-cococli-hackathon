@@ -1,5 +1,5 @@
 from app.repositories.demo import repository
-from app.services.copilot import answer_query, confirm_proposal
+from app.services.copilot import answer_query, complete_proposal, confirm_proposal
 
 
 def test_copilot_answers_from_governed_candidate_context():
@@ -35,8 +35,9 @@ def test_copilot_proposal_is_single_use():
     result = answer_query(repository, "What should I do for P008?")
     proposal_id = result["proposal"]["proposal_id"]
 
-    assert confirm_proposal(proposal_id)
-    assert confirm_proposal(proposal_id) is None
+    assert confirm_proposal(repository, proposal_id)
+    complete_proposal(repository, proposal_id, "copilot-test-request")
+    assert confirm_proposal(repository, proposal_id) is None
 
 
 def test_copilot_generates_a_grounded_coordinator_briefing():
