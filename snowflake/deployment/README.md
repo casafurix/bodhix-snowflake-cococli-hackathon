@@ -11,6 +11,7 @@ PAT, API key, or private key is built into the image.
 
 ```bash
 snow sql -c hackathon -f snowflake/migrations/006_spcs_deployment.sql
+snow sql -c hackathon -f snowflake/migrations/009_durable_copilot_proposals.sql
 docker build --platform linux/amd64 -t atlas:latest .
 snow spcs image-registry login -c hackathon --role CTOPS_TEAM_ROLE
 docker tag atlas:latest \
@@ -25,6 +26,13 @@ snow spcs service create TRIALOPS_SERVICE \
   --min-instances 1 --max-instances 1 --query-warehouse CTOPS_WH
 snow sql -c hackathon -f snowflake/deployment/post_deploy.sql
 ```
+
+Hackathon trial accounts do not support Snowflake External Access Integrations.
+For the public deployment, the Cloudflare gateway fetches only the requested
+`clinicaltrials.gov` v2 study record and forwards that JSON to the authenticated
+`/api/trials/sync-record` intake route. FastAPI validates that the payload NCT ID
+matches the request before Snowflake hashes and versions it. The gateway blocks
+direct public access to the trusted intake route.
 
 For later image releases, push the new image and use `snow spcs service upgrade`
 with the same service specification.

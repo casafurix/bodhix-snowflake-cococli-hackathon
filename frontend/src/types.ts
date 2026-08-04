@@ -206,3 +206,12 @@ export interface CopilotResponse {
   run_record_status: "PERSISTED" | "PERSISTENCE_UNAVAILABLE" | "LOCAL_ONLY";
   agent_trace: AgentTraceStep[];
 }
+
+export interface CopilotConfirmation {
+  proposal_id: string;
+  approval_status: "COMPLETED";
+  task_key: string;
+  task_status?: string;
+  status?: string;
+  agent_trace_step: AgentTraceStep;
+}

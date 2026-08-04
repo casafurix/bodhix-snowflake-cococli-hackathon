@@ -48,6 +48,12 @@ React files. For an API call such as `/api/copilot/query`, the Worker adds the
 Snowflake service credential on the server side and forwards the request to
 FastAPI. The response then travels back through Cloudflare to the browser.
 
+Trial sync has one additional step because Snowflake trial accounts do not
+support External Access Integrations. For `/api/trials/sync`, Cloudflare accepts
+only an NCT ID, fetches the bounded public v2 record from `clinicaltrials.gov`,
+and forwards it to a non-public intake path. FastAPI independently verifies that
+the payload NCT ID matches the request before Snowflake hashes and versions it.
+
 This is why the public URL does not display the Snowflake login page: the browser
 is talking to Cloudflare, while Cloudflare authenticates to Snowflake privately.
 
@@ -64,6 +70,9 @@ the frontend bundle, `wrangler.jsonc`, or a deployment log.
 - Bodies larger than 512 KiB are rejected.
 - Browser-supplied authorization and Snowflake identity headers are discarded.
 - Redirects are not followed, preventing accidental credential forwarding.
+- The ClinicalTrials.gov response is capped at 1 MiB and its NCT ID is checked
+  again by FastAPI before any Snowflake write.
+- Direct public calls to `/api/trials/sync-record` are blocked by the gateway.
 - API responses use `Cache-Control: no-store`.
 - The application remains decision support over synthetic patient data. It does
   not diagnose, confirm eligibility, enroll patients, or contain PHI.
@@ -86,6 +95,8 @@ not for billing or clinical security enforcement.
 8. Wrangler deployed the Worker to the permanent `workers.dev` URL.
 9. The public page, Snowflake health endpoint, and a grounded Cortex Copilot
    answer were tested after deployment.
+10. Copilot action proposals were persisted in Snowflake with a 30-minute expiry,
+    so an approval survives a container replacement and remains single-use.
 
 No password, PAT, or private key was committed to Git.
 
@@ -186,8 +197,10 @@ Test the printed URL in an incognito window that has no Snowflake session:
 2. Open Trials, Patients, Tasks, Analytics, and Notifications.
 3. Open the floating ATLAS Copilot and ask `Explain patient P001 with cited protocol and patient evidence.`.
 4. Confirm evidence citations and safe decision language are shown.
-5. Open `<public-url>/api/health` and confirm the response reports the Snowflake backend.
-6. Confirm the native Snowflake URL still requires Snowflake authentication.
+5. Sync `NCT00749190` and confirm it is versioned as `PENDING_EXTRACTION`.
+6. Approve an open Copilot proposal and confirm step 05 changes to `COMPLETED`.
+7. Open `<public-url>/api/health` and confirm the response reports the Snowflake backend.
+8. Confirm the native Snowflake URL still requires Snowflake authentication.
 
 ## Month-long operation
 

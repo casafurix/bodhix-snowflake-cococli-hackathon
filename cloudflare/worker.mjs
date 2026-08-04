@@ -1,5 +1,7 @@
 const ALLOWED_METHODS = new Set(["GET", "HEAD", "POST", "OPTIONS"]);
 const MAX_REQUEST_BYTES = 512 * 1024;
+const MAX_TRIAL_RECORD_BYTES = 1024 * 1024;
+const NCT_PATTERN = /\bNCT\d{8}\b/i;
 const SECURITY_HEADERS = {
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "X-Content-Type-Options": "nosniff",
@@ -28,6 +30,76 @@ async function withinLimit(limiter, key) {
   return result.success;
 }
 
+async function boundedJson(response, maxBytes) {
+  const declaredLength = Number(response.headers.get("Content-Length") || "0");
+  if (declaredLength > maxBytes) throw new Error("response-too-large");
+  if (!response.body) throw new Error("empty-response");
+
+  const reader = response.body.getReader();
+  const chunks = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel();
+      throw new Error("response-too-large");
+    }
+    chunks.push(value);
+  }
+
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+async function prepareTrialSync(requestBody) {
+  let submitted;
+  try {
+    submitted = JSON.parse(new TextDecoder().decode(requestBody));
+  } catch {
+    return { error: jsonResponse({ detail: "Enter a valid ClinicalTrials.gov NCT ID or URL." }, 422) };
+  }
+  const match = typeof submitted?.source === "string" ? submitted.source.match(NCT_PATTERN) : null;
+  if (!match) {
+    return { error: jsonResponse({ detail: "Enter an NCT ID such as NCT00749190." }, 422) };
+  }
+
+  const nctId = match[0].toUpperCase();
+  let sourceResponse;
+  try {
+    sourceResponse = await fetch(`https://clinicaltrials.gov/api/v2/studies/${nctId}`, {
+      headers: { Accept: "application/json", "User-Agent": "ATLAS-BodhiX-Gateway/1.0" },
+      redirect: "manual",
+    });
+  } catch (error) {
+    console.error(JSON.stringify({ event: "clinicaltrials_fetch_failed", nctId, message: String(error) }));
+    return { error: jsonResponse({ detail: "ClinicalTrials.gov is temporarily unavailable. Try again shortly." }, 502) };
+  }
+  if (sourceResponse.status === 404) {
+    return { error: jsonResponse({ detail: `ClinicalTrials.gov could not find ${nctId}.` }, 422) };
+  }
+  if (!sourceResponse.ok) {
+    console.error(JSON.stringify({ event: "clinicaltrials_fetch_status", nctId, status: sourceResponse.status }));
+    return { error: jsonResponse({ detail: "ClinicalTrials.gov is temporarily unavailable. Try again shortly." }, 502) };
+  }
+
+  try {
+    const payload = await boundedJson(sourceResponse, MAX_TRIAL_RECORD_BYTES);
+    return {
+      body: JSON.stringify({ source: nctId, payload }),
+      path: "/api/trials/sync-record",
+    };
+  } catch {
+    return { error: jsonResponse({ detail: "ClinicalTrials.gov returned an invalid or oversized study record." }, 502) };
+  }
+}
+
 async function proxyApi(request, env) {
   if (!ALLOWED_METHODS.has(request.method)) {
     return jsonResponse({ detail: "Method not allowed" }, 405, { Allow: "GET, HEAD, POST, OPTIONS" });
@@ -42,6 +114,11 @@ async function proxyApi(request, env) {
     return jsonResponse({ detail: "Request body is too large" }, 413);
   }
 
+  const url = new URL(request.url);
+  if (url.pathname === "/api/trials/sync-record") {
+    return jsonResponse({ detail: "Not found" }, 404);
+  }
+
   let requestBody;
   if (request.method === "POST") {
     requestBody = await request.arrayBuffer();
@@ -50,7 +127,6 @@ async function proxyApi(request, env) {
     }
   }
 
-  const url = new URL(request.url);
   const client = clientKey(request);
   if (!(await withinLimit(env.API_RATE_LIMITER, client))) {
     return jsonResponse({ detail: "Too many requests. Please retry shortly." }, 429, { "Retry-After": "60" });
@@ -66,8 +142,16 @@ async function proxyApi(request, env) {
     }
   }
 
+  let upstreamPath = url.pathname;
+  if (request.method === "POST" && url.pathname === "/api/trials/sync") {
+    const prepared = await prepareTrialSync(requestBody);
+    if (prepared.error) return prepared.error;
+    requestBody = prepared.body;
+    upstreamPath = prepared.path;
+  }
+
   const upstreamBase = new URL(env.SNOWFLAKE_ORIGIN);
-  const upstreamUrl = new URL(`${url.pathname}${url.search}`, upstreamBase);
+  const upstreamUrl = new URL(`${upstreamPath}${url.search}`, upstreamBase);
   const headers = new Headers({
     Accept: request.headers.get("Accept") || "application/json",
     Authorization: `Snowflake Token="${env.SNOWFLAKE_PAT}"`,

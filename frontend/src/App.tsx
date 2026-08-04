@@ -293,12 +293,20 @@ export function CopilotCard({ contextPatientId, surface = "card" }: { contextPat
   const [response, setResponse] = useState<CopilotResponse | null>(null);
   const ask = useMutation({
     mutationFn: (value: string) => api.copilot(value, contextPatientId),
-    onSuccess: setResponse,
+    onSuccess: (result) => {
+      confirm.reset();
+      setResponse(result);
+    },
   });
   const confirm = useMutation({
     mutationFn: (proposalId: string) => api.confirmCopilot(proposalId, "Coordinator confirmed the ATLAS proposal."),
-    onSuccess: async () => {
-      setResponse((current) => current ? { ...current, proposal: null, answer: `${current.answer}\n\nAction approved and written to the governed worklist.` } : current);
+    onSuccess: async (result) => {
+      setResponse((current) => current ? {
+        ...current,
+        proposal: null,
+        answer: `${current.answer}\n\nAction approved and written to the governed worklist.`,
+        agent_trace: current.agent_trace.map((stage) => stage.step === "05" ? result.agent_trace_step : stage),
+      } : current);
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["tasks"] }),
         queryClient.invalidateQueries({ queryKey: ["audit-events"] }),
@@ -356,6 +364,7 @@ export function CopilotCard({ contextPatientId, surface = "card" }: { contextPat
             {response.citations.length > 0 && <div className="mt-4 space-y-1.5 border-t border-slate-100 pt-3">{response.citations.slice(0, 4).map((citation) => <div key={`${citation.label}-${citation.source}`} className="flex gap-2 text-[10px] text-slate-500"><span className="font-semibold text-slate-700">{citation.label}</span><span className="font-mono">{citation.source}</span></div>)}</div>}
             {response.retrieved_evidence.length > 0 && <div className="mt-4 rounded-lg border border-blue-100 bg-blue-50/60 p-3"><div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#1d5a85]">Retrieved grounding</div><div className="mt-2 space-y-2">{response.retrieved_evidence.slice(0, 3).map((evidence, index) => <div key={`${evidence.source_id ?? evidence.title ?? index}`} className="text-[10px] leading-4 text-slate-600"><div className="font-semibold text-slate-700">{evidence.title ?? evidence.document_type ?? "Evidence record"}</div><div>{evidence.search_text}</div><div className="mt-0.5 font-mono text-[9px] text-slate-400">{evidence.source_id ?? "Governed Snowflake evidence"}</div></div>)}</div></div>}
             {response.proposal && <div className="mt-4 rounded-lg border border-[#9edbd2] bg-[#effaf8] p-3"><div className="text-xs font-bold text-[#17665e]">Proposed coordinator action</div><div className="mt-1 text-xs leading-5 text-[#275f5a]">{response.proposal.action_type.replaceAll("_", " ").toLowerCase()}. Confirming records a human-reviewed worklist transition.</div><Button type="button" size="sm" className="mt-3" onClick={() => confirm.mutate(response.proposal!.proposal_id)} disabled={confirm.isPending}>{confirm.isPending ? <LoaderCircle className="size-3 animate-spin" /> : <Check className="size-3" />} Confirm action</Button></div>}
+            {confirm.isSuccess && <div className="mt-4 flex items-start gap-2 rounded-lg border border-teal-200 bg-teal-50 p-3 text-xs leading-5 text-teal-800"><ShieldCheck className="mt-0.5 size-4 shrink-0" /><div><div className="font-bold">Approval completed</div><div>The worklist and append-only audit trail were updated.</div></div></div>}
             {confirm.error && <div className="mt-3 text-xs text-rose-700">This proposal could not be applied. Refresh the worklist and try again.</div>}
           </div>
         )}
