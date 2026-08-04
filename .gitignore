@@ -10,6 +10,9 @@ config.toml
 .env
 .env.*
 !.env.example
+.dev.vars
+.dev.vars.*
+.wrangler/
 .DS_Store
 *.log
 __pycache__/
