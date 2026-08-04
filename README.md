@@ -9,16 +9,19 @@ Team workspace for the **Snowflake CoCo (Cortex Code) CLI Hackathon 2026**.
 - [Final Build Plan](docs/FINAL_BUILD_PLAN.md) — the authoritative product, data, CoCo, architecture, deployment, and five-day delivery contract.
 - [ATLAS Product and Operator Guide](docs/ATLAS_PLATFORM_GUIDE.md) — plain-language explanation of the current build, frontend walkthrough, deployment operation, and honest demo boundaries.
 - [CoCo Runbook](docs/coco-runbook.md) — reproducible CLI, skills, and demo workflow.
+- [Public Deployment Runbook](docs/PUBLIC_DEPLOYMENT.md) — Cloudflare gateway,
+  secret handling, rate limits, verification, and month-long operation.
 
 ## Status
 Selected track: **PS-04 — Domain-Specific AI Copilot**.
 
 The deployed golden path is a clinical-trial coordinator copilot that extracts cited protocol criteria, pre-screens a synthetic patient cohort, creates safe coordinator tasks, and records human-reviewed actions in an audit trail. Project-specific CoCo skills live under `.cortex/skills/`.
 
-**Live Snowflake deployment:** [ATLAS Trial Intelligence](https://iaxsmo-pmwcgsc-yq79089.snowflakecomputing.app/)
+**Public deployment:** [ATLAS Trial Intelligence](https://atlas-clinical-trial-copilot.snowflake-hackathon.workers.dev/)
 
-Snowflake sign-in is required. Use a team user with `CTOPS_TEAM_ROLE`; a suspended
-service resumes on first access and may take a short time to become ready.
+The Cloudflare URL is anonymous and keeps the Snowflake PAT server-side. The
+native [Snowflake service](https://iaxsmo-pmwcgsc-yq79089.snowflakecomputing.app/)
+still requires a team user with `CTOPS_TEAM_ROLE`.
 
 ## First vertical slice
 
